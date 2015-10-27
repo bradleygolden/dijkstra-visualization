@@ -1,2 +1,2 @@
 # dijkstra-visualization
-A visualization for Dijkstra's algorithm.
+An awesome visualization for Dijkstra's algorithm.
