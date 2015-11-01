@@ -75,6 +75,46 @@ public class Graph
     }
 
     /**
+     * Getter for nodes in the graph.
+     *
+     * @return An array of nodes of type Node.
+     */
+    public Node[] getNodes()
+    {
+        return nodes;
+    } // end getNodes
+
+    /**
+     * Setter for nodes in the graph.
+     *
+     * @param nodes An array of nodes of type Node.
+     */
+    public void setNodes(Node[] nodes)
+    {
+        this.nodes = nodes;
+    }
+
+    /**
+     * Getter for edges in the graph.
+     *
+     * @return An array of edges of type Edge.
+     */
+    public Edge[] getEdges()
+    {
+        return this.edges;
+    }
+
+    /**
+     * Setter for edges in the graph.
+     *
+     * @param An array of edges of of type Edge.
+     */
+    public void setEdges(Edge[] edges)
+    {
+        this.edges = edges;
+    }
+
+    /**
      * Prints out the current nodes and edges in the graph.
      */
     public String toString()
