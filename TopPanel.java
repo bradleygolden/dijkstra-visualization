@@ -9,6 +9,7 @@ public class TopPanel extends JPanel
     private JPanel chooseGraphs;
     private JLabel choose;
     private JComboBox graphs;
+    private static final String[] GRAPHLIST = {"Graph 1", "Graph 2", "Graph 3"};
     private JButton start;
     private JButton startOver;
     private JPanel steps;
@@ -31,7 +32,7 @@ public class TopPanel extends JPanel
 
         chooseGraphs = new JPanel();
         choose = new JLabel("Choose a graph:");
-        graphs = new JComboBox();
+        graphs = new JComboBox(GRAPHLIST);
         start = new JButton("Start");
         startOver = new JButton("Start Over");
 
