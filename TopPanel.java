@@ -25,6 +25,7 @@ public class TopPanel extends JPanel
         headerPanel = new JPanel();
         headerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         header = new JLabel("Dijkstra's Algorithm");
+        header.setFont(new Font("Serif", Font.BOLD, 20));
 
         headerPanel.add(header);
 
