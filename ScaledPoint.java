@@ -17,11 +17,11 @@ public class ScaledPoint
     }
 
     public int getX() {
-        return (int)x * width;
+        return (int)(x * width);
     }
 
     public int getY() {
-        return (int)y * height;
+        return (int)(y * height);
     }
 
     public void setX(double x)
