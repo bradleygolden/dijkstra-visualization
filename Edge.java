@@ -64,6 +64,45 @@ public class Edge
     }
 
     /**
+     * Getter for the start node of the edge.
+     *
+     * @return The current edge's start point (type Node).
+     */
+    public Node getStart()
+    {
+        return this.start;
+    }
+
+    /**
+     * Getter for the end node of the edge.
+     *
+     * @return The current edge's end point (type Node).
+     */
+    public Node getEnd()
+    {
+        return this.end;
+    }
+
+    /**
+     * Setter for the start node of the edge.
+     *
+     * @param start The start of the edge (type Node).
+     */
+    public void setStart(Node start)
+    {
+        this.start = start;
+    }
+
+    /**
+     * Setter for the end node of the edge.
+     *
+     * @param start The end of the edge (type Node).
+     */
+    public void setEnd(Node end)
+    {
+        this.end = end;
+    }
+    /**
      * Provides the current edge value
      *
      * @return The edge value.
@@ -86,5 +125,8 @@ public class Edge
 
         System.out.println(edge1_2.toString());
         System.out.println(edge2_1.toString());
+        
+        System.out.println(edge1_2.getStart().toString());
+        System.out.println(edge1_2.getEnd().toString());
     }
 }
