@@ -1,6 +1,7 @@
 public class Node
 {
     private int val; // value of the node
+    private ScaledPoint point; // point where the current node is on the screen
 
     /**
      * Creates a Node object with val = 0.
@@ -8,6 +9,7 @@ public class Node
     public Node()
     {
         val = 0;
+        point = new ScaledPoint(); 
     }
 
     /**
@@ -17,7 +19,8 @@ public class Node
      */
     public Node(int val)
     {
-        this.val = val;
+        this();
+        this.val = val; // the set value of the node
     }
 
     /**
@@ -25,7 +28,7 @@ public class Node
      *
      * @param val New value to set node to.
      */
-    public void setVal(int val)
+    public void setValue(int val)
     {
         this.val = val;
     }
@@ -38,6 +41,26 @@ public class Node
     public int getValue()
     {
         return this.val;
+    }
+
+    /**
+     * Setter for the Node's scaled point.
+     *
+     * @param point A ScaledPoint type
+     */
+    public void setScaledPoint(ScaledPoint point)
+    {
+        this.point = point;
+    }
+
+    /**
+     * Getter for the Node's scaled point.
+     *
+     * @return Scaled point for this node.
+     */
+    public ScaledPoint getScaledPoint()
+    {
+        return this.point;
     }
 
     /**
