@@ -4,19 +4,24 @@ import javax.swing.*;
 
 public class TopPanel extends JPanel 
 {
-    private JPanel headerPanel;
-    private JLabel header;
-    private JPanel chooseGraphs;
-    private JLabel choose;
-    private JComboBox graphs;
-    private static final String[] GRAPHLIST = {"Graph 1", "Graph 2", "Graph 3"};
-    private JButton start;
-    private JButton startOver;
-    private JPanel steps;
-    private JButton prev;
-    private JButton next;
-    private DialogPanel dialogPanel;
+    private JPanel headerPanel;                            // Panel containing title
+    private JLabel header;                                 // The title of the program
+    private JPanel chooseGraphs;                           // Panel containing graph options
+    private JLabel choose;                                 // graphs label
+    private JComboBox graphs;                              // List of predefined graphs
+    private static final String[] GRAPHLIST = {"Graph 1", 
+                                               "Graph 2", 
+                                               "Graph 3"}; // Predefined graphs
+    private JButton start;                                 // Starts algorithm
+    private JButton startOver;                             // Restarts algorithm
+    private JPanel steps;                                  // Panel containing stepping buttons
+    private JButton prev;                                  // Go to previous position in algorithm
+    private JButton next;                                  // Go to next position in algorithm
+    private DialogPanel dialogPanel;                       // Panel containing
 
+    /**
+    * Creates a JPanel containing title, options, and a dialogPanel 
+    */
     public TopPanel() 
     {
         super();
@@ -55,6 +60,9 @@ public class TopPanel extends JPanel
         this.add(dialogPanel);
     }
 
+    /**
+    *  Test driver for TopPanel
+    */
     public static void main(String[] args) 
     {
         // Test Code
