@@ -1,7 +1,7 @@
 public class ScaledPoint
 {
-    private float x;
-    private float y;
+    private double x;
+    private double y;
     private static int height = 0;
     private static int width = 0;
 
@@ -24,12 +24,12 @@ public class ScaledPoint
         return y * height;
     }
 
-    public void setX(float x)
+    public void setX(double x)
     {
         this.x = x;
     }
 
-    public void setY(float y)
+    public void setY(double y)
     {
         this.y = y;
     }
