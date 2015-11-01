@@ -92,7 +92,7 @@ public class Graph
     /**
      * Test driver for Graph class
      */
-    public static void main(String[] args)
+    public static Graph testGraph()
     {
         Graph graph = new Graph(3, 3);
 
@@ -103,7 +103,7 @@ public class Graph
         graph.addEdge(graph.nodes[0], graph.nodes[1], 10);
         graph.addEdge(graph.nodes[1], graph.nodes[2], 20);
         graph.addEdge(graph.nodes[2], graph.nodes[0], 10);
-
-        System.out.println(graph.toString());
+        
+        return graph;
     }
 }
