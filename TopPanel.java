@@ -15,8 +15,7 @@ public class TopPanel extends JPanel
     private JPanel steps;
     private JButton prev;
     private JButton next;
-    private JPanel dialogPanel;
-    private JLabel dialog;
+    private DialogPanel dialogPanel;
 
     public TopPanel() 
     {
@@ -48,11 +47,7 @@ public class TopPanel extends JPanel
         steps.add(prev);
         steps.add(next);
 
-        dialogPanel= new JPanel();
-        dialogPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        dialog = new JLabel("Please select a starting node");
-
-        dialogPanel.add(dialog);
+        dialogPanel = new DialogPanel();
 
         this.add(headerPanel);
         this.add(chooseGraphs);
@@ -62,7 +57,8 @@ public class TopPanel extends JPanel
 
     public static void main(String[] args) 
     {
-        JFrame frame = new JFrame("Title");
+        // Test Code
+        JFrame frame = new JFrame("Dijkstra's Algorithm");
         frame.getContentPane().add(new TopPanel(), BorderLayout.NORTH);
         frame.getContentPane().add(new JPanel(), BorderLayout.CENTER);
 
