@@ -1,31 +1,24 @@
-import java.awt.BorderLayout;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+import javax.swing.*;
+import java.awt.*;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
-public class Gui extends JPanel {
-
-    private Point lastPoint;
-
-    public Gui() 
+class AFrame extends JFrame
+{
+    public AFrame()
     {
-        addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
-                lastPoint = new Point(e.getX(), e.getY());
-                System.out.println(lastPoint.toString());
-            }
-        });
+        super( "Dijkstra's Algorithm" );
+        setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+        setSize( 800 , 600 );
+        setVisible( true );
     }
+}
 
-    public static void main(String[] args) 
+public class Gui
+{
+    public static void main(String[] args)
     {
-        JFrame frame = new JFrame("Title");
-        frame.getContentPane().add(new Gui(), BorderLayout.CENTER);
+        AFrame frame = new AFrame();
+        frame.getContentPane().add(new TopPanel(), BorderLayout.NORTH);
+        frame.getContentPane().add(new JPanel(), BorderLayout.CENTER);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 300);
