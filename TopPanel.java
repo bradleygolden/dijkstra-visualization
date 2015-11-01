@@ -42,8 +42,8 @@ public class TopPanel extends JPanel
         chooseGraphs.add(startOver);
 
         steps = new JPanel();
-        prev = new JButton("Previous");
-        next = new JButton("Next");
+        prev = new JButton("Previous Step");
+        next = new JButton("Next Step");
 
         steps.add(prev);
         steps.add(next);
