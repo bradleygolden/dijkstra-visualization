@@ -11,7 +11,7 @@ public class ScaledPoint
         y = 0.0;
     }
 
-    public void updateWindow(int h, int w) 
+    public static void updateWindow(int h, int w) 
     // PRE: h and w are initialized
     // POST: static values of height and width are set to h and w respectively
     {
@@ -43,5 +43,11 @@ public class ScaledPoint
     // POST: y is stored as instance variable y
     {
         this.y = y;
+    }
+    
+    public void setXY(double x, double y)
+    {
+    	this.x = x;
+    	this.y = y;
     }
 }

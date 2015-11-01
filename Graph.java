@@ -104,6 +104,10 @@ public class Graph
         graph.addEdge(graph.nodes[1], graph.nodes[2], 20);
         graph.addEdge(graph.nodes[2], graph.nodes[0], 10);
         
+        graph.nodes[0].getScaledPoint().setXY(0.1, 0.6);
+        graph.nodes[1].getScaledPoint().setXY(0.5, 0.6);
+        graph.nodes[2].getScaledPoint().setXY(0.2, 0.8);
+        
         return graph;
     }
 }
