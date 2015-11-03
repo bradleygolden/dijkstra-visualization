@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Graph
 {
     protected Node[] nodes; // all nodes in the graph
@@ -120,11 +122,17 @@ public class Graph
     public String toString()
     {
         String temp = "";
-        for ( Node n : nodes )
-            temp += n.toString() + " ";
 
-        for ( Edge e : edges )
-            temp += e.toString() + " ";
+        for (Node n : nodes)
+        {
+            temp += "[" + n.toString() + "]: ";
+
+            for (Edge e : edges)
+                if ( n == e.getStart() )
+                    temp += "-" + e.toString() + "-[" + e.getEnd().toString() + "] ";
+
+            temp += "\n";
+        }
 
         return temp;
     }
