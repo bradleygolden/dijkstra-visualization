@@ -1,8 +1,15 @@
+import java.awt.Color;
+
+/**
+ * This class simulates a single edge between two nodes.
+ */
 public class Edge
 {
+    private static final Color DEFAULT_EDGE_COLOR = Color.BLACK; // the default color of edges
     private int val; // value of the edge
     private Node start; // node where edge starts
     private Node end; // node where edge ends
+    private Color color; // color of the current edge
 
     /**
      * Creates an edge object set to default values
@@ -14,6 +21,7 @@ public class Edge
         val = 0;
         start = null;
         end = null;
+        color = DEFAULT_EDGE_COLOR;
     }
 
     /**
@@ -84,6 +92,16 @@ public class Edge
     }
 
     /**
+     * Getter for the current color of this edge.
+     *
+     * @return The current color of this edge as a Color object.
+     */
+    public Color getColor()
+    {
+        return this.color;
+    }
+
+    /**
      * Setter for the start node of the edge.
      *
      * @param start The start of the edge (type Node).
@@ -102,6 +120,17 @@ public class Edge
     {
         this.end = end;
     }
+
+    /**
+     * Setter for the current color of the edge.
+     *
+     * @param color Initialized color for changing the current edge color.
+     */
+    public void setColor(Color color)
+    {
+        this.color = color;
+    }
+
     /**
      * Provides the current edge value
      *

@@ -1,15 +1,24 @@
+import java.awt.Color;
+
+/**
+ * This class simulates a single node within a graph.
+ */
 public class Node
 {
+    private static final Color DEFAULT_NODE_COLOR = Color.BLACK; // the default color of nodes
     private int val; // value of the node
     private ScaledPoint point; // point where the current node is on the screen
+    private Color color; // the color of the current node
 
     /**
-     * Creates a Node object with val = 0.
+     * Creates a Node object with val = 0, point set to a new scaled point, and 
+     * the node set to the default color.
      */
     public Node()
     {
         val = 0;
         point = new ScaledPoint(); 
+        color = DEFAULT_NODE_COLOR;
     }
 
     /**
@@ -61,6 +70,26 @@ public class Node
     public ScaledPoint getScaledPoint()
     {
         return this.point;
+    }
+
+    /**
+     * Getter for the Node's color.
+     *
+     * @return The nodes current color as a Color object.
+     */
+    public Color getColor()
+    {
+        return this.color;
+    }
+
+    /**
+     * Setter for the Node's color.
+     *
+     * @param color An initialized Color object.
+     */
+    public void setColor(Color color)
+    {
+        this.color = color;
     }
 
     /**
