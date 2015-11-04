@@ -128,7 +128,16 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
         }
         else if (e.getSource() == top.start)
         {
-            top.start.setText("Restart");
+            if (top.start.getText() == "Start")
+            {
+                top.start.setText("Stop");
+                top.graphs.setEnabled(false);
+            }
+            else if (top.start.getText() == "Stop")
+            {
+                top.start.setText("Start");
+                top.graphs.setEnabled(true);
+            }
         }
         else if (e.getSource() == top.prev)
         {
