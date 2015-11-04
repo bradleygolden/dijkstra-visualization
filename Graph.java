@@ -11,6 +11,7 @@ public class Graph
     private int maxEdges; // max number of edges in the graph
     private int currNumNodes; // current number of nodes in the graph
     private int currNumEdges; // current number of edges in the graph
+    private String name; // the name of this graph
 
     /**
      * Creates a Graph object with default values
@@ -23,29 +24,33 @@ public class Graph
         maxEdges = 0;
         currNumNodes = 0;
         currNumEdges = 0;
+        name = "Default Name";
     }
 
     /**
      * Creates a Graph object with the number of nodes and edges pre-defined
      *
      * @param numNodes The number of nodes the graph contains. Must be greater than 0.
-     * @param numEdges The number of edgs the graph contains. Must be greater than 0.
+     * @param numEdges The number of edges the graph contains. Must be greater than 0.
+     * @param name The name of the graph as a string.
      */
-    public Graph(int numNodes, int numEdges)
+    public Graph(int numNodes, int numEdges, String name)
     {
         this();
         nodes = new Node[numNodes];
         edges = new Edge[numEdges];
         maxNodes = numNodes;
         maxEdges = numEdges;
+        this.name = name;
     }
 
     /**
      * Adds a node to the current graph.
      * 
      * @param val The value of the node to be added.
+     * @param name The name of the current node as a string.
      */
-    public void addNode(int val)
+    public void addNode(int val, String name)
     {
         if (currNumNodes == maxNodes) // Reached maximum nodes defined in constructor
         {
@@ -54,7 +59,7 @@ public class Graph
             return;
         }
 
-        Node newNode = new Node(val); // create a new node
+        Node newNode = new Node(val, name); // create a new node
         nodes[currNumNodes] = newNode; // add node to graph
         currNumNodes++; // increment number of nodes in the graph
     } // end addNode
@@ -112,11 +117,31 @@ public class Graph
     /**
      * Setter for edges in the graph.
      *
-     * @param An array of edges of of type Edge.
+     * @param edges An array of edges of of type Edge.
      */
     public void setEdges(Edge[] edges)
     {
         this.edges = edges;
+    }
+
+    /**
+     * Setter for the name of the graph.
+     *
+     * @param name The name of the current graph as a string.
+     */
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    /**
+     * Getter for the name of the graph.
+     *
+     * @return The name of the graph as a string.
+     */
+    public String getName()
+    {
+        return name;
     }
 
     /**
@@ -141,32 +166,6 @@ public class Graph
     }
 
     /**
-     * Test driver for Graph class
-     * <p>
-     * This is to be used in conjuction with Gui.java
-     *
-     * @return A graph object.
-     */
-    public static Graph testGraph()
-    {
-        Graph graph = new Graph(3, 3);
-
-        graph.addNode(Integer.MAX_VALUE);
-        graph.addNode(Integer.MAX_VALUE);
-        graph.addNode(Integer.MAX_VALUE);
-
-        graph.addEdge(graph.nodes[0], graph.nodes[1], 10);
-        graph.addEdge(graph.nodes[1], graph.nodes[2], 20);
-        graph.addEdge(graph.nodes[2], graph.nodes[0], 10);
-        
-        graph.nodes[0].getScaledPoint().setXY(0.1, 0.6);
-        graph.nodes[1].getScaledPoint().setXY(0.5, 0.6);
-        graph.nodes[2].getScaledPoint().setXY(0.2, 0.8);
-        
-        return graph;
-    }
-
-    /**
      * A fixed graph with 5 nodes and 7 edges. 
      * <p>
      * This is to be used in conjunction with Gui.java
@@ -176,11 +175,13 @@ public class Graph
      */
     public static Graph graph1()
     {
-        Graph graph = new Graph(5, 7);
+        Graph graph = new Graph(5, 7, "Graph1");
+        int name = 0;
 
         for (int i = 0; i < 5; i++)
         {
-            graph.addNode(Integer.MAX_VALUE);
+            graph.addNode(Integer.MAX_VALUE, Integer.toString(name));
+            name++;
         }
 
         graph.addEdge(graph.nodes[0], graph.nodes[1], 10);
@@ -210,11 +211,13 @@ public class Graph
      */
     public static Graph graph2()
     {
-        Graph graph = new Graph(6, 8);
+        Graph graph = new Graph(6, 8, "Graph2");
+        int name = 0;
 
         for (int i = 0; i < 6; i++)
         {
-            graph.addNode(Integer.MAX_VALUE);
+            graph.addNode(Integer.MAX_VALUE, Integer.toString(name));
+            name++;
         }
 
         graph.addEdge(graph.nodes[0], graph.nodes[1], 10);
@@ -246,11 +249,13 @@ public class Graph
      */
     public static Graph graph3()
     {
-        Graph graph = new Graph(6, 9);
+        Graph graph = new Graph(6, 9, "Graph3");
+        int name = 0;
 
         for (int i = 0; i < 6; i++)
         {
-            graph.addNode(Integer.MAX_VALUE);
+            graph.addNode(Integer.MAX_VALUE, Integer.toString(name));
+            name++;
         }
 
         graph.addEdge(graph.nodes[0], graph.nodes[1], 10);
