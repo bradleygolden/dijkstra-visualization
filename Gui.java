@@ -30,6 +30,7 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
         addMouseListener(this);
         redrawTimer = new Timer(TIMER_CYCLE, null);
         redrawTimer.addActionListener(this);
+        redrawTimer.start();
         backBuffer = new BufferedImage(3000, 2000, BufferedImage.TYPE_INT_RGB);
         draggedPt = null;
         nodeRadius = 20;
@@ -41,7 +42,7 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
         top.start.addActionListener(this);
         top.prev.addActionListener(this);
         top.next.addActionListener(this);
-        //initEdgeButtons();
+        initEdgeButtons();
         repaint();
     }
 
@@ -119,14 +120,10 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
     {
         if(e.getSource() == redrawTimer)
         {
+        	repaint();
             if(draggedPt != null) // drag point if there is one to drag
             {
-                dragPoint();
-                repaint();
-            }
-            else
-            {
-                redrawTimer.stop();
+                dragPoint();                
             }
         }
         else if (e.getSource() == top.start)
