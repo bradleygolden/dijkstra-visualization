@@ -24,7 +24,7 @@ class AFrame extends JFrame implements MouseListener
         radius = 15;
         draggedPt = null;
         
-        graph = Graph.testGraph();
+        graph = Graph.graph1();
     }
     
     @Override
