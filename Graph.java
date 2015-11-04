@@ -18,8 +18,8 @@ public class Graph
      */
     public Graph()
     {
-        nodes = new Node[0];
-        edges = new Edge[0];
+        nodes = null;
+        edges = null;
         maxNodes = 0;
         maxEdges = 0;
         currNumNodes = 0;
@@ -270,5 +270,11 @@ public class Graph
         graph.nodes[5].getScaledPoint().setXY(0.9, 0.2);
 
         return graph;
+    }
+
+    public static void main(String[] args)
+    {
+        Graph graph = graph1();
+        System.out.println(graph.toString());
     }
 }
