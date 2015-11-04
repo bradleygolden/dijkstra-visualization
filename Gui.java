@@ -186,7 +186,8 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
     	ScaledPoint nodePt; // scaled point of a node
     	Color fontColor;    // color of the font
     	int index;          // variable used for indexing
-    	Point difVec;       // difference vector between start and end
+    	float difVecX;      // difference between start.x and end.x
+    	float difVecY;      // difference between start.y and end.y
     	
     	if(graph == null)
     		return;
@@ -201,14 +202,15 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
     		start = e.getStart().getScaledPoint();
     		end = e.getEnd().getScaledPoint();
     		
-    		difVec = new Point(start.getX() - end.getX(),start.getY() - end.getY());
-        	difVec.x = -difVec.x/2;
-        	difVec.y = -difVec.y/2;
-        	if(edgeButtons != null)
+    		difVecX = start.getX() - end.getX();
+    		difVecY = start.getY() - end.getY();
+        	difVecX = difVecX/2f;
+        	difVecY = difVecY/2f;
+        	if(edgeButtons != null && edgeButtons[index] != null)
         	{
-        		edgeButtons[index].setLocation(start.getX()+difVec.x, start.getY()+difVec.y);
+        		edgeButtons[index].setLocation(end.getX()+(int)difVecX, end.getY()+(int)difVecY);
         	}
-    		
+    		((Graphics2D)g).setStroke(new BasicStroke(3));
         	g.setColor(e.getColor());
         	g.drawLine(start.getX(),start.getY(), end.getX(),end.getY());
         	
@@ -225,7 +227,9 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
             		2*nodeRadius, 2*nodeRadius);
             
             g.setColor(fontColor);
-    		g.drawString(Integer.toString(n.getValue()), nodePt.getX(), nodePt.getY());
+    		g.drawString(n.getName(), nodePt.getX(), nodePt.getY());
+    		g.drawString("Distance:" + (n.getValue() == Integer.MAX_VALUE ? "\u221e" : n.getValue()),
+    				nodePt.getX() + 20, nodePt.getY());
     	}       
         
         g.setColor(originalColor);
