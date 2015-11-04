@@ -41,7 +41,7 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
         top.start.addActionListener(this);
         top.prev.addActionListener(this);
         top.next.addActionListener(this);
-        initEdgeButtons();
+        //initEdgeButtons();
         repaint();
     }
 
@@ -167,7 +167,7 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
     	{    		
     		edgeButtons[i] = new JButton(Integer.toString(graph.getEdges()[i].getVal()));
     		edgeButtons[i].addActionListener(this);
-    		edgeButtons[i].setSize(10, 30);
+    		edgeButtons[i].setSize(60,30);
     		add(edgeButtons[i]);
     	}
     }
@@ -198,7 +198,10 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
     		difVec = new Point(start.getX() - end.getX(),start.getY() - end.getY());
         	difVec.x = -difVec.x/2;
         	difVec.y = -difVec.y/2;
-        	edgeButtons[index].setLocation(start.getX()+difVec.x, start.getY()+difVec.y);        	
+        	if(edgeButtons != null)
+        	{
+        		edgeButtons[index].setLocation(start.getX()+difVec.x, start.getY()+difVec.y);
+        	}
     		
         	g.setColor(e.getColor());
         	g.drawLine(start.getX(),start.getY(), end.getX(),end.getY());
