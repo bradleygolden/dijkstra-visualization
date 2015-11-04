@@ -4,18 +4,20 @@ import java.awt.*;
 import java.awt.image.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-class AFrame extends JFrame implements MouseListener, ActionListener
+class AFrame extends JFrame implements MouseListener, ActionListener, ItemListener
 {
     private Image backBuffer;
     public static final int TIMER_CYCLE = 25; // period between redrawTimer triggers in ms
     private Timer redrawTimer;     // timer that will repeatedly redraw the context if necessary
 	private ScaledPoint draggedPt; // point that is being dragged
     private int radius;            // node radius
-	
 	Graph graph;
+    TopPanel top;
 	
     public AFrame()
     {
@@ -24,7 +26,7 @@ class AFrame extends JFrame implements MouseListener, ActionListener
         setSize( 800 , 600 );
         setVisible( true );
         addMouseListener(this);
-        redrawTimer = new Timer(TIMER_CYCLE,null);
+        redrawTimer = new Timer(TIMER_CYCLE, null);
         redrawTimer.addActionListener(this);
         backBuffer = new BufferedImage(1920, 1080, BufferedImage.TYPE_INT_RGB);
         
@@ -32,8 +34,14 @@ class AFrame extends JFrame implements MouseListener, ActionListener
         draggedPt = null;
         
         graph = Graph.graph1();
+
+        top = new TopPanel();
+        top.graphs.addItemListener(this);
+        top.start.addActionListener(this);
+        top.prev.addActionListener(this);
+        top.next.addActionListener(this);
     }
-    
+
     @Override
     public void paint(Graphics g)
     {    	
@@ -121,7 +129,47 @@ class AFrame extends JFrame implements MouseListener, ActionListener
                 redrawTimer.stop();
             }
         }
+        else if (e.getSource() == top.start)
+        {
+            top.start.setText("Restart");
+        }
+        else if (e.getSource() == top.prev)
+        {
+            // Boilerplate
+        }
+        else if (e.getSource() == top.next)
+        {
+            // Boilerplate
+        }
     }
+
+    /**
+    *
+    */
+    public void itemStateChanged(ItemEvent e) 
+    {
+        if (e.getSource() == top.graphs) 
+        {
+            if (top.graphs.getSelectedIndex() == 0)
+                graph = Graph.graph1();
+            else if (top.graphs.getSelectedIndex() == 1)
+                graph = Graph.graph2();
+            else if (top.graphs.getSelectedIndex() == 2)
+                graph = Graph.graph3();
+
+            top.start.setText("Start");
+            repaint();
+        }
+    }
+
+    /**
+    *
+    */
+    public Graph getGraphSelected()
+    {
+        return graph;
+    }
+
 }
 
 public class Gui
@@ -129,7 +177,8 @@ public class Gui
     public static void main(String[] args)
     {
         AFrame frame = new AFrame();
-        frame.getContentPane().add(new TopPanel(), BorderLayout.NORTH);
+
+        frame.getContentPane().add(frame.top, BorderLayout.NORTH);
         frame.getContentPane().add(new JPanel(), BorderLayout.CENTER);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
