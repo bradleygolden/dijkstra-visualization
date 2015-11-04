@@ -176,12 +176,10 @@ public class Graph
     public static Graph graph1()
     {
         Graph graph = new Graph(5, 7, "Graph1");
-        int name = 0;
 
         for (int i = 0; i < 5; i++)
         {
-            graph.addNode(Integer.MAX_VALUE, Integer.toString(name));
-            name++;
+            graph.addNode(Integer.MAX_VALUE, Integer.toString(i));
         }
 
         graph.addEdge(graph.nodes[0], graph.nodes[1], 10);
@@ -212,12 +210,10 @@ public class Graph
     public static Graph graph2()
     {
         Graph graph = new Graph(6, 8, "Graph2");
-        int name = 0;
 
         for (int i = 0; i < 6; i++)
         {
-            graph.addNode(Integer.MAX_VALUE, Integer.toString(name));
-            name++;
+            graph.addNode(Integer.MAX_VALUE, Integer.toString(i));
         }
 
         graph.addEdge(graph.nodes[0], graph.nodes[1], 10);
@@ -250,12 +246,10 @@ public class Graph
     public static Graph graph3()
     {
         Graph graph = new Graph(6, 9, "Graph3");
-        int name = 0;
 
         for (int i = 0; i < 6; i++)
         {
-            graph.addNode(Integer.MAX_VALUE, Integer.toString(name));
-            name++;
+            graph.addNode(Integer.MAX_VALUE, Integer.toString(i));
         }
 
         graph.addEdge(graph.nodes[0], graph.nodes[1], 10);
