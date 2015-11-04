@@ -164,7 +164,7 @@ public class Graph
     }
 
     /**
-     * A fixed graph with 5 nodes and 7 edges.
+     * A fixed graph with 5 nodes and 7 edges. 
      * <p>
      * This is to be used in conjunction with Gui.java
      *
@@ -193,6 +193,79 @@ public class Graph
         graph.nodes[2].getScaledPoint().setXY(0.2, 0.4);
         graph.nodes[3].getScaledPoint().setXY(0.8, 0.4);
         graph.nodes[4].getScaledPoint().setXY(0.5, 0.3);
+
+        return graph;
+    }
+
+    /**
+     * A fixed graph with 6 nodes and 8 edges.
+     * <p>
+     * This is to be used in conjunction with Gui.java
+     *
+     * @return A graph object.
+     * 
+     */
+    public static Graph graph2()
+    {
+        Graph graph = new Graph(6, 8);
+
+        for (int i = 0; i < 6; i++)
+        {
+            graph.addNode(Integer.MAX_VALUE);
+        }
+
+        graph.addEdge(graph.nodes[0], graph.nodes[1], 10);
+        graph.addEdge(graph.nodes[0], graph.nodes[4], 4);
+        graph.addEdge(graph.nodes[1], graph.nodes[3], 4);
+        graph.addEdge(graph.nodes[2], graph.nodes[0], 9);
+        graph.addEdge(graph.nodes[2], graph.nodes[3], 2);
+        graph.addEdge(graph.nodes[2], graph.nodes[4], 10);
+        graph.addEdge(graph.nodes[3], graph.nodes[5], 8);
+        graph.addEdge(graph.nodes[4], graph.nodes[5], 6);
+
+        graph.nodes[0].getScaledPoint().setXY(0.2, 0.8);
+        graph.nodes[1].getScaledPoint().setXY(0.8, 0.8);
+        graph.nodes[2].getScaledPoint().setXY(0.5, 0.5);
+        graph.nodes[3].getScaledPoint().setXY(0.8, 0.5);
+        graph.nodes[4].getScaledPoint().setXY(0.2, 0.2);
+        graph.nodes[5].getScaledPoint().setXY(0.8, 0.2);
+
+        return graph;
+    }
+
+    /**
+     * A fixed graph with 6 nodes and 9 edges.
+     * <p>
+     * This is to be used in conjunction with Gui.java
+     *
+     * @return A graph object.
+     * 
+     */
+    public static Graph graph3()
+    {
+        Graph graph = new Graph(6, 9);
+
+        for (int i = 0; i < 6; i++)
+        {
+            graph.addNode(Integer.MAX_VALUE);
+        }
+
+        graph.addEdge(graph.nodes[0], graph.nodes[1], 10);
+        graph.addEdge(graph.nodes[0], graph.nodes[2], 4);
+        graph.addEdge(graph.nodes[0], graph.nodes[3], 7);
+        graph.addEdge(graph.nodes[1], graph.nodes[3], 4);
+        graph.addEdge(graph.nodes[2], graph.nodes[3], 9);
+        graph.addEdge(graph.nodes[2], graph.nodes[4], 5);
+        graph.addEdge(graph.nodes[3], graph.nodes[4], 8);
+        graph.addEdge(graph.nodes[3], graph.nodes[5], 7);
+        graph.addEdge(graph.nodes[4], graph.nodes[5], 6);
+
+        graph.nodes[0].getScaledPoint().setXY(0.2, 0.8);
+        graph.nodes[1].getScaledPoint().setXY(0.8, 0.8);
+        graph.nodes[2].getScaledPoint().setXY(0.1, 0.5);
+        graph.nodes[3].getScaledPoint().setXY(0.9, 0.5);
+        graph.nodes[4].getScaledPoint().setXY(0.5, 0.2);
+        graph.nodes[5].getScaledPoint().setXY(0.9, 0.2);
 
         return graph;
     }
