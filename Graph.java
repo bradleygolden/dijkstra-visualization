@@ -1,5 +1,8 @@
 import java.util.Arrays;
 
+/**
+ * Used to simulate a graph containing nodes and edges.
+ */
 public class Graph
 {
     protected Node[] nodes; // all nodes in the graph
