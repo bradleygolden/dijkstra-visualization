@@ -42,6 +42,7 @@ public class Node
      */
     public Node(int val, String name)
     {
+        this(val);
         this.name = name;
     }
 
@@ -140,7 +141,7 @@ public class Node
      */
     public static void main(String[] args)
     {
-        Node node1 = new Node(10);
+        Node node1 = new Node(10, "0");
         System.out.println(node1.toString());
     }
 }
