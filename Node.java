@@ -9,6 +9,7 @@ public class Node
     private int val; // value of the node
     private ScaledPoint point; // point where the current node is on the screen
     private Color color; // the color of the current node
+    private String name; // the name of this node
 
     /**
      * Creates a Node object with val = 0, point set to a new scaled point, and 
@@ -19,6 +20,7 @@ public class Node
         val = 0;
         point = new ScaledPoint(); 
         color = DEFAULT_NODE_COLOR;
+        name = "0";
     }
 
     /**
@@ -30,6 +32,17 @@ public class Node
     {
         this();
         this.val = val; // the set value of the node
+    }
+
+    /**
+     * Creates a Node object with a predefined value and a name.
+     *
+     * @param val Value of the current node.
+     * @param name The name of the current node.
+     */
+    public Node(int val, String name)
+    {
+        this.name = name;
     }
 
     /**
@@ -90,6 +103,26 @@ public class Node
     public void setColor(Color color)
     {
         this.color = color;
+    }
+
+    /**
+     * Setter for the Node's name.
+     *
+     * @param name
+     */
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    /**
+     * Getter for the Node's name.
+     *
+     * @return The nodes name as a string.
+     */
+    public String getName()
+    {
+        return name;
     }
 
     /**
