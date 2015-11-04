@@ -3,7 +3,7 @@ import java.awt.Color;
 /**
  * This class simulates a single node within a graph.
  */
-public class Node
+public class Node 
 {
     private static final Color DEFAULT_NODE_COLOR = Color.GREEN; // the default color of nodes
     private int val; // value of the node
