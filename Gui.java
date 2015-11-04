@@ -97,9 +97,9 @@ class AFrame extends JFrame implements MouseListener
     }
 
     @Override
-    public void mouseExited(MouseEvent arg0) {
-        // TODO Auto-generated method stub
-        
+    public void mouseExited(MouseEvent arg0)
+    {
+        draggedPt = null;
     }
 }
 
