@@ -5,7 +5,7 @@ import java.awt.Color;
  */
 public class Node
 {
-    private static final Color DEFAULT_NODE_COLOR = Color.BLACK; // the default color of nodes
+    private static final Color DEFAULT_NODE_COLOR = Color.GREEN; // the default color of nodes
     private int val; // value of the node
     private ScaledPoint point; // point where the current node is on the screen
     private Color color; // the color of the current node

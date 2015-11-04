@@ -5,7 +5,7 @@ import java.awt.Color;
  */
 public class Edge
 {
-    private static final Color DEFAULT_EDGE_COLOR = Color.BLACK; // the default color of edges
+    private static final Color DEFAULT_EDGE_COLOR = Color.BLUE; // the default color of edges
     private int val; // value of the edge
     private Node start; // node where edge starts
     private Node end; // node where edge ends
