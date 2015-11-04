@@ -1,22 +1,22 @@
 import java.awt.*;
 import java.awt.Graphics;
+import java.awt.event.*;
 import javax.swing.*;
 
-public class TopPanel extends JPanel 
+public class TopPanel extends JPanel
 {
     private JPanel headerPanel;                            // Panel containing title
     private JLabel header;                                 // The title of the program
     private JPanel chooseGraphs;                           // Panel containing graph options
     private JLabel choose;                                 // graphs label
-    private JComboBox graphs;                              // List of predefined graphs
+    protected JComboBox graphs;                            // List of predefined graphs
     private static final String[] GRAPHLIST = {"Graph 1", 
                                                "Graph 2", 
                                                "Graph 3"}; // Predefined graphs
-    private JButton start;                                 // Starts algorithm
-    private JButton startOver;                             // Restarts algorithm
+    protected JButton start;                                 // Starts algorithm
     private JPanel steps;                                  // Panel containing stepping buttons
-    private JButton prev;                                  // Go to previous position in algorithm
-    private JButton next;                                  // Go to next position in algorithm
+    protected JButton prev;                                  // Go to previous position in algorithm
+    protected JButton next;                                  // Go to next position in algorithm
     private DialogPanel dialogPanel;                       // Panel containing
 
     /**
@@ -38,12 +38,10 @@ public class TopPanel extends JPanel
         choose = new JLabel("Choose a graph:");
         graphs = new JComboBox(GRAPHLIST);
         start = new JButton("Start");
-        startOver = new JButton("Start Over");
 
         chooseGraphs.add(choose);
         chooseGraphs.add(graphs);
         chooseGraphs.add(start);
-        chooseGraphs.add(startOver);
 
         steps = new JPanel();
         prev = new JButton("Previous Step");
