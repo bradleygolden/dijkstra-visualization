@@ -10,59 +10,73 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
-class AFrame extends JFrame implements MouseListener, ActionListener, ItemListener
+class AFrame extends JFrame implements MouseListener, ActionListener, ItemListener, MouseMotionListener
 {
-    public static final int TIMER_CYCLE = 25; // period between redrawTimer triggers in ms
     private Image backBuffer;      // back buffer to draw graph
-    private Timer redrawTimer;     // timer that will repeatedly redraw the context if necessary
 	private ScaledPoint draggedPt; // point that is being dragged
 	private int nodeRadius;        // radius of the circles drawn as nodes
-	private JButton[] edgeButtons; // buttons for edges
-
-	Graph graph;
-    TopPanel top;
+	private Graph graph;
+    private TopPanel top;
+    private Drawable[] drawables;
 	
     public AFrame()
     {
         super( "Dijkstra's Algorithm" );
+        
         setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
         setSize( 800 , 600 );
         setVisible( true );
         addMouseListener(this);
-        redrawTimer = new Timer(TIMER_CYCLE, null);
-        redrawTimer.addActionListener(this);
-        redrawTimer.start();
+        addMouseMotionListener(this);
+        
         backBuffer = new BufferedImage(3000, 2000, BufferedImage.TYPE_INT_RGB);
         draggedPt = null;
-        nodeRadius = 20;
-        
+        nodeRadius = 20;        
         graph = Graph.graph1();
+        initDrawables();
 
         top = new TopPanel();
-        top.graphs.addItemListener(this);
+        top.graphs.addItemListener (this);
         top.start.addActionListener(this);
-        top.prev.addActionListener(this);
-        top.next.addActionListener(this);
-        initEdgeButtons();
-        repaint();
+        top.prev.addActionListener (this);
+        top.next.addActionListener (this);
+        
+        add(top, BorderLayout.NORTH);
+        add(new JPanel(), BorderLayout.CENTER);
+    }
+    
+    public void initDrawables()
+    {
+    	int index;
+    	
+    	index = 0;
+    	drawables = new Drawable[graph.getNodes().length + graph.getEdges().length];    	
+    	
+    	for(Edge e : graph.getEdges())
+    		drawables[index++] = new DrawableEdge(e);
+    	
+    	for(Node n : graph.getNodes())
+    		drawables[index++] = new DrawableNode(n);
     }
 
     @Override
     public void paint(Graphics g)
-    {
+    {    	
     	Graphics frameGraphics; // main graphics object
     	
-    	frameGraphics = g;    	
+    	frameGraphics = g;
         ScaledPoint.updateWindow(getHeight(), getWidth());
         
-        if(backBuffer != null) // handle weird java weird java
+        if(backBuffer != null) // start drawing to backbuffer
         	g = backBuffer.getGraphics();
         
-        drawGraph(g);
+        for(Drawable d : drawables)
+        	d.draw(g);
         
-        if(backBuffer != null)
-        	frameGraphics.drawImage(backBuffer, 0, 0, null); // present back buffer to front buffer
+        if(backBuffer != null) // present back buffer to front buffer
+        	frameGraphics.drawImage(backBuffer, 0, 0, null);
         
         super.paint(g);
     }
@@ -86,9 +100,7 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
         {
             if(getDistanceFromMouse(n.getScaledPoint(), e.getX(), e.getY()) < nodeRadius)
             {
-                draggedPt = n.getScaledPoint();
-                redrawTimer.start();
-                dragPoint();
+                draggedPt = n.getScaledPoint();                
                 break;
             }
         }
@@ -100,15 +112,13 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
     }
     
     @Override
-    public void mouseClicked(MouseEvent arg0) {
-        // TODO Auto-generated method stub
-        
+    public void mouseClicked(MouseEvent e)
+    {        
     }
 
     @Override
-    public void mouseEntered(MouseEvent arg0) {
-        // TODO Auto-generated method stub
-        
+    public void mouseEntered(MouseEvent e)
+    {        
     }
 
     @Override
@@ -120,15 +130,7 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        if(e.getSource() == redrawTimer)
-        {
-        	repaint();
-            if(draggedPt != null) // drag point if there is one to drag
-            {
-                dragPoint();                
-            }
-        }
-        else if (e.getSource() == top.start)
+        if (e.getSource() == top.start)
         {
             if (top.start.getText() == "Start")
             {
@@ -167,101 +169,33 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
             {
                 graph = Graph.graph3();                
             }
-            initEdgeButtons();
 
             top.start.setText("Start");
+            initDrawables();
             repaint();
         }
     }
-    
-    public void initEdgeButtons()
-    {       
-        if(edgeButtons != null)
-        {
-        	for(JButton b : edgeButtons)
-        	{
-        		remove(b);
-        	}
-        }
-        
-        edgeButtons = new JButton[graph.getEdges().length];
-    	
-    	for(int i=0;i<edgeButtons.length;i++)
-    	{    		
-    		edgeButtons[i] = new JButton(Integer.toString(graph.getEdges()[i].getVal()));
-    		edgeButtons[i].addActionListener(this);
-    		edgeButtons[i].setSize(60,30);
-    		add(edgeButtons[i]);
-    	}
-    }
-    
-    public void drawGraph(Graphics g)
-    {
-    	Color originalColor;// color carried by g
-    	ScaledPoint start;  // starting point of an edge
-    	ScaledPoint end;    // ending point of an edge
-    	ScaledPoint nodePt; // scaled point of a node
-    	Color fontColor;    // color of the font
-    	int index;          // variable used for indexing
-    	float difVecX;      // difference between start.x and end.x
-    	float difVecY;      // difference between start.y and end.y
-    	
-    	if(graph == null)
-    		return;
-    	
-    	originalColor = g.getColor();
-    	nodeRadius = 20;
-    	fontColor = Color.BLACK;
-    	index = 0;
-    	
-    	for(Edge e : graph.getEdges())
-        {
-    		start = e.getStart().getScaledPoint();
-    		end = e.getEnd().getScaledPoint();
-    		
-    		difVecX = start.getX() - end.getX();
-    		difVecY = start.getY() - end.getY();
-        	difVecX = difVecX/2f;
-        	difVecY = difVecY/2f;
-        	if(edgeButtons != null && edgeButtons[index] != null) // weird java null check
-        	{
-        		edgeButtons[index].setLocation(end.getX()+(int)difVecX, end.getY()+(int)difVecY);
-        		edgeButtons[index].setContentAreaFilled(false);
-        		edgeButtons[index].setVisible(true);
-        	}
-    		((Graphics2D)g).setStroke(new BasicStroke(3));
-        	g.setColor(e.getColor());
-        	g.drawLine(start.getX(),start.getY(), end.getX(),end.getY());
-        	
-        	
-        	index++;
-        }
-    	
-    	for(Node n : graph.nodes)
-    	{
-    		nodePt = n.getScaledPoint();
-    		
-    		g.setColor(n.getColor());
-            g.fillOval(nodePt.getX()-nodeRadius, nodePt.getY()-nodeRadius, 
-            		2*nodeRadius, 2*nodeRadius);
-            
-            g.setColor(fontColor);
-    		g.drawString(n.getName(), nodePt.getX(), nodePt.getY());
-    		g.drawString("Distance:" + (n.getValue() == Integer.MAX_VALUE ? "\u221e" : n.getValue()),
-    				nodePt.getX() + 20, nodePt.getY());
-    	}       
-        
-        g.setColor(originalColor);
-    }
+
+	@Override
+	public void mouseDragged(MouseEvent e)
+	{
+		if(draggedPt != null)
+		{
+			dragPoint();
+			repaint();
+		}
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e)
+	{
+	}
 }
 
 public class Gui
 {
     public static void main(String[] args)
     {
-        AFrame frame = new AFrame();
-
-        frame.getContentPane().add(frame.top, BorderLayout.NORTH);
-        frame.getContentPane().add(new JPanel(), BorderLayout.CENTER);
+        AFrame frame = new AFrame();        
     }
 }
