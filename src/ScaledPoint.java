@@ -1,3 +1,5 @@
+package src;
+
 /**
  * Used to convert relative x and y coordinates into actual x and y coordinates given
  * a dynamic display.

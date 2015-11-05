@@ -1,7 +1,7 @@
 /*
  * for calculating path to return to the front end
  */
-package BusinessTier;
+package src;
 
 import java.util.List;
 
