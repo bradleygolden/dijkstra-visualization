@@ -15,8 +15,8 @@ import java.util.List;
  */
 public class NodeBE
 {
-    List<EdgeBE> edgesToNode;     // list of all edges lead to this node
-    List<EdgeBE> edgesFromNode;   // list of all edges lead from this node
+    private List<EdgeBE> edgesToNode;     // list of all edges lead to this node
+    private List<EdgeBE> edgesFromNode;   // list of all edges lead from this node
     
     /**
     * Creates a default NodeBE object
