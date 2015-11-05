@@ -16,7 +16,7 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
     private Timer redrawTimer;     // timer that will repeatedly redraw the context if necessary
 	private ScaledPoint draggedPt; // point that is being dragged
 	private int nodeRadius;        // radius of the circles drawn as nodes
-	private JButton[] edgeButtons; // buttons for edges	
+	private JButton[] edgeButtons; // buttons for edges
 
 	Graph graph;
     TopPanel top;
@@ -154,11 +154,18 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
         if (e.getSource() == top.graphs) 
         {
             if (top.graphs.getSelectedIndex() == 0)
+            {
                 graph = Graph.graph1();
+            }
             else if (top.graphs.getSelectedIndex() == 1)
+            {
                 graph = Graph.graph2();
+            }
             else if (top.graphs.getSelectedIndex() == 2)
-                graph = Graph.graph3();
+            {
+                graph = Graph.graph3();                
+            }
+            initEdgeButtons();
 
             top.start.setText("Start");
             repaint();
@@ -166,7 +173,15 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
     }
     
     public void initEdgeButtons()
-    {
+    {       
+        if(edgeButtons != null)
+        {
+        	for(JButton b : edgeButtons)
+        	{
+        		remove(b);
+        	}
+        }
+        
         edgeButtons = new JButton[graph.getEdges().length];
     	
     	for(int i=0;i<edgeButtons.length;i++)
@@ -206,9 +221,11 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
     		difVecY = start.getY() - end.getY();
         	difVecX = difVecX/2f;
         	difVecY = difVecY/2f;
-        	if(edgeButtons != null && edgeButtons[index] != null)
+        	if(edgeButtons != null && edgeButtons[index] != null) // weird java null check
         	{
         		edgeButtons[index].setLocation(end.getX()+(int)difVecX, end.getY()+(int)difVecY);
+        		edgeButtons[index].setContentAreaFilled(false);
+        		edgeButtons[index].setVisible(true);
         	}
     		((Graphics2D)g).setStroke(new BasicStroke(3));
         	g.setColor(e.getColor());
