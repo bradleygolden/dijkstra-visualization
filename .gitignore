@@ -1,2 +1,6 @@
 *.class
 *.swp
+/dijkstra-visualization/nbproject/private/
+/nbproject/private/
+/dist/
+/build/
