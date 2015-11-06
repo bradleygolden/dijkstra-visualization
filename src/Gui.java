@@ -15,11 +15,15 @@ import java.awt.event.MouseMotionListener;
 class AFrame extends JFrame implements MouseListener, ActionListener, ItemListener, MouseMotionListener
 {
     private Image backBuffer;         // back buffer to draw graph
-	private DrawableNode draggedNode; // point that is being dragged
-	private Graph graph;              // graph object
+    private DrawableNode draggedNode; // point that is being dragged
+    private Graph graph;              // graph object
     private TopPanel top;             // top panel
     private Drawable[] drawables;     // array of drawable objects
-	
+    
+    /**
+     * Initializes the main frame.
+     *
+     */
     public AFrame()
     {
         super( "Dijkstra's Algorithm" );
@@ -47,82 +51,120 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
         add(new JPanel(), BorderLayout.CENTER);
     }
     
+    /**
+     * Initializes all drawables based on the current graph.
+     *
+     */
     public void initDrawables()
     {
-    	int index; // index of drawable object in drawable array
-    	
-    	index = 0;
-    	drawables = new Drawable[graph.getNodes().length + graph.getEdges().length];    	
-    	
-    	for(Edge e : graph.getEdges()) // init all edges
-    		drawables[index++] = new DrawableEdge(e);
-    	
-    	for(Node n : graph.getNodes()) // init all nodes
-    		drawables[index++] = new DrawableNode(n);
+        int index; // index of drawable object in drawable array
+        
+        index = 0;
+        drawables = new Drawable[graph.getNodes().length + graph.getEdges().length];        
+        
+        for(Edge e : graph.getEdges()) // init all edges
+            drawables[index++] = new DrawableEdge(e);
+        
+        for(Node n : graph.getNodes()) // init all nodes
+            drawables[index++] = new DrawableNode(n);
     }
 
+    /**
+     * Main paint method.
+     *
+     */
     @Override
     public void paint(Graphics g)
-    {    	
-    	Graphics frameGraphics; // main graphics object
-    	
-    	//super.paint(g);
-    	frameGraphics = g;
+    {
+        Graphics frameGraphics; // main graphics object
+        
+        //super.paint(g);
+        frameGraphics = g;
         ScaledPoint.updateWindow(getHeight() - 0, getWidth());        
         
         if(backBuffer != null) // start drawing to backbuffer
         {
-        	g = backBuffer.getGraphics();
+            g = backBuffer.getGraphics();
         }
         
         for(Drawable d : drawables) // draw all drawables
         {
-        	d.draw(g);
+            d.draw(g);
         }
         
         if(backBuffer != null) // present back buffer to front buffer
         {
-        	frameGraphics.drawImage(backBuffer, 0, 0, null);
+            frameGraphics.drawImage(backBuffer, 0, 0, null);
         }
         
         super.paint(g);
     }
     
+    /**
+     * Handles mouse pressed event.
+     *
+     * @param e mouse event
+     */
     public void mousePressed(MouseEvent e)
     {        
-    	Drawable.setMouse(e.getX(), e.getY());
-    	
-    	for(Drawable d : drawables) // find first node that collides with mouse
+        Drawable.setMouse(e.getX(), e.getY());
+        
+        for(Drawable d : drawables) // find first node that collides with mouse
         {
             if(d instanceof DrawableNode && ((DrawableNode) d).isMouseOver())
             {
-            	draggedNode = (DrawableNode)d;
-            	break;
-            }            	
+                draggedNode = (DrawableNode)d;
+                break;
+            }               
         }
     }
 
+    /**
+     * Handles mouse released event.
+     *
+     * @param e mouse event
+     */
     public void mouseReleased(MouseEvent e)
     {
-    	draggedNode = null;
+        draggedNode = null;
     }
     
+    /**
+     * Handles mouse clicked event.
+     *
+     * @param e mouse event
+     */
     @Override
     public void mouseClicked(MouseEvent e)
     {        
     }
 
+    /**
+     * Handles mouse entered event.
+     *
+     * @param e mouse event
+     */
     @Override
     public void mouseEntered(MouseEvent e)
     {        
     }
 
+    /**
+     * Handles mouse exited event.
+     *
+     * @param e mouse event
+     */
     @Override
     public void mouseExited(MouseEvent arg0)
     {
         draggedNode = null;
     }
     
+    /**
+     * Handles action listener event.
+     *
+     * @param e action event
+     */
     @Override
     public void actionPerformed(ActionEvent e)
     {
@@ -149,6 +191,11 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
         }
     }
 
+    /**
+     * Handles graph combo box.
+     *
+     * @param e item event
+     */
     public void itemStateChanged(ItemEvent e) 
     {
         if (e.getSource() == top.graphs) // handle graph combo box
@@ -171,25 +218,40 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
             repaint();
         }
     }
+    
+    /**
+     * Handles mouse dragged event. It is used to drag nodes.
+     *
+     * @param e mouse event
+     */
+    @Override
+    public void mouseDragged(MouseEvent e)
+    {
+        if(draggedNode != null) // drag node
+        {
+            draggedNode.setPosition(e.getX(),e.getY());
+            repaint();
+        }
+    }
 
-	@Override
-	public void mouseDragged(MouseEvent e)
-	{
-		if(draggedNode != null) // drag node
-		{
-			draggedNode.setPosition(e.getX(),e.getY());
-			repaint();
-		}
-	}
-
-	@Override
-	public void mouseMoved(MouseEvent e)
-	{
-	}
+    /**
+     * Handles mouse moved event.
+     *
+     * @param e mouse event
+     */
+    @Override
+    public void mouseMoved(MouseEvent e)
+    {
+    }
 }
 
 public class Gui
 {
+    /**
+     * Application's entry point.
+     *
+     * @param args command line arguments.
+     */
     public static void main(String[] args)
     {
         AFrame frame = new AFrame();
