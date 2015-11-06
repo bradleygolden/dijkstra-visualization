@@ -1,7 +1,6 @@
 /*
  * for calculating path to return to the front end
  */
-package src;
 
 import java.util.List;
 

@@ -1,5 +1,3 @@
-package src;
-
 import java.awt.Graphics;
 
 public abstract class Drawable
