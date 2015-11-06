@@ -88,4 +88,10 @@ public class ScaledPoint
     	this.x = x;
     	this.y = y;
     }
+    
+    public void setWinXY(int x, int y)
+    {
+    	this.x = (double)x/width;
+    	this.y = (double)y/height;
+    }
 }

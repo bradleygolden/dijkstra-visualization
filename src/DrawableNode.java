@@ -7,31 +7,46 @@ public class DrawableNode extends Drawable
 {
 	private int radius;
 	private Node node;
+	private ScaledPoint point;
 
 	public DrawableNode(Node node)
 	{
-		radius = 20;
+		this.radius = 20;
 		this.node = node;
+		this.point = node.getScaledPoint();
 	}
 
 	@Override
 	public void draw(Graphics g)
 	{
-    	ScaledPoint nodePt; // scaled point of a node
     	String dist;        // distance being drawn
-    	
-    	nodePt = node.getScaledPoint();
 		
 		g.setColor(node.getColor());
-        g.fillOval(nodePt.getX()-radius, nodePt.getY()-radius,      // draw node circle
+        g.fillOval(point.getX()-radius, point.getY()-radius,      // draw node circle
         		2*radius, 2*radius);
         
         g.setColor(Color.BLACK);
-		g.drawString(node.getName(), nodePt.getX(), nodePt.getY()); // draw node name
+		g.drawString(node.getName(), point.getX(), point.getY()); // draw node name
 		g.setColor(Color.WHITE);
-		g.fillRect(nodePt.getX() + 20, nodePt.getY() - 15, 80, 20); // draw back for node distance
+		g.fillRect(point.getX() + 20, point.getY() - 15, 80, 20); // draw back for node distance
 		g.setColor(Color.BLACK);
 		dist = "Distance:" + (node.getValue() == Integer.MAX_VALUE ? "\u221e" : node.getValue());
-		g.drawString(dist, nodePt.getX() + 20, nodePt.getY());      // draw distance
+		g.drawString(dist, point.getX() + 20, point.getY());      // draw distance
+	}
+	
+	private int getDistanceFromMouse(int mouseX, int mouseY)
+    {		
+        return (int)(Math.sqrt((point.getX()-mouseX)*(point.getX()-mouseX) + 
+        		(point.getY()-mouseY)*(point.getY()-mouseY)));
+    }
+	
+	public boolean isMouseOver()
+	{
+		return getDistanceFromMouse(mouseX, mouseY) < radius;
+	}
+	
+	public void setPosition(int x, int y)
+	{
+		point.setWinXY(x, y);
 	}
 }

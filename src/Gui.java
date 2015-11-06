@@ -14,29 +14,29 @@ import java.awt.event.MouseMotionListener;
 
 class AFrame extends JFrame implements MouseListener, ActionListener, ItemListener, MouseMotionListener
 {
-    private Image backBuffer;      // back buffer to draw graph
-	private ScaledPoint draggedPt; // point that is being dragged
-	private int nodeRadius;        // radius of the circles drawn as nodes
-	private Graph graph;
-    private TopPanel top;
-    private Drawable[] drawables;
+    private Image backBuffer;         // back buffer to draw graph
+	private DrawableNode draggedNode; // point that is being dragged
+	private Graph graph;              // graph object
+    private TopPanel top;             // top panel
+    private Drawable[] drawables;     // array of drawable objects
 	
     public AFrame()
     {
         super( "Dijkstra's Algorithm" );
         
+        // initialize frame
         setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
         setSize( 800 , 600 );
-        setVisible( true );
         addMouseListener(this);
         addMouseMotionListener(this);
         
+        // initialize variables
         backBuffer = new BufferedImage(3000, 2000, BufferedImage.TYPE_INT_RGB);
-        draggedPt = null;
-        nodeRadius = 20;        
+        draggedNode = null;     
         graph = Graph.graph1();
         initDrawables();
-
+        
+        // initialize top panel
         top = new TopPanel();
         top.graphs.addItemListener (this);
         top.start.addActionListener(this);
@@ -49,15 +49,15 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
     
     public void initDrawables()
     {
-    	int index;
+    	int index; // index of drawable object in drawable array
     	
     	index = 0;
     	drawables = new Drawable[graph.getNodes().length + graph.getEdges().length];    	
     	
-    	for(Edge e : graph.getEdges())
+    	for(Edge e : graph.getEdges()) // init all edges
     		drawables[index++] = new DrawableEdge(e);
     	
-    	for(Node n : graph.getNodes())
+    	for(Node n : graph.getNodes()) // init all nodes
     		drawables[index++] = new DrawableNode(n);
     }
 
@@ -66,49 +66,45 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
     {    	
     	Graphics frameGraphics; // main graphics object
     	
+    	//super.paint(g);
     	frameGraphics = g;
-        ScaledPoint.updateWindow(getHeight(), getWidth());
+        ScaledPoint.updateWindow(getHeight() - 0, getWidth());        
         
         if(backBuffer != null) // start drawing to backbuffer
+        {
         	g = backBuffer.getGraphics();
+        }
         
-        for(Drawable d : drawables)
+        for(Drawable d : drawables) // draw all drawables
+        {
         	d.draw(g);
+        }
         
         if(backBuffer != null) // present back buffer to front buffer
+        {
         	frameGraphics.drawImage(backBuffer, 0, 0, null);
+        }
         
         super.paint(g);
     }
     
-    void dragPoint()
-    {        
-        draggedPt.setX((double)getMousePosition().x/getWidth());
-        draggedPt.setY((double)getMousePosition().y/getHeight());
-    }
-    
-    int getDistanceFromMouse(ScaledPoint p, int mouseX, int mouseY)
-    {        
-        return (int)(Math.sqrt((p.getX()-mouseX)*(p.getX()-mouseX) + 
-        		(p.getY()-mouseY)*(p.getY()-mouseY)));
-    }
-    
     public void mousePressed(MouseEvent e)
-    {
-        // find first point that collides with mouse
-        for(Node n : graph.getNodes())
+    {        
+    	Drawable.setMouse(e.getX(), e.getY());
+    	
+    	for(Drawable d : drawables) // find first node that collides with mouse
         {
-            if(getDistanceFromMouse(n.getScaledPoint(), e.getX(), e.getY()) < nodeRadius)
+            if(d instanceof DrawableNode && ((DrawableNode) d).isMouseOver())
             {
-                draggedPt = n.getScaledPoint();                
-                break;
-            }
+            	draggedNode = (DrawableNode)d;
+            	break;
+            }            	
         }
     }
 
     public void mouseReleased(MouseEvent e)
     {
-    	draggedPt = null;
+    	draggedNode = null;
     }
     
     @Override
@@ -124,7 +120,7 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
     @Override
     public void mouseExited(MouseEvent arg0)
     {
-        draggedPt = null;
+        draggedNode = null;
     }
     
     @Override
@@ -132,22 +128,22 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
     {
         if (e.getSource() == top.start)
         {
-            if (top.start.getText() == "Start")
+            if (top.start.getText() == "Start") // handle start button
             {
                 top.start.setText("Stop");
                 top.graphs.setEnabled(false);
             }
-            else if (top.start.getText() == "Stop")
+            else if (top.start.getText() == "Stop") // handle stop button
             {
                 top.start.setText("Start");
                 top.graphs.setEnabled(true);
             }
         }
-        else if (e.getSource() == top.prev)
+        else if (e.getSource() == top.prev) // handle prev button
         {
             // Boilerplate
         }
-        else if (e.getSource() == top.next)
+        else if (e.getSource() == top.next) // handle next button
         {
             // Boilerplate
         }
@@ -155,17 +151,17 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
 
     public void itemStateChanged(ItemEvent e) 
     {
-        if (e.getSource() == top.graphs) 
+        if (e.getSource() == top.graphs) // handle graph combo box
         {
-            if (top.graphs.getSelectedIndex() == 0)
+            if (top.graphs.getSelectedIndex() == 0) // graph1
             {
                 graph = Graph.graph1();
             }
-            else if (top.graphs.getSelectedIndex() == 1)
+            else if (top.graphs.getSelectedIndex() == 1) // graph2
             {
                 graph = Graph.graph2();
             }
-            else if (top.graphs.getSelectedIndex() == 2)
+            else if (top.graphs.getSelectedIndex() == 2) // graph3
             {
                 graph = Graph.graph3();                
             }
@@ -179,9 +175,9 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
 	@Override
 	public void mouseDragged(MouseEvent e)
 	{
-		if(draggedPt != null)
+		if(draggedNode != null) // drag node
 		{
-			dragPoint();
+			draggedNode.setPosition(e.getX(),e.getY());
 			repaint();
 		}
 	}
@@ -196,6 +192,7 @@ public class Gui
 {
     public static void main(String[] args)
     {
-        AFrame frame = new AFrame();        
+        AFrame frame = new AFrame();
+        frame.setVisible(true);
     }
 }
