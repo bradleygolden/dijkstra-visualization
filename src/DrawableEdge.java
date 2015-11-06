@@ -10,7 +10,7 @@ public class DrawableEdge extends Drawable
     private int thickness; // thickness of the edge
     
     /**
-     * Initialises DrawableEdge
+     * initializes DrawableEdge
      *
      * @param edge Edge object to be drawn.
      */

@@ -11,6 +11,8 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 class AFrame extends JFrame implements MouseListener, ActionListener, ItemListener, MouseMotionListener
 {
@@ -36,7 +38,8 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
         
         // initialize variables
         backBuffer = new BufferedImage(3000, 2000, BufferedImage.TYPE_INT_RGB);
-        draggedNode = null;     
+        draggedNode = null;    
+        
         graph = Graph.graph1();
         initDrawables();
         
@@ -202,7 +205,7 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
         {
             if (top.graphs.getSelectedIndex() == 0) // graph1
             {
-                graph = Graph.graph1();
+                graph = GraphData.createSampleGraphData().createView();
             }
             else if (top.graphs.getSelectedIndex() == 1) // graph2
             {
@@ -254,6 +257,15 @@ public class Gui
      */
     public static void main(String[] args)
     {
+        GraphData logicalGraph = GraphData.createSampleGraphData();
+        
+        try {
+            // return states that can be used to represent on the UI
+            java.util.List<DijkstraAlgorithmState> states = logicalGraph.performDijkstraAlgorithm("A", "F");
+        } catch (Exception ex) {
+            Logger.getLogger(Gui.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         AFrame frame = new AFrame();
         frame.setVisible(true);
     }
