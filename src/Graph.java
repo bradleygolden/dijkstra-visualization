@@ -34,7 +34,7 @@ public class Graph
      *
      * @param numNodes The number of nodes the graph contains. Must be greater than 0.
      * @param numEdges The number of edges the graph contains. Must be greater than 0.
-     * @param name The name of the graph as a string.
+     * @param name The name of the graph as a string. Must be initialized.
      */
     public Graph(int numNodes, int numEdges, String name)
     {
@@ -49,8 +49,8 @@ public class Graph
     /**
      * Adds a node to the current graph.
      * 
-     * @param val The value of the node to be added.
-     * @param name The name of the current node as a string.
+     * @param val The value of the node to be added. Must be initialized.
+     * @param name The name of the current node as a string. Must be initialized.
      */
     public void addNode(int val, String name)
     {
@@ -67,11 +67,13 @@ public class Graph
     } // end addNode
 
     /**
-     * Adds a edge to the current graph.
+     * Adds an edge to the current graph.
+     * <p>
+     * Returns if the maximium amount of predefined edges has been exceeded.
      * 
-     * @param start The starting node of the edge to be added.
-     * @param end The end node of the edge to be added.
-     * @param val The weight of the edge to be added.
+     * @param start The starting node of the edge to be added. Must be initialized.
+     * @param end The end node of the edge to be added. Must be initialized.
+     * @param val The weight of the edge to be added. Must be initialized.
      */
     public void addEdge(Node start, Node end, int val)
     {
@@ -99,7 +101,7 @@ public class Graph
     /**
      * Setter for nodes in the graph.
      *
-     * @param nodes An array of nodes of type Node.
+     * @param nodes An array of nodes of type Node. Must be initialized.
      */
     public void setNodes(Node[] nodes)
     {
@@ -119,7 +121,7 @@ public class Graph
     /**
      * Setter for edges in the graph.
      *
-     * @param edges An array of edges of of type Edge.
+     * @param edges An array of edges of of type Edge. Must be initialized.
      */
     public void setEdges(Edge[] edges)
     {
@@ -129,7 +131,7 @@ public class Graph
     /**
      * Setter for the name of the graph.
      *
-     * @param name The name of the current graph as a string.
+     * @param name The name of the current graph as a string. Must be initialized.
      */
     public void setName(String name)
     {
@@ -153,10 +155,13 @@ public class Graph
     {
         String temp = "";
 
+        // display the info for each node
         for (Node n : nodes)
         {
             temp += "[" + n.toString() + "]: ";
 
+
+            // display the info for each edge
             for (Edge e : edges)
                 if ( n == e.getStart() )
                     temp += "-" + e.toString() + "-[" + e.getEnd().toString() + "] ";
@@ -179,11 +184,13 @@ public class Graph
     {
         Graph graph = new Graph(5, 7, "Graph1");
 
+        // add 5 nodes
         for (int i = 0; i < 5; i++)
         {
             graph.addNode(Integer.MAX_VALUE, Integer.toString(i));
         }
 
+        // add 7 edges
         graph.addEdge(graph.nodes[0], graph.nodes[1], 10);
         graph.addEdge(graph.nodes[1], graph.nodes[2], 4);
         graph.addEdge(graph.nodes[1], graph.nodes[3], 9);
@@ -192,6 +199,7 @@ public class Graph
         graph.addEdge(graph.nodes[3], graph.nodes[2], 6);
         graph.addEdge(graph.nodes[4], graph.nodes[3], 4);
 
+        // set scaled points for nodes
         graph.nodes[0].getScaledPoint().setXY(0.2, 0.8);
         graph.nodes[1].getScaledPoint().setXY(0.8, 0.8);
         graph.nodes[2].getScaledPoint().setXY(0.2, 0.4);
@@ -213,11 +221,13 @@ public class Graph
     {
         Graph graph = new Graph(6, 8, "Graph2");
 
+        // add 6 nodes
         for (int i = 0; i < 6; i++)
         {
             graph.addNode(Integer.MAX_VALUE, Integer.toString(i));
         }
 
+        // add 8 edges
         graph.addEdge(graph.nodes[0], graph.nodes[1], 10);
         graph.addEdge(graph.nodes[0], graph.nodes[4], 4);
         graph.addEdge(graph.nodes[1], graph.nodes[3], 4);
@@ -227,6 +237,7 @@ public class Graph
         graph.addEdge(graph.nodes[3], graph.nodes[5], 8);
         graph.addEdge(graph.nodes[4], graph.nodes[5], 6);
 
+        // set scaled points for nodes
         graph.nodes[0].getScaledPoint().setXY(0.2, 0.8);
         graph.nodes[1].getScaledPoint().setXY(0.8, 0.8);
         graph.nodes[2].getScaledPoint().setXY(0.5, 0.5);
@@ -249,11 +260,13 @@ public class Graph
     {
         Graph graph = new Graph(6, 9, "Graph3");
 
+        // add 6 nodes
         for (int i = 0; i < 6; i++)
         {
             graph.addNode(Integer.MAX_VALUE, Integer.toString(i));
         }
 
+        // add 9 edges
         graph.addEdge(graph.nodes[0], graph.nodes[1], 10);
         graph.addEdge(graph.nodes[0], graph.nodes[2], 4);
         graph.addEdge(graph.nodes[0], graph.nodes[3], 7);
@@ -264,6 +277,7 @@ public class Graph
         graph.addEdge(graph.nodes[3], graph.nodes[5], 7);
         graph.addEdge(graph.nodes[4], graph.nodes[5], 6);
 
+        // set scaled points for nodes
         graph.nodes[0].getScaledPoint().setXY(0.2, 0.8);
         graph.nodes[1].getScaledPoint().setXY(0.8, 0.8);
         graph.nodes[2].getScaledPoint().setXY(0.1, 0.5);
@@ -274,6 +288,9 @@ public class Graph
         return graph;
     }
 
+    /**
+     * Test driver for the graph class.
+     */
     public static void main(String[] args)
     {
         Graph graph = graph1();

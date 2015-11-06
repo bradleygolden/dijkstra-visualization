@@ -14,7 +14,7 @@ public class Edge
     private Color color; // color of the current edge
 
     /**
-     * Creates an edge object set to default values
+     * Creates an edge object set to default values.
      * <p>
      * Edge value is set to 0. Start and end nodes are set to 0 and null.
      */
@@ -31,7 +31,7 @@ public class Edge
      * <p>
      * Start and ending nodes are set to null.
      *
-     * @param val value of the edge
+     * @param val Value of the edge. Must be initialized.
      */
     public Edge(int val)
     {
@@ -56,7 +56,7 @@ public class Edge
     /**
      * Setter for the edge value.
      * 
-     * @param val Value for the edge.
+     * @param val Value for the edge. Must be initialized.
      */
     public void setVal(int val)
     {
@@ -106,7 +106,7 @@ public class Edge
     /**
      * Setter for the start node of the edge.
      *
-     * @param start The start of the edge (type Node).
+     * @param start The start of the edge (type Node). Must be initialized.
      */
     public void setStart(Node start)
     {
@@ -116,7 +116,7 @@ public class Edge
     /**
      * Setter for the end node of the edge.
      *
-     * @param start The end of the edge (type Node).
+     * @param start The end of the edge (type Node). Must be initialized.
      */
     public void setEnd(Node end)
     {
@@ -126,7 +126,7 @@ public class Edge
     /**
      * Setter for the current color of the edge.
      *
-     * @param color Initialized color for changing the current edge color.
+     * @param color Initialized color for changing the current edge color. Must be initialized.
      */
     public void setColor(Color color)
     {
@@ -144,7 +144,7 @@ public class Edge
     }
 
     /**
-     * Test driver for the Edge class
+     * Test driver for the Edge class.
      */
     public static void main(String[] args)
     {

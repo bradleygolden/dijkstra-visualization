@@ -26,7 +26,7 @@ public class Node
     }
 
     /**
-     * Creates a Node object with a predefined value.
+     * Creates a Node object with a value.
      *
      * @param val Value of the current node.
      */
@@ -37,10 +37,10 @@ public class Node
     }
 
     /**
-     * Creates a Node object with a predefined value and a name.
+     * Creates a Node object with a value and a name.
      *
-     * @param val Value of the current node.
-     * @param name The name of the current node.
+     * @param val Value of the current node. Must be initialized.
+     * @param name The name of the current node. Must be initialized.
      */
     public Node(int val, String name)
     {
@@ -49,9 +49,9 @@ public class Node
     }
 
     /**
-     * Setter for the Node value
+     * Setter for the Node value.
      *
-     * @param val New value to set node to.
+     * @param val New value to set node to. Must be initialzed.
      */
     public void setValue(int val)
     {
@@ -59,7 +59,7 @@ public class Node
     }
 
     /**
-     * Getter for the Node value
+     * Getter for the Node value.
      *
      * @return The Node's value.
      */
@@ -71,7 +71,7 @@ public class Node
     /**
      * Setter for the Node's scaled point.
      *
-     * @param point A ScaledPoint type
+     * @param point A ScaledPoint type. Must be initialzed.
      */
     public void setScaledPoint(ScaledPoint point)
     {
@@ -101,7 +101,7 @@ public class Node
     /**
      * Setter for the Node's color.
      *
-     * @param color An initialized Color object.
+     * @param color An initialized Color object. Must be initialized.
      */
     public void setColor(Color color)
     {
@@ -111,7 +111,7 @@ public class Node
     /**
      * Setter for the Node's name.
      *
-     * @param name
+     * @param name The name of the node. Must be initialized.
      */
     public void setName(String name)
     {
