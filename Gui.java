@@ -137,7 +137,17 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
      */
     @Override
     public void mouseClicked(MouseEvent e)
-    {        
+    {
+    	Drawable.setMouse(e.getX(), e.getY());
+        
+        for(Drawable d : drawables) // find first gbutton that collides with mouse
+        {
+            if(d instanceof DrawableEdge && ((DrawableEdge) d).clickButton())
+            {
+            	repaint();
+                break;
+            }               
+        }
     }
 
     /**
@@ -203,7 +213,7 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
         {
             if (top.graphs.getSelectedIndex() == 0) // graph1
             {
-                //graph = GraphData.createSampleGraphData().createView();
+            	graph = Graph.graph1();
             }
             else if (top.graphs.getSelectedIndex() == 1) // graph2
             {

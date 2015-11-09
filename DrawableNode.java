@@ -19,7 +19,10 @@ public class DrawableNode extends Drawable
         this.node = node;
         this.point = node.getScaledPoint();
         
-        if(point.getX)
+        if(point.getY() < panelHeigth)
+        {
+        	point.setWinXY(point.getX(), 200);
+        }
     }
 
     /**
@@ -40,10 +43,10 @@ public class DrawableNode extends Drawable
         g.drawString(node.getName(), point.getX(), point.getY()); // draw node name
         
         g.setColor(Color.WHITE);
-        g.fillRect(point.getX() + 20, point.getY() - 15, 80, 20); // draw back for node distance
+        g.fillRect(point.getX() + 20, point.getY() - 15, 40, 20); // draw back for node distance
         
         g.setColor(Color.BLACK);
-        dist = "Distance:" + (node.getValue() == Integer.MAX_VALUE ? "\u221e" : node.getValue());
+        dist = "" + (node.getValue() == Integer.MAX_VALUE ? "\u221e" : node.getValue());
         g.drawString(dist, point.getX() + 20, point.getY());      // draw distance
 
     }
@@ -78,5 +81,9 @@ public class DrawableNode extends Drawable
     public void setPosition(int x, int y)
     {
         point.setWinXY(x, y);
+        if(point.getY() < panelHeigth)
+        {
+        	point.setWinXY(point.getX(), 200);
+        }
     }
 }
