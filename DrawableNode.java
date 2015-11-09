@@ -6,6 +6,7 @@ public class DrawableNode extends Drawable
     private int radius;
     private Node node;
     private ScaledPoint point;
+    private static int panelHeigth = 200; // MAGIC NUMBER
 
     /**
      * Initializes DrawableNode object.
@@ -17,6 +18,8 @@ public class DrawableNode extends Drawable
         this.radius = 20;
         this.node = node;
         this.point = node.getScaledPoint();
+        
+        if(point.getX)
     }
 
     /**

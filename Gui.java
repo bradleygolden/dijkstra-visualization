@@ -203,7 +203,7 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
         {
             if (top.graphs.getSelectedIndex() == 0) // graph1
             {
-                graph = GraphData.createSampleGraphData().createView();
+                //graph = GraphData.createSampleGraphData().createView();
             }
             else if (top.graphs.getSelectedIndex() == 1) // graph2
             {
@@ -254,16 +254,7 @@ public class Gui
      * @param args command line arguments.
      */
     public static void main(String[] args)
-    {
-        GraphData logicalGraph = GraphData.createSampleGraphData();
-        
-        try {
-            // return states that can be used to represent on the UI
-            java.util.List<DijkstraAlgorithmState> states = logicalGraph.performDijkstraAlgorithm("A", "F");
-        } catch (Exception ex) {
-            Logger.getLogger(Gui.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+    {        
         AFrame frame = new AFrame();
         frame.setVisible(true);
     }
