@@ -43,10 +43,14 @@ public class Edge
      * Setter for the edge value.
      * 
      * @param val Value for the edge. Must be initialized.
+     * TODO
      */
     public void setVal(int val)
     {
-        this.val = val;
+        this.val = val; // change the value of this edge
+        // now change both directions of the backend edge
+        this.backendEdge.setWeight(val); // change the backend edge weight
+        this.backendEdgeReverse.setWeight(val); // change the backend edge weight 
     }
 
     /**
