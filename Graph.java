@@ -18,6 +18,7 @@ public class Graph
     private String name; // the name of this graph
     private List<DijkstraAlgorithmState> states; // a list of dijkstra algorithm states
     private int currentStateIndex; // the index of the current state of the graph
+    protected String path = "";
 
     /**
      * Creates a Graph object with default values
@@ -196,33 +197,42 @@ public class Graph
         }
     }
 
-    public void nextState()
+    public boolean nextState()
     {
         if (currentStateIndex < states.size() - 1)
         {
             currentStateIndex++;
+            path += states.get(currentStateIndex).getLastStartNode() + states.get(currentStateIndex).getLastEndNode();
+            return true;
         }
+
+        return false;
     }
 
-    public void prevState()
+    public boolean prevState()
     {
         if (currentStateIndex > 0)
         {
             currentStateIndex--;
+            int pathLength = path.length();
+            path = path.substring(0, pathLength - 2);
+            return true;
         }
+
+        return false;
     }
 
     public void updateGraph() {
         String lastVisitedNode = states.get(currentStateIndex).getLastVisitedNode().getName();
-
-        System.out.println(lastVisitedNode);
         for (Node n : nodes)
         {
             if (n.getName().equals(lastVisitedNode))
             {
-                System.out.println("YAY WE ARE HERE: " + n.getName() + "\n");
+                // Set visual cues
                 n.setColor(Color.GREEN);
                 n.setValue(states.get(currentStateIndex).getLastAccumulatedWeight());
+
+                System.out.println(path);
                 break;
             }
         }

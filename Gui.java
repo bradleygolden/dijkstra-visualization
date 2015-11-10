@@ -147,16 +147,20 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
         else if (e.getSource() == top.prev) // handle prev button
         {
             // TODO: uncolor nodes
-            graph.prevState();
-            graph.updateGraph();
-            repaint();
+            if (graph.prevState())
+            {
+                graph.updateGraph();
+            }
         }
         else if (e.getSource() == top.next) // handle next button
         {
-            graph.nextState();
-            graph.updateGraph();
-            repaint();
+            if (graph.nextState())
+            {
+                graph.updateGraph();
+            }
         }
+
+        repaint();
     }
 
     /**
