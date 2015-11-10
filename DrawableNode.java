@@ -6,6 +6,7 @@ public class DrawableNode extends Drawable
     private int radius;
     private Node node;
     private ScaledPoint point;
+    private static int panelHeigth = 200; // MAGIC NUMBER
 
     /**
      * Initializes DrawableNode object.
@@ -17,6 +18,11 @@ public class DrawableNode extends Drawable
         this.radius = 20;
         this.node = node;
         this.point = node.getScaledPoint();
+        
+        if(point.getY() < panelHeigth)
+        {
+        	point.setWinXY(point.getX(), 200);
+        }
     }
 
     /**
@@ -28,19 +34,25 @@ public class DrawableNode extends Drawable
     public void draw(Graphics g)
     {
         String dist;        // distance being drawn
+        int drawRadius;
+        
+        drawRadius = radius;
+        
+        if(isMouseOver())
+        	drawRadius += 5;
         
         g.setColor(node.getColor());
-        g.fillOval(point.getX()-radius, point.getY()-radius,      // draw node circle
-                2*radius, 2*radius);
+        g.fillOval(point.getX()-drawRadius, point.getY()-drawRadius,      // draw node circle
+                2*drawRadius, 2*drawRadius);
         
         g.setColor(Color.BLACK);
         g.drawString(node.getName(), point.getX(), point.getY()); // draw node name
         
         g.setColor(Color.WHITE);
-        g.fillRect(point.getX() + 20, point.getY() - 15, 80, 20); // draw back for node distance
+        g.fillRect(point.getX() + 20, point.getY() - 15, 40, 20); // draw back for node distance
         
         g.setColor(Color.BLACK);
-        dist = "Distance:" + (node.getValue() == Integer.MAX_VALUE ? "\u221e" : node.getValue());
+        dist = "" + (node.getValue() == Integer.MAX_VALUE ? "\u221e" : node.getValue());
         g.drawString(dist, point.getX() + 20, point.getY());      // draw distance
 
     }
@@ -63,7 +75,7 @@ public class DrawableNode extends Drawable
      */
     public boolean isMouseOver()
     {
-        return getDistance(mouseX, mouseY) < radius;
+        return getDistance(AFrame.getMouse().x, AFrame.getMouse().y) < radius;
     }
     
     /**
@@ -75,5 +87,9 @@ public class DrawableNode extends Drawable
     public void setPosition(int x, int y)
     {
         point.setWinXY(x, y);
+        if(point.getY() < panelHeigth)
+        {
+        	point.setWinXY(point.getX(), 200);
+        }
     }
 }
