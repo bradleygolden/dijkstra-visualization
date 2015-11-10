@@ -233,9 +233,31 @@ public class Graph
                 n.setValue(states.get(currentStateIndex).getLastAccumulatedWeight());
 
                 System.out.println(path);
+                System.out.println("curr path: " + getPath());
                 break;
             }
         }
+    }
+
+    public String getPath()
+    {
+        if (path.length() < 2)
+        {
+            return "";
+        }
+
+        int n = path.length() - 2;
+        String result = path.substring(n, n+2);
+
+        for (int i = n - 2; i > 0; i-=2)
+        {
+            if (path.charAt(i+1) == result.charAt(result.length() - 2))
+            {
+                result = result + path.substring(i, i+2);
+            }
+        }
+
+        return result;
     }
 
     /**
