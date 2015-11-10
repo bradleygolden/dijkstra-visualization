@@ -256,12 +256,19 @@ public class Gui
     public static void main(String[] args)
     {
         GraphData logicalGraph = GraphData.createSampleGraphData();
+        java.util.List<DijkstraAlgorithmState> states = null;
         
         try {
             // return states that can be used to represent on the UI
-            java.util.List<DijkstraAlgorithmState> states = logicalGraph.performDijkstraAlgorithm("A", "F");
+            states = logicalGraph.performDijkstraAlgorithm("A", "D");
+
         } catch (Exception ex) {
             Logger.getLogger(Gui.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        for (DijkstraAlgorithmState state : states)
+        {
+            System.out.println("Number of visited nodes:" + state.getLastVisitedNode().getName());
         }
         
         AFrame frame = new AFrame();

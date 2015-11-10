@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Used to simulate a graph containing nodes and edges.
@@ -12,6 +13,8 @@ public class Graph
     private int currNumNodes; // current number of nodes in the graph
     private int currNumEdges; // current number of edges in the graph
     private String name; // the name of this graph
+    private List<DijkstraAlgorithmState> states; // a list of dijkstra algorithm states
+    private int currentStateIndex; // the index of the current state of the graph
 
     /**
      * Creates a Graph object with default values
@@ -25,6 +28,8 @@ public class Graph
         currNumNodes = 0;
         currNumEdges = 0;
         name = "Default Name";
+        states = null;
+        currentStateIndex = 0;
     }
 
     /**
@@ -171,6 +176,31 @@ public class Graph
     }
 
     /**
+     * Runs dijkstra's algorithm and produces the graph states into states instance
+     * variable.
+     *
+     * @param baseGraph A default graph of type GraphData. Graph is non empty.
+     * @param start The node where the algorithm starts. Letter A-Z.
+     * @param end The node where the algorithm ends. Letter A-Z.
+     */
+    public void setStates(GraphData baseGraph, String start, String end)
+    {
+        // populate all states
+        try {
+          states = baseGraph.performDijkstraAlgorithm(start, end);
+        } catch (Exception ex) {
+            System.out.println("Exception: " + ex);
+        }
+
+    }
+
+    public void nexState()
+    {
+        currentStateIndex++;
+        states.get(currentStateIndex);
+    }
+
+    /**
      * A fixed graph with 5 nodes and 7 edges. 
      * <p>
      * This is to be used in conjunction with Gui.java
@@ -180,6 +210,28 @@ public class Graph
      */
     public static Graph graph1()
     {
+
+        // create backend graph
+        GraphData logicalGraph = new GraphData();
+
+        logicalGraph.addNode("A");
+        logicalGraph.addNode("B");
+        logicalGraph.addNode("C");
+        logicalGraph.addNode("D");
+        logicalGraph.addNode("E");
+
+        logicalGraph.addEdgeToNode("A", "B", 10);
+        logicalGraph.addEdgeToNode("B", "C", 4);
+        logicalGraph.addEdgeToNode("B", "D", 9);
+        logicalGraph.addEdgeToNode("C", "A", 5);
+        logicalGraph.addEdgeToNode("C", "E", 10);
+        logicalGraph.addEdgeToNode("D", "C", 6);
+        logicalGraph.addEdgeToNode("E", "D", 4);
+
+        // get all states for Dijkstra's Algorithm
+        //this.setStates(logicalGraph, "A", "B"); 
+
+        // draw the graph
         Graph graph = new Graph(5, 7, "Graph1");
 
         // add 5 nodes
