@@ -11,31 +11,9 @@ public class Edge
     private Node end; // node where edge ends
     private Color color; // color of the current edge
 
-    /**
-     * Creates an edge object set to default values.
-     * <p>
-     * Edge value is set to 0. Start and end nodes are set to 0 and null.
-     */
-    public Edge()
-    {
-        val = 0;
-        start = null;
-        end = null;
-        color = DEFAULT_EDGE_COLOR;
-    }
-
-    /**
-     * Creates an edge object with a given edge value.
-     * <p>
-     * Start and ending nodes are set to null.
-     *
-     * @param val Value of the edge. Must be initialized.
-     */
-    public Edge(int val)
-    {
-        this();
-        this.val = val;
-    }
+    private EdgeData backendEdge; // for directed graph
+    // use of this instance variable is optional
+    private EdgeData backendEdgeReverse; // for undirected graph. must be used with backendEdge
 
     /**
      * Creates an edge object with a given start, end, and edge value.
@@ -43,12 +21,22 @@ public class Edge
      * @param start The node where the edge starts. (Not null)
      * @param end The node where the edge ends. (Not null)
      * @param val Value of the edge.
+     * TODO
      */
     public Edge(Node start, Node end, int val)
     {
-        this(val);
+        NodeData tempStart = start.getData();
+        NodeData tempEnd = end.getData();
+        this.val = val;
         this.start = start;
         this.end = end;
+        this.backendEdge = new EdgeData(tempStart, val);
+        this.backendEdgeReverse = new EdgeData(tempEnd, val);
+
+        //TODO - this creates an undirected node
+        //pulled from GraphData.java
+        tempStart.addOrUpdateEdge(backendEdge);
+        tempEnd.addOrUpdateEdge(backendEdgeReverse);
     }
 
     /**
@@ -146,8 +134,8 @@ public class Edge
      */
     public static void main(String[] args)
     {
-        Node node1 = new Node(Integer.MAX_VALUE);
-        Node node2 = new Node(Integer.MAX_VALUE);
+        Node node1 = new Node("A");
+        Node node2 = new Node("B");
 
         Edge edge1_2 = new Edge(node1, node2, 10);
         Edge edge2_1 = new Edge(node2, node1, 20);
