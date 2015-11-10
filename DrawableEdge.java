@@ -66,7 +66,7 @@ public class DrawableEdge extends Drawable
     		{
     			return true;
     		}
-    		if(newWeight > 0)
+    		if(newWeight > 0 && newWeight < 10000)
     		{
     			edge.setVal(newWeight);
     			button.setText(input);

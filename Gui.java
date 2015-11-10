@@ -1,24 +1,21 @@
 import javax.swing.*;
-
 import java.awt.*;
-import java.awt.image.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-class AFrame extends JFrame implements MouseListener, ActionListener, ItemListener, MouseMotionListener
+class AFrame extends JFrame implements MouseListener, ActionListener, ItemListener, MouseMotionListener, ComponentListener
 {
-    private Image backBuffer;         // back buffer to draw graph
-    private DrawableNode draggedNode; // point that is being dragged
+	private static Point mouse = new Point();
     private Graph graph;              // graph object
     private TopPanel top;             // top panel
-    private Drawable[] drawables;     // array of drawable objects
+    private DrawManager drawManager;
     
     /**
      * Initializes the main frame.
@@ -33,13 +30,11 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
         setSize( 800 , 600 );
         addMouseListener(this);
         addMouseMotionListener(this);
+        addComponentListener(this);         
         
-        // initialize variables
-        backBuffer = new BufferedImage(3000, 2000, BufferedImage.TYPE_INT_RGB);
-        draggedNode = null;    
-        
+        drawManager = new DrawManager();
         graph = Graph.graph1();
-        initDrawables();
+        drawManager.initDrawables(graph);
         
         // initialize top panel
         top = new TopPanel();
@@ -50,25 +45,7 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
         
         add(top, BorderLayout.NORTH);
         add(new JPanel(), BorderLayout.CENTER);
-    }
-    
-    /**
-     * Initializes all drawables based on the current graph.
-     *
-     */
-    public void initDrawables()
-    {
-        int index; // index of drawable object in drawable array
-        
-        index = 0;
-        drawables = new Drawable[graph.getNodes().length + graph.getEdges().length];        
-        
-        for(Edge e : graph.getEdges()) // init all edges
-            drawables[index++] = new DrawableEdge(e);
-        
-        for(Node n : graph.getNodes()) // init all nodes
-            drawables[index++] = new DrawableNode(n);
-    }
+    }    
 
     /**
      * Main paint method.
@@ -76,29 +53,18 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
      */
     @Override
     public void paint(Graphics g)
-    {
-        Graphics frameGraphics; // main graphics object
-        
-        //super.paint(g);
-        frameGraphics = g;
-        ScaledPoint.updateWindow(getHeight() - 0, getWidth());        
-        
-        if(backBuffer != null) // start drawing to backbuffer
-        {
-            g = backBuffer.getGraphics();
-        }
-        
-        for(Drawable d : drawables) // draw all drawables
-        {
-            d.draw(g);
-        }
-        
-        if(backBuffer != null) // present back buffer to front buffer
-        {
-            frameGraphics.drawImage(backBuffer, 0, 0, null);
-        }
-        
+    {    	
+    	ScaledPoint.updateWindow(getHeight() - 0, getWidth());
+    	
+    	g = drawManager.drawAll(g);
+    	
         super.paint(g);
+        
+    }
+    
+    public static Point getMouse()
+    {
+    	return mouse;
     }
     
     /**
@@ -107,17 +73,8 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
      * @param e mouse event
      */
     public void mousePressed(MouseEvent e)
-    {        
-        Drawable.setMouse(e.getX(), e.getY());
-        
-        for(Drawable d : drawables) // find first node that collides with mouse
-        {
-            if(d instanceof DrawableNode && ((DrawableNode) d).isMouseOver())
-            {
-                draggedNode = (DrawableNode)d;
-                break;
-            }               
-        }
+    {               
+        drawManager.mousePressed();
     }
 
     /**
@@ -127,7 +84,7 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
      */
     public void mouseReleased(MouseEvent e)
     {
-        draggedNode = null;
+        drawManager.nullDraggedNode();
     }
     
     /**
@@ -138,16 +95,8 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
     @Override
     public void mouseClicked(MouseEvent e)
     {
-    	Drawable.setMouse(e.getX(), e.getY());
-        
-        for(Drawable d : drawables) // find first gbutton that collides with mouse
-        {
-            if(d instanceof DrawableEdge && ((DrawableEdge) d).clickButton())
-            {
-            	repaint();
-                break;
-            }               
-        }
+    	drawManager.mouseClicked();
+    	repaint();
     }
 
     /**
@@ -168,7 +117,7 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
     @Override
     public void mouseExited(MouseEvent arg0)
     {
-        draggedNode = null;
+        drawManager.nullDraggedNode();
     }
     
     /**
@@ -225,7 +174,7 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
             }
 
             top.start.setText("Start");
-            initDrawables();
+            drawManager.initDrawables(graph);
             repaint();
         }
     }
@@ -238,11 +187,10 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
     @Override
     public void mouseDragged(MouseEvent e)
     {
-        if(draggedNode != null) // drag node
-        {
-            draggedNode.setPosition(e.getX(),e.getY());
-            repaint();
-        }
+    	mouse.x = e.getX();
+    	mouse.y = e.getY();
+        drawManager.dragNode();
+        repaint();
     }
 
     /**
@@ -253,7 +201,31 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
     @Override
     public void mouseMoved(MouseEvent e)
     {
+    	mouse.x = e.getX();
+    	mouse.y = e.getY();
     }
+
+	@Override
+	public void componentHidden(ComponentEvent arg0)
+	{		
+	}
+
+	@Override
+	public void componentMoved(ComponentEvent e)
+	{		
+	}
+
+	@Override
+	public void componentResized(ComponentEvent e)
+	{
+		repaint();
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e)
+	{
+		repaint();		
+	}
 }
 
 public class Gui

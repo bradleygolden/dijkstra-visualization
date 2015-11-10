@@ -12,7 +12,7 @@ public class GButton extends Drawable
 	private Point location;
 	private String text;
 	private Dimension size;
-	private static Color color = Color.WHITE;
+	private GradientPaint gradient;
 	
 	public GButton(String text, int x, int y, int width, int height)
 	{
@@ -23,8 +23,12 @@ public class GButton extends Drawable
 	
 	boolean isMouseOver()
 	{
-		return mouseX > location.x && mouseX < location.x + size.width && 
-				mouseY > location.y && mouseY < location.y + size.height;
+		Point mouse;
+		
+		mouse = AFrame.getMouse();
+		
+		return mouse.x > location.x && mouse.x < location.x + size.width && 
+				mouse.y > location.y && mouse.y < location.y + size.height;
 	}
 
 	@Override
@@ -32,13 +36,10 @@ public class GButton extends Drawable
 	{		
 		location.x -= size.width/2;
 		location.y -= size.height/2;
-		
-		
-		
-		//g.setColor(color);
-		GradientPaint redtowhite = new GradientPaint(location.x,location.y,
-				color.WHITE,location.x, location.y+size.height,color.GRAY);
-		((Graphics2D) g).setPaint(redtowhite);
+
+		gradient = new GradientPaint(location.x,location.y,
+				Color.WHITE,location.x, location.y+size.height,Color.GRAY);
+		((Graphics2D) g).setPaint(gradient);
 		g.fillRect(location.x, location.y, size.width, size.height);
 		g.setColor(Color.BLACK);
 		((Graphics2D)g).setStroke(new BasicStroke(1));

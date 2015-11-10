@@ -34,10 +34,16 @@ public class DrawableNode extends Drawable
     public void draw(Graphics g)
     {
         String dist;        // distance being drawn
+        int drawRadius;
+        
+        drawRadius = radius;
+        
+        if(isMouseOver())
+        	drawRadius += 5;
         
         g.setColor(node.getColor());
-        g.fillOval(point.getX()-radius, point.getY()-radius,      // draw node circle
-                2*radius, 2*radius);
+        g.fillOval(point.getX()-drawRadius, point.getY()-drawRadius,      // draw node circle
+                2*drawRadius, 2*drawRadius);
         
         g.setColor(Color.BLACK);
         g.drawString(node.getName(), point.getX(), point.getY()); // draw node name
@@ -69,7 +75,7 @@ public class DrawableNode extends Drawable
      */
     public boolean isMouseOver()
     {
-        return getDistance(mouseX, mouseY) < radius;
+        return getDistance(AFrame.getMouse().x, AFrame.getMouse().y) < radius;
     }
     
     /**
