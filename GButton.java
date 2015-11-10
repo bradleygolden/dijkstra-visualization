@@ -5,62 +5,99 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.geom.Ellipse2D;
 
 public class GButton extends Drawable
 {
-	private Point location;
-	private String text;
-	private Dimension size;
-	private GradientPaint gradient;
+	public static final Color GRADIENT_START_COLOR = Color.WHITE; // color of the gradient top
+	public static final Color GRADIENT_END_COLOR = Color.GRAY;    // color of the gradient bottom	
+	public static final int TEXT_OFFSET_X = 10;         // x offset of the button's text
+	public static final int TEXT_OFFSET_Y = 15;         // y offset of the button's text
+	public static final Color FONT_COLOR = Color.BLACK; // color of the font and frame
+	public static final int HILIGHT_THICKNESS = 3;      // thickness of the button's frame when 
+	                                                    // it's highlighted
 	
-	public GButton(String text, int x, int y, int width, int height)
+	private Point location;          // location of the button
+	private String text;             // text of the button
+	private Dimension size;          // size of the button
+	private GradientPaint gradient;  // gradient used to fill the button
+	
+	/**
+	 * Initializes GButton.
+	 * @param text text of the button
+	 * @param width width of the button
+	 * @param height height of the button
+	 */
+	public GButton(String text, int width, int height)
 	{
 		this.text = text;
-		this.location = new Point(x,y);
+		this.location = new Point();
 		this.size = new Dimension(width, height);
 	}
 	
+	/**
+	 * Check if cursor is over the button.
+	 * @return Result of the collision check.
+	 */
 	boolean isMouseOver()
 	{
 		Point mouse;
 		
 		mouse = AFrame.getMouse();
 		
+		// this is a simple rectangle collision detection
+		// check if coordinates of the cursor are within rectangle bound by the button
 		return mouse.x > location.x && mouse.x < location.x + size.width && 
 				mouse.y > location.y && mouse.y < location.y + size.height;
 	}
 
 	@Override
+	/**
+	 * Draws the button to graphics object g.
+	 * @param g Graphics object used to draw the button.
+	 */
     public void draw(Graphics g)
-	{		
+	{
+		// offset the button so its center is in the middle not in the corner
 		location.x -= size.width/2;
 		location.y -= size.height/2;
 
-		gradient = new GradientPaint(location.x,location.y,
-				Color.WHITE,location.x, location.y+size.height,Color.GRAY);
+		// fill the button interior with gradient
+		gradient = new GradientPaint(location.x, location.y, GRADIENT_START_COLOR,
+				                     location.x, location.y + size.height, GRADIENT_END_COLOR);
 		((Graphics2D) g).setPaint(gradient);
 		g.fillRect(location.x, location.y, size.width, size.height);
 		
-		if(isMouseOver())
+		g.setColor(FONT_COLOR);
+		if(isMouseOver()) // if it's highlighted, make frame thicker
 		{
-			g.setColor(Color.BLUE);
-			((Graphics2D)g).setStroke(new BasicStroke(3));
+			((Graphics2D)g).setStroke(new BasicStroke(HILIGHT_THICKNESS));
 		}
-		else
+		else             // otherwise draw it normally
 		{
-			g.setColor(Color.BLACK);
 			((Graphics2D)g).setStroke(new BasicStroke(1));
 		}
+		
+		// draw frame around button and text inside
 		g.drawRect(location.x, location.y, size.width, size.height);
-		g.drawString(text, location.x + 10, location.y + 15);
+		g.drawString(text, location.x + TEXT_OFFSET_X, location.y + TEXT_OFFSET_Y);
     }
 	
+	/**
+	 * Sets text of the button.
+	 * @param text String used to set the text.
+	 */
 	public void setText(String text)
 	{
 		this.text = text;
 	}
 	
+	/**
+	 * Sets the location of the button.
+	 * @param x new x coordinate in pixels from the upper
+	 *          left corner of the frame
+	 * @param y new y coordinate in pixels from the upper
+	 *          left corner of the frame
+	 */
 	public void setLocation(int x, int y)
 	{
 		location.x = x;

@@ -1,7 +1,5 @@
 import javax.swing.*;
-
 import java.awt.*;
-import java.awt.image.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -11,8 +9,6 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 class AFrame extends JFrame implements MouseListener, ActionListener, ItemListener, MouseMotionListener, ComponentListener
 {
@@ -37,8 +33,7 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
         addComponentListener(this);
         
         drawManager = new DrawManager();
-        graph = Graph.graph1();
-        drawManager.initDrawables(graph);
+        graph = null;
         
         // initialize top panel
         top = new TopPanel();
@@ -52,6 +47,8 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
         
         add(top, BorderLayout.NORTH);
         add(new JPanel(), BorderLayout.CENTER);
+        
+        top.graphs.setSelectedIndex(0);
     }
 
     /**
@@ -63,7 +60,11 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
     {
     	ScaledPoint.updateWindow(getHeight() - 0, getWidth());
     	
-    	g = drawManager.drawAll(g);
+    	if(graph != null)
+    	{
+    		Drawable.setPath(graph.getPath());    	
+    		g = drawManager.drawAll(g);
+    	}
     	
         super.paint(g);
     }
@@ -153,7 +154,6 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
         }
         else if (e.getSource() == top.prev) // handle prev button
         {
-            // TODO: uncolor nodes
             if (graph.prevState())
             {
                 graph.updateGraph();
@@ -181,20 +181,20 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
         {
             if (top.graphs.getSelectedIndex() == 0) // graph1
             {
-                graph = Graph.graph1();
-                graph.updateGraph();
+                graph = Graph.graph1();                
             }
             else if (top.graphs.getSelectedIndex() == 1) // graph2
             {
+            	return;
                 //graph = Graph.graph2();
-                //graph.updateGraph();
             }
             else if (top.graphs.getSelectedIndex() == 2) // graph3
             {
-                //graph = Graph.graph3();                
-                //graph.updateGraph();
+            	return;
+                //graph = Graph.graph3(); 
             }
-
+            
+            graph.updateGraph();
             top.start.setText("Start");
             drawManager.initDrawables(graph);
             repaint();

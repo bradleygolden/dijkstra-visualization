@@ -1,4 +1,5 @@
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -7,20 +8,29 @@ import javax.swing.JOptionPane;
 
 public class DrawableEdge extends Drawable
 {
-    private Edge edge;     // edge object to be drawn 
-    private int thickness; // thickness of the edge
-    private GButton button;
+	public static final int DEF_BUTTON_WIDTH = 40;        // default button's width
+	public static final int DEF_BUTTON_HEIGHT = 22;       // default button's height
+	public static final int DEF_THICKENSS = 3;            // default edge's thickness
+	public static final Color PATH_COLOR = Color.MAGENTA; // edge's color if it's part of the path
+	public static final Color NONPATH_COLOR = Color.GRAY; // default color of the edge
+	public static final int MIN_WEIGHT = 0;               // the least edge's weight
+	public static final int MAX_WEIGHT = 9999;            // the greatest edge's weight
+	
+    private Edge edge;      // edge object to be drawn 
+    private int thickness;  // thickness of the edge
+    private GButton button; // button that displays edge's weight and allows user
+                            // to change it
     
     /**
-     * initializes DrawableEdge
+     * Initializes DrawableEdge.
      *
-     * @param edge Edge object to be drawn.
+     * @param edge Edge object represented by this DrawableEdge.
      */
     public DrawableEdge(Edge edge)
     {
-        thickness = 3;
+        thickness = DEF_THICKENSS;
         this.edge = edge;
-        button = new GButton(Integer.toString(edge.getVal()), 0, 0, 40, 22);
+        button = new GButton(edge.getVal() + "", DEF_BUTTON_WIDTH, DEF_BUTTON_HEIGHT);
     }
     
     /**
@@ -33,31 +43,81 @@ public class DrawableEdge extends Drawable
     {
         ScaledPoint start;  // starting point of an edge
         ScaledPoint end;    // ending point of an edge
-        Point transform;
+        Point transform;    // vector that offsets the button to the middle
         
         start = edge.getStart().getScaledPoint();
         end = edge.getEnd().getScaledPoint();
+
+        if(isPath()) // decide the color based on whether it's part of the path or not
+        {
+        	g.setColor(PATH_COLOR);
+        }
+        else
+        {
+        	g.setColor(NONPATH_COLOR);
+        }
         
+        // draw the edge itself
         ((Graphics2D)g).setStroke(new BasicStroke(thickness));
-        g.setColor(edge.getColor());
         g.drawLine(start.getX(),start.getY(), end.getX(),end.getY());
         
+        // these lines compute the vector that offsets
+        // the button so it's in between two nodes that edge connects
+        // equation: r = v1 + (v2 - v1)/2
         transform = new Point();
-        transform.x = start.getX() - end.getX();
-        transform.y = start.getY() - end.getY();        
+        transform.x = end.getX() + (start.getX() - end.getX())/2;
+        transform.y = end.getY() + (start.getY() - end.getY())/2;
         
-        button.setLocation(end.getX() + transform.x / 2, end.getY() + transform.y / 2);
+        // move the button and draw it
+        button.setLocation(transform.x, transform.y);
         button.draw(g);
     }
     
+    /**
+     * Checks if the edge belongs to the current path.
+     * @return result of the check.
+     */
+    private boolean isPath()
+    {
+    	char startName;       // name of the one node that is connected to the edge
+    	char endName;         // name of the other node that is connected to the edge
+    	String curPathEdge;   // string used to iterate over current path
+    	
+    	startName = edge.getStart().getName().charAt(0);
+    	endName = edge.getEnd().getName().charAt(0);
+    	
+    	for(int i=0;i<path.length();i+=2) // iterate over current path
+    	{
+    		curPathEdge = path.substring(i, i+2); // current edge is a string of two chars
+    		                                      // which are the names of the nodes
+    		    		
+    		if(curPathEdge.indexOf(startName) != -1 && 
+    		   curPathEdge.indexOf(endName) != -1)     // the edge belong to path if 
+    			                                       // names of the nodes it connects
+    			                                       // are found in curPathEdge
+    		{
+    			return true;
+    		}
+    	}
+    	
+    	return false;
+    }
+    
+    /**
+     * Tries to click the button of the edge. When button is clicked,
+     * user can input a new value for the edge.
+     * @return Returns whether the button was actually clicked.
+     * It was if the mouse was over it.
+     */
     public boolean clickButton()
     {
-    	String input;
+    	String input;  // 
     	int newWeight;
     	
     	if(button.isMouseOver())
     	{
     		input = JOptionPane.showInputDialog("New weight");
+    		
     		try
     		{
     			newWeight = new Integer(input);
@@ -66,11 +126,13 @@ public class DrawableEdge extends Drawable
     		{
     			return true;
     		}
-    		if(newWeight > 0 && newWeight < 10000)
+    		
+    		if(newWeight >= MIN_WEIGHT && newWeight <= MAX_WEIGHT)
     		{
     			edge.setVal(newWeight);
     			button.setText(input);
     		}
+    		
     		return true;
     	}
     	return false;
