@@ -113,6 +113,11 @@ public class Node
         return name;
     }
 
+    public NodeData getData()
+    {
+        return this.backendNode;
+    }
+
     /**
      * Prints a string of the current node's value.
      *
