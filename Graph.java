@@ -1,5 +1,6 @@
 import java.util.Arrays;
 import java.util.List;
+import java.awt.Color;
 
 /**
  * Used to simulate a graph containing nodes and edges.
@@ -8,6 +9,8 @@ public class Graph
 {
     protected Node[] nodes; // all nodes in the graph
     protected Edge[] edges; // all edges in the graph
+    private static String STARTNODE = "";
+    private static String ENDNODE = "";
     private int maxNodes; // max number of nodes in the graph
     private int maxEdges; // max number of edges in the graph
     private int currNumNodes; // current number of nodes in the graph
@@ -187,17 +190,41 @@ public class Graph
     {
         // populate all states
         try {
-          states = baseGraph.performDijkstraAlgorithm(start, end);
+            states = baseGraph.performDijkstraAlgorithm(start, end);
         } catch (Exception ex) {
             System.out.println("Exception: " + ex);
         }
-
     }
 
-    public void nexState()
+    public void nextState()
     {
-        currentStateIndex++;
-        states.get(currentStateIndex);
+        if (currentStateIndex < states.size() - 1)
+        {
+            currentStateIndex++;
+        }
+    }
+
+    public void prevState()
+    {
+        if (currentStateIndex > 0)
+        {
+            currentStateIndex--;
+        }
+    }
+
+    public void updateGraph() {
+        String lastVisitedNode = states.get(currentStateIndex).getLastVisitedNode().getName();
+
+        System.out.println(lastVisitedNode);
+        for (Node n : nodes)
+        {
+            if (n.getName().equals(lastVisitedNode))
+            {
+                System.out.println("YAY WE ARE HERE: " + n.getName());
+                n.setColor(Color.GREEN);
+                break;
+            }
+        }
     }
 
     /**
@@ -228,16 +255,19 @@ public class Graph
         logicalGraph.addEdgeToNode("D", "C", 6);
         logicalGraph.addEdgeToNode("E", "D", 4);
 
-        // get all states for Dijkstra's Algorithm
-        //this.setStates(logicalGraph, "A", "B"); 
+        STARTNODE = "A";
+        ENDNODE = "E";
 
         // draw the graph
         Graph graph = new Graph(5, 7, "Graph1");
 
+        // get all states for Dijkstra's Algorithm
+        graph.setStates(logicalGraph, STARTNODE, ENDNODE); 
+
         // add 5 nodes
-        for (int i = 0; i < 5; i++)
+        for (char i = 'A'; i < 'F'; i++)
         {
-            graph.addNode(Integer.MAX_VALUE, Integer.toString(i));
+            graph.addNode(Integer.MAX_VALUE, i + "");
         }
 
         // add 7 edges

@@ -39,6 +39,7 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
         draggedNode = null;    
         
         graph = Graph.graph1();
+        graph.updateGraph();
         initDrawables();
         
         // initialize top panel
@@ -184,11 +185,16 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
         }
         else if (e.getSource() == top.prev) // handle prev button
         {
-            // Boilerplate
+            // TODO: uncolor nodes
+            graph.prevState();
+            graph.updateGraph();
+            repaint();
         }
         else if (e.getSource() == top.next) // handle next button
         {
-            // Boilerplate
+            graph.nextState();
+            graph.updateGraph();
+            repaint();
         }
     }
 
@@ -203,15 +209,18 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
         {
             if (top.graphs.getSelectedIndex() == 0) // graph1
             {
-                graph = GraphData.createSampleGraphData().createView();
+                graph = Graph.graph1();
+                graph.updateGraph();
             }
             else if (top.graphs.getSelectedIndex() == 1) // graph2
             {
                 graph = Graph.graph2();
+                graph.updateGraph();
             }
             else if (top.graphs.getSelectedIndex() == 2) // graph3
             {
                 graph = Graph.graph3();                
+                graph.updateGraph();
             }
 
             top.start.setText("Start");
@@ -255,22 +264,14 @@ public class Gui
      */
     public static void main(String[] args)
     {
-        GraphData logicalGraph = GraphData.createSampleGraphData();
-        java.util.List<DijkstraAlgorithmState> states = null;
-        
-        try {
-            // return states that can be used to represent on the UI
-            states = logicalGraph.performDijkstraAlgorithm("A", "D");
+        //try {
+        //    // return states that can be used to represent on the UI
+        //    states = logicalGraph.performDijkstraAlgorithm("A", "D");
 
-        } catch (Exception ex) {
-            Logger.getLogger(Gui.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        //} catch (Exception ex) {
+        //    Logger.getLogger(Gui.class.getName()).log(Level.SEVERE, null, ex);
+        //}
 
-        for (DijkstraAlgorithmState state : states)
-        {
-            System.out.println("Number of visited nodes:" + state.getLastVisitedNode().getName());
-        }
-        
         AFrame frame = new AFrame();
         frame.setVisible(true);
     }
