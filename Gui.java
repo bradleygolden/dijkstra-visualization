@@ -46,6 +46,9 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
         top.start.addActionListener(this);
         top.prev.addActionListener (this);
         top.next.addActionListener (this);
+
+        top.prev.setEnabled(false);
+        top.next.setEnabled(false);
         
         add(top, BorderLayout.NORTH);
         add(new JPanel(), BorderLayout.CENTER);
@@ -137,11 +140,15 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
             {
                 top.start.setText("Stop");
                 top.graphs.setEnabled(false);
+                top.prev.setEnabled(true);
+                top.next.setEnabled(true);
             }
             else if (top.start.getText() == "Stop") // handle stop button
             {
                 top.start.setText("Start");
                 top.graphs.setEnabled(true);
+                top.prev.setEnabled(false);
+                top.next.setEnabled(false);
             }
         }
         else if (e.getSource() == top.prev) // handle prev button
@@ -253,14 +260,6 @@ public class Gui
      */
     public static void main(String[] args)
     {
-        //try {
-        //    // return states that can be used to represent on the UI
-        //    states = logicalGraph.performDijkstraAlgorithm("A", "D");
-
-        //} catch (Exception ex) {
-        //    Logger.getLogger(Gui.class.getName()).log(Level.SEVERE, null, ex);
-        //}
-
         AFrame frame = new AFrame();
         frame.setVisible(true);
     }
