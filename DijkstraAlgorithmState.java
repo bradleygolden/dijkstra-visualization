@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map.Entry;
 
 /**
- *
  * @author Amanda Olson
  * DijkstraAlgorithmState represents one iteration of DijkstraAlgorithm's state
  */
@@ -18,7 +17,6 @@ public class DijkstraAlgorithmState
     // This hashmap maps node and its shortest step to get there.
     // if node is already visited, the value of map will be the shortest could possibly be found from the starting point
     private HashMap<NodeData, DijkstraAlgorithmStep> _distances;
-    
     
     private DijkstraAlgorithmState()
     {
@@ -47,7 +45,22 @@ public class DijkstraAlgorithmState
     {
         return _distances;
     }
-    
+
+    public String getLastStartNode() 
+    {
+        return  _distances.get(getLastVisitedNode()).startNode.getName();
+    }
+
+    public int getLastAccumulatedWeight()
+    {
+        return _distances.get(getLastVisitedNode()).accumulatedWeight;
+    }
+
+    public String getLastEndNode()
+    {
+        return _distances.get(getLastVisitedNode()).endNode.getName();
+    }
+
     public DijkstraAlgorithmState makeCopy()
     {
         DijkstraAlgorithmState copy = new DijkstraAlgorithmState();

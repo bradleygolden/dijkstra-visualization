@@ -220,8 +220,9 @@ public class Graph
         {
             if (n.getName().equals(lastVisitedNode))
             {
-                System.out.println("YAY WE ARE HERE: " + n.getName());
+                System.out.println("YAY WE ARE HERE: " + n.getName() + "\n");
                 n.setColor(Color.GREEN);
+                n.setValue(states.get(currentStateIndex).getLastAccumulatedWeight());
                 break;
             }
         }
@@ -247,11 +248,11 @@ public class Graph
         logicalGraph.addNode("D");
         logicalGraph.addNode("E");
 
-        logicalGraph.addEdgeToNode("A", "B", 10);
+        logicalGraph.addEdgeToNode("A", "B", 8);
         logicalGraph.addEdgeToNode("B", "C", 4);
-        logicalGraph.addEdgeToNode("B", "D", 9);
+        logicalGraph.addEdgeToNode("B", "D", 0);
         logicalGraph.addEdgeToNode("C", "A", 5);
-        logicalGraph.addEdgeToNode("C", "E", 10);
+        logicalGraph.addEdgeToNode("C", "E", 12);
         logicalGraph.addEdgeToNode("D", "C", 6);
         logicalGraph.addEdgeToNode("E", "D", 4);
 
@@ -271,11 +272,11 @@ public class Graph
         }
 
         // add 7 edges
-        graph.addEdge(graph.nodes[0], graph.nodes[1], 10);
+        graph.addEdge(graph.nodes[0], graph.nodes[1], 8);
         graph.addEdge(graph.nodes[1], graph.nodes[2], 4);
-        graph.addEdge(graph.nodes[1], graph.nodes[3], 9);
+        graph.addEdge(graph.nodes[1], graph.nodes[3], 0);
         graph.addEdge(graph.nodes[2], graph.nodes[0], 5);
-        graph.addEdge(graph.nodes[2], graph.nodes[4], 10);
+        graph.addEdge(graph.nodes[2], graph.nodes[4], 12);
         graph.addEdge(graph.nodes[3], graph.nodes[2], 6);
         graph.addEdge(graph.nodes[4], graph.nodes[3], 4);
 
