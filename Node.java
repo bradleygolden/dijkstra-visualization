@@ -11,39 +11,26 @@ public class Node
     private Color color; // the color of the current node
     private String name; // the name of this node
 
-    /**
-     * Creates a Node object with val = 0, point set to a new scaled point, and 
-     * the node set to the default color.
-     */
+    private NodeData backendNode;
+
     public Node()
     {
-        val = 0;
-        point = new ScaledPoint(); 
+        // TODO - delete this constructor
         color = DEFAULT_NODE_COLOR;
-        name = "0";
     }
 
     /**
+     * TODO
      * Creates a Node object with a value.
      *
      * @param val Value of the current node.
      */
-    public Node(int val)
+    public Node(String name)
     {
-        this();
-        this.val = val; // the set value of the node
-    }
-
-    /**
-     * Creates a Node object with a value and a name.
-     *
-     * @param val Value of the current node. Must be initialized.
-     * @param name The name of the current node. Must be initialized.
-     */
-    public Node(int val, String name)
-    {
-        this(val);
+        this.point = new ScaledPoint(); 
+        this.val = Integer.MAX_VALUE;
         this.name = name;
+        this.backendNode = new NodeData(name);
     }
 
     /**
@@ -141,7 +128,7 @@ public class Node
      */
     public static void main(String[] args)
     {
-        Node node1 = new Node(10, "0");
+        Node node1 = new Node("A");
         System.out.println(node1.toString());
     }
 }
