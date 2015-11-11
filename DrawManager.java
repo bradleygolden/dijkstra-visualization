@@ -1,5 +1,8 @@
+import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -8,11 +11,14 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JPanel;
 
 public class DrawManager extends JPanel implements MouseMotionListener, MouseListener
-{
-	private static Point mouse = new Point();
+{	
+	private static Point mouse = new Point();	
+	
+	private Font defFont;             // default font for drawing strings
     private DrawableNode draggedNode; // point that is being dragged	
 	private Drawable[] drawables;     // array of drawable objects
 	
+	public static boolean showMap = true;
 	
 	/**
      * Default constructor initializes DrawManager object.
@@ -24,6 +30,7 @@ public class DrawManager extends JPanel implements MouseMotionListener, MouseLis
         drawables = null;
         addMouseListener(this);
         addMouseMotionListener(this);
+        defFont = new Font("SansSerif", Font.BOLD, 15);
 
         setBackground(new Color(255,255,153));
 	}
@@ -54,18 +61,63 @@ public class DrawManager extends JPanel implements MouseMotionListener, MouseLis
     protected void paintComponent(Graphics g)
     {
     	super.paintComponent(g);
-
+    	
+    	if(TopPanel.getGraph() == null)
+    		return;
+    	
     	//
     	// T H I S    I S    G A R B A G E
     	//
     	initDrawables(TopPanel.getGraph());
+    	
     	ScaledPoint.updateWindow(getHeight(), getWidth());
     	Drawable.setPath(TopPanel.getGraph().getPath());
+    	
+    	if(DrawManager.showMap)
+    		drawMap(g);
+    	
+    	g.setFont(defFont);
         
         for(Drawable d : drawables) // draw all drawables
         {
             d.draw(g);
         }
+    }
+    
+    private void drawMap(Graphics g)
+    {
+    	Point point;
+    	
+    	point = new Point(30,30);
+    	drawGenericNode(g, DrawableNode.NODE_UNVISITED_COLOR, point, "\u221e");
+    	
+    	point = new Point(30,80);
+    	drawGenericNode(g, DrawableNode.NODE_VISITED_COLOR, point, "10");
+    	
+    	point = new Point(30,130);
+    	drawGenericNode(g, DrawableNode.NODE_PATH_COLOR, point, "5");
+    }
+    
+    public void drawGenericNode(Graphics g, Color color, Point point, String distance)
+    {
+    	g.setColor(color);
+        g.fillOval(point.x-DrawableNode.RADIUS, point.y-DrawableNode.RADIUS,      // draw node circle
+                2*DrawableNode.RADIUS, 2*DrawableNode.RADIUS);
+        g.setColor(Color.BLACK);
+        
+        ((Graphics2D)g).setStroke(new BasicStroke(1));
+        g.drawOval(point.x-DrawableNode.RADIUS, point.y-DrawableNode.RADIUS,      // draw circumference
+                2*DrawableNode.RADIUS, 2*DrawableNode.RADIUS);
+        
+        g.setColor(Color.BLACK);
+        g.drawString("A", point.x, point.y); // draw node name
+        
+        g.setColor(Color.WHITE);
+        g.fillRect(point.x + DrawableNode.DIST_BOX_OFFSET_X, point.y + DrawableNode.DIST_BOX_OFFSET_Y, 
+        		DrawableNode.DIST_BOX_WIDTH, DrawableNode.DIST_BOX_HEIGTH);             // draw back for node distance
+        
+        g.setColor(Color.BLACK);
+        g.drawString(distance, point.x + DrawableNode.DIST_BOX_OFFSET_X, point.y);      // draw distance
     }
     
     public static Point getMouse()
