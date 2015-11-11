@@ -186,6 +186,25 @@ public class Graph
         return name;
     }
 
+    /**
+     * Collects the names of the nodes in the graph
+     *
+     * @return String[] a list of the graph's node names
+     */
+    public String[] getNodeNames()
+    {
+        String[] nodeNames = new String[maxNodes];
+        
+        int i = 0;
+        for (Node n : nodes)
+        {
+           nodeNames[i] = n.getName();
+           i++;
+        }
+
+        return nodeNames;
+    }
+
 
     /**
      * Prints out the current nodes and edges in the graph.

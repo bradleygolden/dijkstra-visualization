@@ -13,17 +13,25 @@ public class DialogPanel extends JPanel
     {
         super();
         this.setLayout(new FlowLayout(FlowLayout.CENTER));
-        dialog = new JLabel("Please select a starting node");
+        dialog = new JLabel("Welcome.  Please select a graph to begin");
+        this.add(dialog);
     }
 
     /**
     * Sets the dialog label to a new string
+    *
     * @param dialog the string to change the label to 
     */
     public void setDialog(String dialog)
-    // PRE: dialog is initialized
-    // POST: JLabel dialog is set to new dialog
     {
-        this.dialog = new JLabel(dialog);
+        this.dialog.setText(dialog);
+    }
+
+    /**
+     * Resets dialog to the welcome message
+     */
+    public void resetDialog()
+    {
+        this.dialog.setText("Welcome.  Please select a graph to begin");
     }
 }
