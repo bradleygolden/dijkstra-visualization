@@ -150,7 +150,7 @@ public class GraphData
         
         for(NodeData node : _nodes)
         {
-           view.addNode(Integer.MAX_VALUE , node.getName());
+           view.addNode(node.getName());
            indexCache.put(node, index);
            index++;
         }
