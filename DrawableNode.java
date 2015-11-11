@@ -9,11 +9,14 @@ public class DrawableNode extends Drawable
 	public static final int DIST_BOX_OFFSET_Y = -15; // y pos. of the distance box relative to node
 	public static final int DIST_BOX_HEIGTH = 20;    // height of the distance box
 	public static final int DIST_BOX_WIDTH = 40;     // width of the distance box
-	public static final int RADIUS = 20;         // default radius of the node
-	public static final int RADIUS_BIG = 25;     // default radius when node is highlighted
+	public static final int RADIUS = 20;             // default radius of the node
+	public static final int RADIUS_BIG = 25;         // default radius when node is highlighted
 	public static final Color NODE_UNVISITED_COLOR = new Color(200,200,200);
 	public static final Color NODE_VISITED_COLOR = new Color(200,255,200);
 	public static final Color NODE_PATH_COLOR = new Color(50,255,50);
+	
+	private static String startNode = "";
+	private static String endNode = "";
 	
     private Node node;
     private ScaledPoint point;
@@ -39,15 +42,33 @@ public class DrawableNode extends Drawable
     {
         String dist;        // distance being drawn
         int drawRadius;
+        int thickness;
+        Color frameColor;
 
         drawRadius = isMouseOver() ? RADIUS_BIG : RADIUS;
         
         g.setColor(getColor());
         g.fillOval(point.getX()-drawRadius, point.getY()-drawRadius,      // draw node circle
-                2*drawRadius, 2*drawRadius);
-        g.setColor(Color.BLACK);
+                2*drawRadius, 2*drawRadius);        
         
-        ((Graphics2D)g).setStroke(new BasicStroke(1));
+        if(node.getName() == startNode)
+        {
+        	thickness = 3;
+        	frameColor = Color.GREEN;
+        }
+        else if(node.getName() == endNode)
+        {
+        	thickness = 3;
+        	frameColor = Color.BLUE;
+        }
+        else
+        {
+        	thickness = 1;
+        	frameColor = Color.BLACK;
+        }
+        
+        g.setColor(frameColor);
+        ((Graphics2D)g).setStroke(new BasicStroke(thickness));
         g.drawOval(point.getX()-drawRadius, point.getY()-drawRadius,      // draw circumference
                 2*drawRadius, 2*drawRadius);
         
@@ -107,5 +128,15 @@ public class DrawableNode extends Drawable
     public void setPosition(int x, int y)
     {
         point.setWinXY(x, y);
+    }
+    
+    public static void setStart(String start)
+    {
+    	startNode = start;
+    }
+    
+    public static void setEnd(String end)
+    {
+    	endNode = end;
     }
 }
