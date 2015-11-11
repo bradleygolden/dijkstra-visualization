@@ -7,10 +7,25 @@ import java.awt.Color;
  */
 public class Graph
 {
+    // start and end is chosen and changed by the user
+    private static String START_NODE = "A"; // starting point in the graph
+    private static String END_NODE = "A"; // ending point in the graph
+    // cannot initalize this static variable until a new graph is created
+    protected static GraphData BACKEND_GRAPH; // graph strictly used for backend (algorithm) processing
+
+    //
+    // middle tier related instance variables
+    //
     protected Node[] nodes; // all nodes in the graph
     protected Edge[] edges; // all edges in the graph
-    private static String STARTNODE = "";
-    private static String ENDNODE = "";
+
+    //
+    // backend tier related instance variables
+    //
+    // BACKEND_GRAPH contains all information about the graph pertaining to the backend and  
+    // is only to be used in conjunction with Data classes.
+
+    // graph related instance variables
     private int maxNodes; // max number of nodes in the graph
     private int maxEdges; // max number of edges in the graph
     private int currNumNodes; // current number of nodes in the graph
@@ -42,6 +57,7 @@ public class Graph
      * @param numNodes The number of nodes the graph contains. Must be greater than 0.
      * @param numEdges The number of edges the graph contains. Must be greater than 0.
      * @param name The name of the graph as a string. Must be initialized.
+     * TODO
      */
     public Graph(int numNodes, int numEdges, String name)
     {
@@ -51,6 +67,7 @@ public class Graph
         maxNodes = numNodes;
         maxEdges = numEdges;
         this.name = name;
+        this.BACKEND_GRAPH = new GraphData();
     }
 
     /**
@@ -59,8 +76,10 @@ public class Graph
      * @param val The value of the node to be added. Must be initialized.
      * @param name The name of the current node as a string. Must be initialized.
      */
-    public void addNode(int val, String name)
+    public void addNode(String name)
     {
+        Node newNode; // new node to be added to business logic tier
+
         if (currNumNodes == maxNodes) // Reached maximum nodes defined in constructor
         {
             System.out.println("You cannot add more nodes than you defined in the" +
@@ -68,7 +87,11 @@ public class Graph
             return;
         }
 
-        Node newNode = new Node(val, name); // create a new node
+        newNode = new Node(name); // create a new logic node
+
+        // add node to backendGraph
+        BACKEND_GRAPH.addNode(newNode.getData());
+
         nodes[currNumNodes] = newNode; // add node to graph
         currNumNodes++; // increment number of nodes in the graph
     } // end addNode
@@ -84,13 +107,19 @@ public class Graph
      */
     public void addEdge(Node start, Node end, int val)
     {
+        Edge newEdge;
+
         if (currNumEdges == maxEdges) // Reached maximum edges defined in constructor
         {
             System.out.println("You have reached maximum ammount of edges");
             return;
         }
 
-        Edge newEdge = new Edge(start, end, val);
+        newEdge = new Edge(start, end, val);
+
+        // add edge to backendGraph
+        BACKEND_GRAPH.addEdgeToNode(start.getName(), end.getName(), val);
+
         edges[currNumEdges] = newEdge;
         currNumEdges++;
     }
@@ -155,6 +184,7 @@ public class Graph
         return name;
     }
 
+
     /**
      * Prints out the current nodes and edges in the graph.
      */
@@ -187,11 +217,11 @@ public class Graph
      * @param start The node where the algorithm starts. Letter A-Z.
      * @param end The node where the algorithm ends. Letter A-Z.
      */
-    public void setStates(GraphData baseGraph, String start, String end)
+    public void setStates()
     {
         // populate all states
         try {
-            states = baseGraph.performDijkstraAlgorithm(start, end);
+            states = BACKEND_GRAPH.performDijkstraAlgorithm(START_NODE, END_NODE);
         } catch (Exception ex) {
             System.out.println("Exception: " + ex);
         }
@@ -229,11 +259,9 @@ public class Graph
             if (n.getName().equals(lastVisitedNode))
             {
                 // Set visual cues
-                n.setColor(Color.GREEN);
+                n.setColor(Color.GREEN); // TODO Remove once merged with Maciezk's code
                 n.setValue(states.get(currentStateIndex).getLastAccumulatedWeight());
 
-                System.out.println(path);
-                System.out.println("curr path: " + getPath());
                 break;
             }
         }
@@ -260,6 +288,23 @@ public class Graph
         return result;
     }
 
+    public void setStart(String start)
+    {
+        START_NODE = start;
+    }
+
+    public void setEnd(String end)
+    {
+        END_NODE = end;
+    }
+
+    public void run(Graph graph)
+    {
+        // get all states for Dijkstra's Algorithm
+        graph.setStates(); 
+        graph.updateGraph();
+    }
+
     /**
      * A fixed graph with 5 nodes and 7 edges. 
      * <p>
@@ -268,39 +313,16 @@ public class Graph
      * @return A graph object.
      * 
      */
+    //public static Graph graph1(string startNode, string endNode)
     public static Graph graph1()
     {
-
-        // create backend graph
-        GraphData logicalGraph = new GraphData();
-
-        logicalGraph.addNode("A");
-        logicalGraph.addNode("B");
-        logicalGraph.addNode("C");
-        logicalGraph.addNode("D");
-        logicalGraph.addNode("E");
-
-        logicalGraph.addEdgeToNode("A", "B", 8);
-        logicalGraph.addEdgeToNode("B", "C", 4);
-        logicalGraph.addEdgeToNode("B", "D", 0);
-        logicalGraph.addEdgeToNode("C", "A", 5);
-        logicalGraph.addEdgeToNode("C", "E", 12);
-        logicalGraph.addEdgeToNode("D", "C", 6);
-        logicalGraph.addEdgeToNode("E", "D", 4);
-
-        STARTNODE = "A";
-        ENDNODE = "E";
-
         // draw the graph
         Graph graph = new Graph(5, 7, "Graph1");
-
-        // get all states for Dijkstra's Algorithm
-        graph.setStates(logicalGraph, STARTNODE, ENDNODE); 
 
         // add 5 nodes
         for (char i = 'A'; i < 'F'; i++)
         {
-            graph.addNode(Integer.MAX_VALUE, i + "");
+            graph.addNode(i + "");
         }
 
         // add 7 edges
@@ -312,12 +334,17 @@ public class Graph
         graph.addEdge(graph.nodes[3], graph.nodes[2], 6);
         graph.addEdge(graph.nodes[4], graph.nodes[3], 4);
 
+        START_NODE = "A";
+        END_NODE = "D";
+
         // set scaled points for nodes
         graph.nodes[0].getScaledPoint().setXY(0.2, 0.8);
         graph.nodes[1].getScaledPoint().setXY(0.8, 0.8);
         graph.nodes[2].getScaledPoint().setXY(0.2, 0.4);
         graph.nodes[3].getScaledPoint().setXY(0.8, 0.4);
         graph.nodes[4].getScaledPoint().setXY(0.5, 0.3);
+
+        graph.setStates();
 
         return graph;
     }
@@ -332,12 +359,13 @@ public class Graph
      */
     public static Graph graph2()
     {
+/*      // draw the graph*/
         Graph graph = new Graph(6, 8, "Graph2");
 
         // add 6 nodes
-        for (int i = 0; i < 6; i++)
+        for (char i = 'A'; i < 'G'; i++)
         {
-            graph.addNode(Integer.MAX_VALUE, Integer.toString(i));
+            graph.addNode(i + "");
         }
 
         // add 8 edges
@@ -350,6 +378,9 @@ public class Graph
         graph.addEdge(graph.nodes[3], graph.nodes[5], 8);
         graph.addEdge(graph.nodes[4], graph.nodes[5], 6);
 
+        START_NODE = "A";
+        END_NODE = "E";
+
         // set scaled points for nodes
         graph.nodes[0].getScaledPoint().setXY(0.2, 0.8);
         graph.nodes[1].getScaledPoint().setXY(0.8, 0.8);
@@ -357,6 +388,8 @@ public class Graph
         graph.nodes[3].getScaledPoint().setXY(0.8, 0.5);
         graph.nodes[4].getScaledPoint().setXY(0.2, 0.2);
         graph.nodes[5].getScaledPoint().setXY(0.8, 0.2);
+
+        graph.setStates();
 
         return graph;
     }
@@ -374,12 +407,12 @@ public class Graph
         Graph graph = new Graph(6, 9, "Graph3");
 
         // add 6 nodes
-        for (int i = 0; i < 6; i++)
+        for (char i = 'A'; i < 'G'; i++)
         {
-            graph.addNode(Integer.MAX_VALUE, Integer.toString(i));
+            graph.addNode(i + "");
         }
 
-        // add 9 edges
+        // add 9 edges to middle tier node
         graph.addEdge(graph.nodes[0], graph.nodes[1], 10);
         graph.addEdge(graph.nodes[0], graph.nodes[2], 4);
         graph.addEdge(graph.nodes[0], graph.nodes[3], 7);
@@ -390,6 +423,9 @@ public class Graph
         graph.addEdge(graph.nodes[3], graph.nodes[5], 7);
         graph.addEdge(graph.nodes[4], graph.nodes[5], 6);
 
+        START_NODE = "A";
+        END_NODE = "E";
+
         // set scaled points for nodes
         graph.nodes[0].getScaledPoint().setXY(0.2, 0.8);
         graph.nodes[1].getScaledPoint().setXY(0.8, 0.8);
@@ -397,6 +433,8 @@ public class Graph
         graph.nodes[3].getScaledPoint().setXY(0.9, 0.5);
         graph.nodes[4].getScaledPoint().setXY(0.5, 0.2);
         graph.nodes[5].getScaledPoint().setXY(0.9, 0.2);
+
+        graph.setStates();
 
         return graph;
     }
