@@ -5,18 +5,19 @@ import javax.swing.*;
 
 public class TopPanel extends JPanel implements ActionListener, ItemListener
 {
+	private static Graph graph;                            // graph object
+    private static final String[] GRAPHLIST = {"Graph 1", 
+                                               "Graph 2", 
+                                               "Graph 3"}; // Predefined graphs
     private JPanel headerPanel;                            // Panel containing title
     private JLabel header;                                 // The title of the program
     private JPanel chooseGraphs;                           // Panel containing graph options
     private JLabel choose;                                 // graphs label
-    protected JComboBox graphs;                            // List of predefined graphs
-    private static final String[] GRAPHLIST = {"Graph 1", 
-                                               "Graph 2", 
-                                               "Graph 3"}; // Predefined graphs
-    protected JButton start;                                 // Starts algorithm
+    private JComboBox graphs;                              // List of predefined graphs
+    private JButton start;                                 // Starts algorithm
     private JPanel steps;                                  // Panel containing stepping buttons
-    protected JButton prev;                                  // Go to previous position in algorithm
-    protected JButton next;                                  // Go to next position in algorithm
+    private JButton prev;                                  // Go to previous position in algorithm
+    private JButton next;                                  // Go to next position in algorithm
     private DialogPanel dialogPanel;                       // Panel containing
 
     /**
@@ -50,7 +51,7 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
         steps.add(prev);
         steps.add(next);
         
-        Gui.graph = Graph.graph1();
+        graph = Graph.graph1();
         
         // initialize top panel
         graphs.addItemListener (this);
@@ -98,16 +99,16 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
         }
         else if (e.getSource() == prev) // handle prev button
         {
-            if (Gui.graph.prevState())
+            if (graph.prevState())
             {
-            	Gui.graph.updateGraph();
+            	graph.updateGraph();
             }
         }
         else if (e.getSource() == next) // handle next button
         {
-            if (Gui.graph.nextState())
+            if (graph.nextState())
             {
-            	Gui.graph.updateGraph();
+            	graph.updateGraph();
             }
         }
         
@@ -125,25 +126,43 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
         {
             if (graphs.getSelectedIndex() == 0) // graph1
             {
-            	Gui.graph = Graph.graph1();                
+            	graph = Graph.graph1();
             }
             else if (graphs.getSelectedIndex() == 1) // graph2
             {
-            	return;
-                //graph = Graph.graph2();
+            	graph = Graph.graph2();
             }
             else if (graphs.getSelectedIndex() == 2) // graph3
             {
-            	return;
-                //graph = Graph.graph3(); 
+            	graph = Graph.graph3();
             }
             
-            Gui.graph.updateGraph();
+            graph.updateGraph();
             start.setText("Start");
             graphs.setEnabled(true);
             DrawableEdge.enableButtons(true);
             getParent().repaint();
         }
+    }
+
+    /**
+     * Sets private static graph to new graph
+     *
+     * @param g the new graph to be set
+     */
+    public static void setGraph(Graph g)
+    {
+        graph = g;
+    }
+
+    /**
+     * Returns instance of current graph
+     *
+     * @return the current graph instance 
+     */
+    public static Graph getGraph()
+    {
+        return graph;
     }
 
     /**
