@@ -59,14 +59,14 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
     public void paint(Graphics g)
     {
     	ScaledPoint.updateWindow(getHeight() - 0, getWidth());
-    	
-    	super.paint(g);
-    	
+    	    	
     	if(graph != null)
     	{
     		Drawable.setPath(graph.getPath());    	
-    		drawManager.drawAll(g);
+    		g = drawManager.drawAll(g);
     	}
+    	
+    	super.paint(g);
     }
     
     public static Point getMouse()
