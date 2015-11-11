@@ -46,16 +46,25 @@ public class DijkstraAlgorithmState
         return _distances;
     }
 
+    /**
+     * Returns the starting node of the current state
+     */
     public String getLastStartNode() 
     {
         return  _distances.get(getLastVisitedNode()).startNode.getName();
     }
 
+    /**
+     * Returns the total distance to get to the final ending node in the current state
+     */
     public int getLastAccumulatedWeight()
     {
         return _distances.get(getLastVisitedNode()).accumulatedWeight;
     }
 
+    /**
+     * Returns the final ending node of the current state
+     */
     public String getLastEndNode()
     {
         return _distances.get(getLastVisitedNode()).endNode.getName();

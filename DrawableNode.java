@@ -1,5 +1,7 @@
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 public class DrawableNode extends Drawable
 {
@@ -9,6 +11,9 @@ public class DrawableNode extends Drawable
 	public static final int DIST_BOX_WIDTH = 40;     // width of the distance box
 	public static final int RADIUS = 20;         // default radius of the node
 	public static final int RADIUS_BIG = 25;     // default radius when node is highlighted
+	public static final Color NODE_UNVISITED_COLOR = new Color(200,200,200);
+	public static final Color NODE_VISITED_COLOR = new Color(200,255,200);
+	public static final Color NODE_PATH_COLOR = new Color(50,255,50);
 	
     private Node node;
     private ScaledPoint point;
@@ -37,8 +42,13 @@ public class DrawableNode extends Drawable
 
         drawRadius = isMouseOver() ? RADIUS_BIG : RADIUS;
         
-        g.setColor(node.getColor());
+        g.setColor(getColor());
         g.fillOval(point.getX()-drawRadius, point.getY()-drawRadius,      // draw node circle
+                2*drawRadius, 2*drawRadius);
+        g.setColor(Color.BLACK);
+        
+        ((Graphics2D)g).setStroke(new BasicStroke(1));
+        g.drawOval(point.getX()-drawRadius, point.getY()-drawRadius,      // draw circumference
                 2*drawRadius, 2*drawRadius);
         
         g.setColor(Color.BLACK);
@@ -52,6 +62,18 @@ public class DrawableNode extends Drawable
         dist = "" + (node.getValue() == Integer.MAX_VALUE ? "\u221e" : node.getValue());
         g.drawString(dist, point.getX() + DIST_BOX_OFFSET_X, point.getY());      // draw distance
 
+    }
+    
+    private Color getColor()
+    {
+    	if(node.getValue() == Integer.MAX_VALUE)
+    	{
+    		return NODE_UNVISITED_COLOR;
+    	}
+    	else
+    	{
+    		return NODE_VISITED_COLOR;
+    	}
     }
     
     /**
