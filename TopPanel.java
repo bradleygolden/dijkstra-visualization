@@ -1,9 +1,9 @@
 import java.awt.*;
-import java.awt.Graphics;
 import java.awt.event.*;
+
 import javax.swing.*;
 
-public class TopPanel extends JPanel
+public class TopPanel extends JPanel implements ActionListener, ItemListener
 {
     private JPanel headerPanel;                            // Panel containing title
     private JLabel header;                                 // The title of the program
@@ -49,6 +49,17 @@ public class TopPanel extends JPanel
 
         steps.add(prev);
         steps.add(next);
+        
+        Gui.graph = Graph.graph1();
+        
+        // initialize top panel
+        graphs.addItemListener (this);
+        start.addActionListener(this);
+        prev.addActionListener (this);
+        next.addActionListener (this);
+
+        prev.setEnabled(false);
+        next.setEnabled(false);
 
         dialogPanel = new DialogPanel();
 
@@ -56,6 +67,83 @@ public class TopPanel extends JPanel
         this.add(chooseGraphs);
         this.add(steps);
         this.add(dialogPanel);
+    }
+    
+    /**
+     * Handles action listener event.
+     *
+     * @param e action event
+     */
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        if (e.getSource() == start)
+        {
+            if (start.getText() == "Start") // handle start button
+            {
+                start.setText("Stop");
+                graphs.setEnabled(false);
+                prev.setEnabled(true);
+                next.setEnabled(true);
+                DrawableEdge.enableButtons(false);
+            }
+            else if (start.getText() == "Stop") // handle stop button
+            {
+                start.setText("Start");
+                graphs.setEnabled(true);
+                prev.setEnabled(false);
+                next.setEnabled(false);
+                DrawableEdge.enableButtons(true);
+            }
+        }
+        else if (e.getSource() == prev) // handle prev button
+        {
+            if (Gui.graph.prevState())
+            {
+            	Gui.graph.updateGraph();
+            }
+        }
+        else if (e.getSource() == next) // handle next button
+        {
+            if (Gui.graph.nextState())
+            {
+            	Gui.graph.updateGraph();
+            }
+        }
+        
+        getParent().repaint();
+    }
+
+    /**
+     * Handles graph combo box.
+     *
+     * @param e item event
+     */
+    public void itemStateChanged(ItemEvent e) 
+    {
+        if (e.getSource() == graphs) // handle graph combo box
+        {
+            if (graphs.getSelectedIndex() == 0) // graph1
+            {
+            	Gui.graph = Graph.graph1();                
+            }
+            else if (graphs.getSelectedIndex() == 1) // graph2
+            {
+            	return;
+                //graph = Graph.graph2();
+            }
+            else if (graphs.getSelectedIndex() == 2) // graph3
+            {
+            	return;
+                //graph = Graph.graph3(); 
+            }
+            
+            Gui.graph.updateGraph();
+            start.setText("Start");
+            graphs.setEnabled(true);
+            DrawableEdge.enableButtons(true);
+            getParent().repaint();
+        }
     }
 
     /**
