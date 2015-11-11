@@ -58,9 +58,9 @@ public class DrawManager extends JPanel implements MouseMotionListener, MouseLis
     	//
     	// T H I S    I S    G A R B A G E
     	//
-    	initDrawables(AFrame.graph);
+    	initDrawables(Gui.graph);
     	ScaledPoint.updateWindow(getHeight(), getWidth());
-    	Drawable.setPath(AFrame.graph.getPath());
+    	Drawable.setPath(Gui.graph.getPath());
         
         for(Drawable d : drawables) // draw all drawables
         {

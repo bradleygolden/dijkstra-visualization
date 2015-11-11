@@ -10,7 +10,8 @@ public class DrawableEdge extends Drawable
 {
 	public static final int DEF_BUTTON_WIDTH = 40;        // default button's width
 	public static final int DEF_BUTTON_HEIGHT = 22;       // default button's height
-	public static final int DEF_THICKENSS = 3;            // default edge's thickness
+	public static final int PATH_THICKNESS = 4;           // path edge's thickness
+	public static final int NONPATH_THICKNESS = 2;        // non-path edge's thickness
 	public static final Color PATH_COLOR = Color.MAGENTA; // edge's color if it's part of the path
 	public static final Color NONPATH_COLOR = Color.GRAY; // default color of the edge
 	public static final int MIN_WEIGHT = 0;               // the least edge's weight
@@ -18,8 +19,7 @@ public class DrawableEdge extends Drawable
 	
 	private static boolean buttonsEnabled = true; // flag that allows change edges weights
 	
-    private Edge edge;      // edge object to be drawn 
-    private int thickness;  // thickness of the edge
+    private Edge edge;      // edge object to be drawn
     private GButton button; // button that displays edge's weight and allows user
                             // to change it
     
@@ -30,7 +30,6 @@ public class DrawableEdge extends Drawable
      */
     public DrawableEdge(Edge edge)
     {
-        thickness = DEF_THICKENSS;
         this.edge = edge;
         button = new GButton(edge.getVal() + "", DEF_BUTTON_WIDTH, DEF_BUTTON_HEIGHT);
     }
@@ -53,14 +52,15 @@ public class DrawableEdge extends Drawable
         if(isPath()) // decide the color based on whether it's part of the path or not
         {
         	g.setColor(PATH_COLOR);
+        	((Graphics2D)g).setStroke(new BasicStroke(PATH_THICKNESS));
         }
         else
         {
         	g.setColor(NONPATH_COLOR);
+        	((Graphics2D)g).setStroke(new BasicStroke(NONPATH_THICKNESS));
         }
         
-        // draw the edge itself
-        ((Graphics2D)g).setStroke(new BasicStroke(thickness));
+        // draw the edge itself        
         g.drawLine(start.getX(),start.getY(), end.getX(),end.getY());
         
         // these lines compute the vector that offsets
