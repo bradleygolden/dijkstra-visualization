@@ -242,6 +242,8 @@ public class Graph
     {
         // populate all states
         try {
+            System.out.println("START_NODE: " + START_NODE);
+            System.out.println("END_NODE: " + END_NODE);
             states = BACKEND_GRAPH.performDijkstraAlgorithm(START_NODE, END_NODE);
         } catch (Exception ex) {
             System.out.println("Exception: " + ex);
@@ -309,13 +311,15 @@ public class Graph
         return result;
     }
 
-    public void setStart(String start, Color c)
+    public void setStart(String start)
     {
+        System.out.println("setStart");
         START_NODE = start;
     }
 
-    public void setEnd(String end, Color c)
+    public void setEnd(String end)
     {
+        System.out.println("setEnd");
         END_NODE = end;
     }
 
@@ -362,9 +366,6 @@ public class Graph
             GRAPH.addEdge(GRAPH.nodes[2], GRAPH.nodes[4], 12);
             GRAPH.addEdge(GRAPH.nodes[3], GRAPH.nodes[2], 6);
             GRAPH.addEdge(GRAPH.nodes[4], GRAPH.nodes[3], 4);
-
-            START_NODE = "A";
-            END_NODE = "E";
 
             // set scaled points for nodes
             GRAPH.nodes[0].getScaledPoint().setXY(0.2, 0.8);
