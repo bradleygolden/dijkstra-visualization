@@ -16,6 +16,8 @@ public class DrawableEdge extends Drawable
 	public static final int MIN_WEIGHT = 0;               // the least edge's weight
 	public static final int MAX_WEIGHT = 9999;            // the greatest edge's weight
 	
+	private static boolean buttonsEnabled = false; // flag that allows change edges weights
+	
     private Edge edge;      // edge object to be drawn 
     private int thickness;  // thickness of the edge
     private GButton button; // button that displays edge's weight and allows user
@@ -84,7 +86,7 @@ public class DrawableEdge extends Drawable
     	String curPathEdge;   // string used to iterate over current path
     	
     	startName = edge.getStart().getName().charAt(0);
-    	endName = edge.getEnd().getName().charAt(0);
+    	endName = edge.getEnd().getName().charAt(0);    	
     	
     	for(int i=0;i<path.length();i+=2) // iterate over current path
     	{
@@ -111,10 +113,11 @@ public class DrawableEdge extends Drawable
      */
     public boolean clickButton()
     {
-    	String input;  // 
-    	int newWeight;
-    	
-    	if(button.isMouseOver())
+    	String input;  // string returned by input dialog
+    	int newWeight; // weight received from user
+    	    	
+    	if(buttonsEnabled && button.isMouseOver()) // button can be clicked only it cursor is over it
+    		                                       // and flag is enabled
     	{
     		input = JOptionPane.showInputDialog("New weight");
     		
@@ -127,7 +130,7 @@ public class DrawableEdge extends Drawable
     			return true;
     		}
     		
-    		if(newWeight >= MIN_WEIGHT && newWeight <= MAX_WEIGHT)
+    		if(newWeight >= MIN_WEIGHT && newWeight <= MAX_WEIGHT) // allow only certain range
     		{
     			edge.setVal(newWeight);
     			button.setText(input);
@@ -135,6 +138,25 @@ public class DrawableEdge extends Drawable
     		
     		return true;
     	}
+    	
     	return false;
+    }
+    
+    /**
+     * Sets buttonsEnabled flag, which enables or disables edge buttons.
+     * @param enabled new value of buttonsEnabled.
+     */
+    public static void enableButtons(boolean enabled)
+    {
+    	buttonsEnabled = enabled;
+    }
+    
+    /**
+     * Returns whether edge buttons are enabled or not.
+     * @return buttonsEnabled.
+     */
+    public static boolean getEnabledFlag()
+    {
+    	return buttonsEnabled;
     }
 }

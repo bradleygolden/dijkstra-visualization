@@ -9,7 +9,7 @@ import java.awt.Point;
 public class GButton extends Drawable
 {
 	public static final Color GRADIENT_START_COLOR = Color.WHITE; // color of the gradient top
-	public static final Color GRADIENT_END_COLOR = Color.GRAY;    // color of the gradient bottom	
+	public static final Color GRADIENT_END_COLOR = Color.GRAY;    // color of the gradient bottom
 	public static final int TEXT_OFFSET_X = 10;         // x offset of the button's text
 	public static final int TEXT_OFFSET_Y = 15;         // y offset of the button's text
 	public static final Color FONT_COLOR = Color.BLACK; // color of the font and frame
@@ -57,18 +57,22 @@ public class GButton extends Drawable
 	 */
     public void draw(Graphics g)
 	{
+		Color gradientEnd;  // color for gradient end, depends on buttons being enabled
+		
+		gradientEnd = DrawableEdge.getEnabledFlag() ? GRADIENT_END_COLOR : GRADIENT_START_COLOR;
+		
 		// offset the button so its center is in the middle not in the corner
 		location.x -= size.width/2;
 		location.y -= size.height/2;
 
 		// fill the button interior with gradient
 		gradient = new GradientPaint(location.x, location.y, GRADIENT_START_COLOR,
-				                     location.x, location.y + size.height, GRADIENT_END_COLOR);
-		((Graphics2D) g).setPaint(gradient);
+				                     location.x, location.y + size.height, gradientEnd);
+		((Graphics2D)g).setPaint(gradient);
 		g.fillRect(location.x, location.y, size.width, size.height);
 		
 		g.setColor(FONT_COLOR);
-		if(isMouseOver()) // if it's highlighted, make frame thicker
+		if(isMouseOver() && DrawableEdge.getEnabledFlag()) // make frame thicker if it's highlighted
 		{
 			((Graphics2D)g).setStroke(new BasicStroke(HILIGHT_THICKNESS));
 		}

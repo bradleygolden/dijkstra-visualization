@@ -3,11 +3,18 @@ import java.awt.Graphics;
 
 public class DrawableNode extends Drawable
 {
-    private int radius;
+	public static final int DIST_BOX_OFFSET_X = 20;  // x pos. of the distance box relative to node
+	public static final int DIST_BOX_OFFSET_Y = -15; // y pos. of the distance box relative to node
+	public static final int DIST_BOX_HEIGTH = 20;    // height of the distance box
+	public static final int DIST_BOX_WIDTH = 40;     // width of the distance box
+	public static final int RADIUS = 20;         // default radius of the node
+	public static final int RADIUS_BIG = 25;     // default radius when node is highlighted
+	public static final int PANEL_HEIGHT = 200;      // heigh of the panel, this decides how close 
+	                                                 // to the top nodes can be drawn
+	
     private Node node;
     private ScaledPoint point;
-    private static int panelHeigth = 200; // MAGIC NUMBER
-
+    
     /**
      * Initializes DrawableNode object.
      *
@@ -15,13 +22,12 @@ public class DrawableNode extends Drawable
      */
     public DrawableNode(Node node)
     {
-        this.radius = 20;
-        this.node = node;
+    	this.node = node;
         this.point = node.getScaledPoint();
         
-        if(point.getY() < panelHeigth)
+        if(point.getY() < PANEL_HEIGHT)
         {
-        	point.setWinXY(point.getX(), 200);
+        	point.setWinXY(point.getX(), PANEL_HEIGHT);
         }
     }
 
@@ -35,11 +41,8 @@ public class DrawableNode extends Drawable
     {
         String dist;        // distance being drawn
         int drawRadius;
-        
-        drawRadius = radius;
-        
-        if(isMouseOver())
-        	drawRadius += 5;
+
+        drawRadius = isMouseOver() ? RADIUS_BIG : RADIUS;       
         
         g.setColor(node.getColor());
         g.fillOval(point.getX()-drawRadius, point.getY()-drawRadius,      // draw node circle
@@ -49,11 +52,12 @@ public class DrawableNode extends Drawable
         g.drawString(node.getName(), point.getX(), point.getY()); // draw node name
         
         g.setColor(Color.WHITE);
-        g.fillRect(point.getX() + 20, point.getY() - 15, 40, 20); // draw back for node distance
+        g.fillRect(point.getX() + DIST_BOX_OFFSET_X, point.getY() + DIST_BOX_OFFSET_Y, 
+        		DIST_BOX_WIDTH, DIST_BOX_HEIGTH);             // draw back for node distance
         
         g.setColor(Color.BLACK);
         dist = "" + (node.getValue() == Integer.MAX_VALUE ? "\u221e" : node.getValue());
-        g.drawString(dist, point.getX() + 20, point.getY());      // draw distance
+        g.drawString(dist, point.getX() + DIST_BOX_OFFSET_X, point.getY());      // draw distance
 
     }
     
@@ -62,6 +66,7 @@ public class DrawableNode extends Drawable
      *
      * @param x x coordinate on the frame in pixels.
      * @param y y coordinate on the frame in pixels.
+     * @return distance in pixels.
      */
     private int getDistance(int x, int y)
     {       
@@ -71,11 +76,11 @@ public class DrawableNode extends Drawable
     
     /**
      * Checks whether mouse is hovering over this node.
-     *
+     * @return result of the check.
      */
     public boolean isMouseOver()
     {
-        return getDistance(AFrame.getMouse().x, AFrame.getMouse().y) < radius;
+        return getDistance(AFrame.getMouse().x, AFrame.getMouse().y) < RADIUS;
     }
     
     /**
@@ -87,7 +92,7 @@ public class DrawableNode extends Drawable
     public void setPosition(int x, int y)
     {
         point.setWinXY(x, y);
-        if(point.getY() < panelHeigth)
+        if(point.getY() < PANEL_HEIGHT)
         {
         	point.setWinXY(point.getX(), 200);
         }

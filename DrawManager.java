@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -45,9 +46,8 @@ public class DrawManager
     /**
      * Draws the graph to the screen.
      * @param g graphics object which will drawn the graph.
-     * @return returns back buffer context used to finish drawing by the frame.
      */
-    public Graphics drawAll(Graphics g)
+    public void drawAll(Graphics g)
     {
     	Graphics frameGraphics; // main graphics object
 
@@ -65,10 +65,8 @@ public class DrawManager
         
         if(backBuffer != null) // present back buffer to front buffer (screen)
         {
-            frameGraphics.drawImage(backBuffer, 0, 0, null);
+            frameGraphics.drawImage(backBuffer, 0, 200, null);
         }
-        
-        return g;
     }
     
     /**

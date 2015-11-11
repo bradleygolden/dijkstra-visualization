@@ -60,13 +60,13 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
     {
     	ScaledPoint.updateWindow(getHeight() - 0, getWidth());
     	
+    	super.paint(g);
+    	
     	if(graph != null)
     	{
     		Drawable.setPath(graph.getPath());    	
-    		g = drawManager.drawAll(g);
+    		drawManager.drawAll(g);
     	}
-    	
-        super.paint(g);
     }
     
     public static Point getMouse()
@@ -143,6 +143,7 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
                 top.graphs.setEnabled(false);
                 top.prev.setEnabled(true);
                 top.next.setEnabled(true);
+                DrawableEdge.enableButtons(false);
             }
             else if (top.start.getText() == "Stop") // handle stop button
             {
@@ -150,6 +151,7 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
                 top.graphs.setEnabled(true);
                 top.prev.setEnabled(false);
                 top.next.setEnabled(false);
+                DrawableEdge.enableButtons(true);
             }
         }
         else if (e.getSource() == top.prev) // handle prev button
@@ -166,7 +168,7 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
                 graph.updateGraph();
             }
         }
-
+        
         repaint();
     }
 
@@ -195,8 +197,10 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
             }
             
             graph.updateGraph();
-            top.start.setText("Start");
             drawManager.initDrawables(graph);
+            top.start.setText("Start");
+            top.graphs.setEnabled(true);
+            DrawableEdge.enableButtons(true);
             repaint();
         }
     }
