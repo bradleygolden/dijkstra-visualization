@@ -8,7 +8,7 @@ import java.awt.event.ItemListener;
 
 public class Gui
 {
-	public static Graph graph;              // graph object
+	private static Graph graph;              // graph object
     /**
      * Application's entry point.
      *
@@ -22,5 +22,15 @@ public class Gui
         frame.add(new TopPanel(), BorderLayout.NORTH);
         frame.add(new DrawManager(), BorderLayout.CENTER);
         frame.setVisible(true);
+    }
+    
+    public static Graph getGraph()
+    {
+    	return graph;
+    }
+    
+    public static void setGraph(Graph graph)
+    {
+    	Gui.graph = graph;
     }
 }
