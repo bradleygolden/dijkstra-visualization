@@ -63,8 +63,10 @@ public class DrawManager extends JPanel implements MouseMotionListener, MouseLis
     	super.paintComponent(g);
     	
     	if(TopPanel.getGraph() == null)
+    	{
     		return;
-    	
+    	}
+
     	//
     	// T H I S    I S    G A R B A G E
     	//

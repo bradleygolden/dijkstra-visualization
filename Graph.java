@@ -12,6 +12,8 @@ public class Graph
     private static String END_NODE = "A"; // ending point in the graph
     // cannot initalize this static variable until a new graph is created
     protected static GraphData BACKEND_GRAPH; // graph strictly used for backend (algorithm) processing
+    private static int MAX_EDGES = 0; // max number of edges in the graph
+    private static Graph GRAPH;
 
     //
     // middle tier related instance variables
@@ -38,18 +40,17 @@ public class Graph
     /**
      * Creates a Graph object with default values
      */
-    public Graph()
-    {
-        nodes = null;
-        edges = null;
-        maxNodes = 0;
-        maxEdges = 0;
-        currNumNodes = 0;
-        currNumEdges = 0;
-        name = "Default Name";
-        states = null;
-        currentStateIndex = 0;
-    }
+    //public Graph()
+    //{
+        //nodes = null;
+        //maxNodes = 0;
+        //maxEdges = 0;
+        //currNumNodes = 0;
+        //currNumEdges = 0;
+        //name = "Default Name";
+        //states = null;
+        //currentStateIndex = 0;
+    /*}*/
 
     /**
      * Creates a Graph object with the number of nodes and edges pre-defined
@@ -61,11 +62,12 @@ public class Graph
      */
     public Graph(int numNodes, int numEdges, String name)
     {
-        this();
+        //this();
         nodes = new Node[numNodes];
         edges = new Edge[numEdges];
         maxNodes = numNodes;
         maxEdges = numEdges;
+        MAX_EDGES = maxEdges;
         this.name = name;
         this.BACKEND_GRAPH = new GraphData();
     }
@@ -184,6 +186,25 @@ public class Graph
         return name;
     }
 
+    /**
+     * Collects the names of the nodes in the graph
+     *
+     * @return String[] a list of the graph's node names
+     */
+    public String[] getNodeNames()
+    {
+        String[] nodeNames = new String[maxNodes];
+        
+        int i = 0;
+        for (Node n : nodes)
+        {
+           nodeNames[i] = n.getName();
+           i++;
+        }
+
+        return nodeNames;
+    }
+
 
     /**
      * Prints out the current nodes and edges in the graph.
@@ -277,7 +298,7 @@ public class Graph
         int n = path.length() - 2;
         String result = path.substring(n, n+2);
 
-        for (int i = n - 2; i > 0; i-=2)
+        for (int i = n - 2; i >= 0; i-=2)
         {
             if (path.charAt(i+1) == result.charAt(result.length() - 2))
             {
@@ -305,6 +326,11 @@ public class Graph
         graph.updateGraph();
     }
 
+    public static Graph graph1()
+    {
+        return graph1("init");
+    }
+
     /**
      * A fixed graph with 5 nodes and 7 edges. 
      * <p>
@@ -314,39 +340,64 @@ public class Graph
      * 
      */
     //public static Graph graph1(string startNode, string endNode)
-    public static Graph graph1()
+    public static Graph graph1(String... args)
     {
-        // draw the graph
-        Graph graph = new Graph(5, 7, "Graph1");
+        String arg = args[0];
 
-        // add 5 nodes
-        for (char i = 'A'; i < 'F'; i++)
+        if (arg.equals("init"))
         {
-            graph.addNode(i + "");
+            GRAPH = new Graph(5, 7, "Graph1");
+
+            // add 5 nodes
+            for (char i = 'A'; i < 'F'; i++)
+            {
+                GRAPH.addNode(i + "");
+            }
+
+            // add 7 edges
+            GRAPH.addEdge(GRAPH.nodes[0], GRAPH.nodes[1], 8);
+            GRAPH.addEdge(GRAPH.nodes[1], GRAPH.nodes[2], 4);
+            GRAPH.addEdge(GRAPH.nodes[1], GRAPH.nodes[3], 0);
+            GRAPH.addEdge(GRAPH.nodes[2], GRAPH.nodes[0], 9);
+            GRAPH.addEdge(GRAPH.nodes[2], GRAPH.nodes[4], 12);
+            GRAPH.addEdge(GRAPH.nodes[3], GRAPH.nodes[2], 6);
+            GRAPH.addEdge(GRAPH.nodes[4], GRAPH.nodes[3], 4);
+
+            START_NODE = "A";
+            END_NODE = "E";
+
+            // set scaled points for nodes
+            GRAPH.nodes[0].getScaledPoint().setXY(0.2, 0.8);
+            GRAPH.nodes[1].getScaledPoint().setXY(0.8, 0.8);
+            GRAPH.nodes[2].getScaledPoint().setXY(0.2, 0.4);
+            GRAPH.nodes[3].getScaledPoint().setXY(0.8, 0.4);
+            GRAPH.nodes[4].getScaledPoint().setXY(0.5, 0.3);
         }
 
-        // add 7 edges
-        graph.addEdge(graph.nodes[0], graph.nodes[1], 8);
-        graph.addEdge(graph.nodes[1], graph.nodes[2], 4);
-        graph.addEdge(graph.nodes[1], graph.nodes[3], 0);
-        graph.addEdge(graph.nodes[2], graph.nodes[0], 5);
-        graph.addEdge(graph.nodes[2], graph.nodes[4], 12);
-        graph.addEdge(graph.nodes[3], graph.nodes[2], 6);
-        graph.addEdge(graph.nodes[4], graph.nodes[3], 4);
+        else if (arg.equals("start"))
+        {
+            Edge[] tempEdges = new Edge[GRAPH.maxEdges];
+            for (int i = 0; i < GRAPH.maxEdges; i++)
+            {
+                tempEdges[i] = new Edge(GRAPH.edges[i].getStart(), 
+                        GRAPH.edges[i].getEnd(), GRAPH.edges[i].getVal());
+            }
+            GRAPH.edges = new Edge[GRAPH.maxEdges];
+            GRAPH.currNumEdges = 0;
 
-        START_NODE = "A";
-        END_NODE = "D";
+            // add 7 edges
+            GRAPH.addEdge(GRAPH.nodes[0], GRAPH.nodes[1], tempEdges[0].getVal());
+            GRAPH.addEdge(GRAPH.nodes[1], GRAPH.nodes[2], tempEdges[1].getVal());
+            GRAPH.addEdge(GRAPH.nodes[1], GRAPH.nodes[3], tempEdges[2].getVal());
+            GRAPH.addEdge(GRAPH.nodes[2], GRAPH.nodes[0], tempEdges[3].getVal());
+            GRAPH.addEdge(GRAPH.nodes[2], GRAPH.nodes[4], tempEdges[4].getVal());
+            GRAPH.addEdge(GRAPH.nodes[3], GRAPH.nodes[2], tempEdges[5].getVal());
+            GRAPH.addEdge(GRAPH.nodes[4], GRAPH.nodes[3], tempEdges[6].getVal());
+        }
 
-        // set scaled points for nodes
-        graph.nodes[0].getScaledPoint().setXY(0.2, 0.8);
-        graph.nodes[1].getScaledPoint().setXY(0.8, 0.8);
-        graph.nodes[2].getScaledPoint().setXY(0.2, 0.4);
-        graph.nodes[3].getScaledPoint().setXY(0.8, 0.4);
-        graph.nodes[4].getScaledPoint().setXY(0.5, 0.3);
+        GRAPH.setStates();
 
-        graph.setStates();
-
-        return graph;
+        return GRAPH;
     }
 
     /**
@@ -359,7 +410,7 @@ public class Graph
      */
     public static Graph graph2()
     {
-/*      // draw the graph*/
+        /*      // draw the graph*/
         Graph graph = new Graph(6, 8, "Graph2");
 
         // add 6 nodes
