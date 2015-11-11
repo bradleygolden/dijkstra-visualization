@@ -358,6 +358,9 @@ public class Graph
                 GRAPH.addNode(i + "");
             }
 
+            START_NODE = "A";
+            END_NODE = "A";
+
             // add 7 edges
             GRAPH.addEdge(GRAPH.nodes[0], GRAPH.nodes[1], 8);
             GRAPH.addEdge(GRAPH.nodes[1], GRAPH.nodes[2], 4);
