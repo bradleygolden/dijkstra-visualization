@@ -105,6 +105,8 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
                 next.setEnabled(true);
                 DrawableEdge.enableButtons(false);
                 nodeSelectionPanel.setVisible(false);
+                graph = Graph.graph1("start");
+                graph.updateGraph();
             }
             else if (start.getText() == "Stop") // handle stop button
             {

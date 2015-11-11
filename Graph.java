@@ -281,10 +281,7 @@ public class Graph
         {
             if (n.getName().equals(lastVisitedNode))
             {
-                // Set visual cues
-                n.setColor(Color.GREEN); // TODO Remove once merged with Maciezk's code
                 n.setValue(states.get(currentStateIndex).getLastAccumulatedWeight());
-
                 break;
             }
         }
