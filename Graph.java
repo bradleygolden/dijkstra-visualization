@@ -242,8 +242,6 @@ public class Graph
     {
         // populate all states
         try {
-            System.out.println("START_NODE: " + START_NODE);
-            System.out.println("END_NODE: " + END_NODE);
             states = BACKEND_GRAPH.performDijkstraAlgorithm(START_NODE, END_NODE);
         } catch (Exception ex) {
             System.out.println("Exception: " + ex);
@@ -281,7 +279,10 @@ public class Graph
         {
             if (n.getName().equals(lastVisitedNode))
             {
+                // Set visual cues
+                n.setColor(Color.GREEN); // TODO Remove once merged with Maciezk's code
                 n.setValue(states.get(currentStateIndex).getLastAccumulatedWeight());
+
                 break;
             }
         }
@@ -310,13 +311,11 @@ public class Graph
 
     public void setStart(String start)
     {
-        System.out.println("setStart");
         START_NODE = start;
     }
 
     public void setEnd(String end)
     {
-        System.out.println("setEnd");
         END_NODE = end;
     }
 
