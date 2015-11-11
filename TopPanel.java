@@ -71,6 +71,9 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
         startingNode = new JComboBox();
         endingNode = new JComboBox();
 
+        startingNode.addItemListener(this);
+        endingNode.addItemListener(this);
+
         nodeSelectionPanel.add(new JLabel("Starting Node:"));
         nodeSelectionPanel.add(startingNode);
         nodeSelectionPanel.add(new JLabel("Ending Node:"));
@@ -178,6 +181,14 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
             graphs.setEnabled(true);
             DrawableEdge.enableButtons(true);
             getParent().repaint();
+        }
+        else if (e.getSource() == startingNode)
+        {
+            graph.setStart(startingNode.getSelectedItem() + "");
+        }
+        else if (e.getSource() == endingNode)
+        {
+            graph.setEnd(endingNode.getSelectedItem() + "");
         }
     }
 

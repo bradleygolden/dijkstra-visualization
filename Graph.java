@@ -309,12 +309,12 @@ public class Graph
         return result;
     }
 
-    public void setStart(String start)
+    public void setStart(String start, Color c)
     {
         START_NODE = start;
     }
 
-    public void setEnd(String end)
+    public void setEnd(String end, Color c)
     {
         END_NODE = end;
     }
