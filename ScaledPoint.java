@@ -87,6 +87,11 @@ public class ScaledPoint
     	this.y = y;
     }
     
+    /**
+     * Sets scaled x and y coordinates based on panel's width and height
+     * @param x new x coordinate in the panel.
+     * @param y new y coordinate in the panel.
+     */
     public void setWinXY(int x, int y)
     {
     	this.x = (double)x/width;

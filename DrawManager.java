@@ -1,15 +1,18 @@
+import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
-public class DrawManager
+import javax.swing.JPanel;
+
+public class DrawManager extends JPanel implements MouseMotionListener, MouseListener
 {
-	public static final int BACKBUFFER_HEIGHT = 2000; // height of backbuffer
-	public static final int BACKBUFFER_WIDTH = 3000;  // width of backbuffer
-
-	private Image backBuffer;         // back buffer to draw graph
+	private static Point mouse = new Point();
     private DrawableNode draggedNode; // point that is being dragged	
 	private Drawable[] drawables;     // array of drawable objects
+	
 	
 	/**
      * Default constructor initializes DrawManager object.
@@ -17,10 +20,12 @@ public class DrawManager
      */
 	public DrawManager()
 	{
-        backBuffer = new BufferedImage(BACKBUFFER_WIDTH, BACKBUFFER_HEIGHT, 
-        		                       BufferedImage.TYPE_INT_RGB);
         draggedNode = null;
         drawables = null;
+        addMouseListener(this);
+        addMouseMotionListener(this);
+
+        setBackground(new Color(255,255,153));
 	}
 	
 	/**
@@ -43,68 +48,29 @@ public class DrawManager
     }
     
     /**
-     * Draws the graph to the screen.
-     * @param g graphics object which will drawn the graph.
+     * Draws the graph to the screen. This function is invoked by JAVA engine.
      */
-    public Graphics drawAll(Graphics g)
+    @Override
+    protected void paintComponent(Graphics g)
     {
-    	Graphics frameGraphics; // main graphics object
+    	super.paintComponent(g);
 
-        frameGraphics = g;
-
-    	if(backBuffer != null) // start drawing to backbuffer
-        {
-            g = backBuffer.getGraphics();
-        }
+    	//
+    	// T H I S    I S    G A R B A G E
+    	//
+    	initDrawables(AFrame.graph);
+    	ScaledPoint.updateWindow(getHeight(), getWidth());
+    	Drawable.setPath(AFrame.graph.getPath());
         
         for(Drawable d : drawables) // draw all drawables
         {
             d.draw(g);
         }
-        
-        if(backBuffer != null) // present back buffer to front buffer (screen)
-        {
-            frameGraphics.drawImage(backBuffer, 0, 0, null);
-        }
-        
-        return g;
     }
     
-    /**
-     * Sets this.draggedNode to null so it is no longer being dragged.
-     */
-    public void nullDraggedNode()
+    public static Point getMouse()
     {
-    	draggedNode = null;
-    }
-    
-    /**
-     * Moves currently dragged node to where mouse is.
-     */
-    public void dragNode()
-    {    	
-    	if(draggedNode != null) // make sure it's not null
-        {
-            draggedNode.setPosition(AFrame.getMouse().x,AFrame.getMouse().y);            
-        }
-    }
-    
-    /**
-     * Handles mouse pressed event.
-     * Currently this event causes draw manager to look for
-     * node that is under the cursor and marks is as draggedNode.
-     */
-    public void mousePressed()
-    {
-    	for(Drawable d : drawables) // find first node that collides with mouse
-        {
-            if(d instanceof DrawableNode &&       // this if statement detects draggedNode
-               ((DrawableNode) d).isMouseOver())
-            {
-                draggedNode = (DrawableNode)d;
-                break;
-            }               
-        }
+    	return mouse;
     }
     
     /**
@@ -120,5 +86,104 @@ public class DrawManager
                 break;
             }               
         }
+    }
+    
+    /**
+     * Handles mouse dragged event. It is used to drag nodes.
+     *
+     * @param e mouse event
+     */
+    @Override
+    public void mouseDragged(MouseEvent e)
+    {
+    	DrawManager.mouse.x = e.getX();
+    	DrawManager.mouse.y = e.getY();
+    	if(draggedNode != null) // make sure it's not null
+        {
+            draggedNode.setPosition(e.getX(), e.getY());            
+        }
+    	repaint();
+    }
+
+    /**
+     * Handles mouse moved event.
+     *
+     * @param e mouse event
+     */
+    @Override
+    public void mouseMoved(MouseEvent e)
+    {
+    	DrawManager.mouse.x = e.getX();
+    	DrawManager.mouse.y = e.getY();
+    	repaint();
+    }
+    
+    /**
+     * Handles mouse pressed event.
+     *
+     * @param e mouse event
+     */
+    @Override
+    public void mousePressed(MouseEvent e)
+    {        
+    	for(Drawable d : drawables) // find first node that collides with mouse
+        {
+            if(d instanceof DrawableNode &&       // this if statement detects draggedNode
+               ((DrawableNode) d).isMouseOver())
+            {
+                draggedNode = (DrawableNode)d;
+                break;
+            }               
+        }
+    }
+
+    /**
+     * Handles mouse released event.
+     *
+     * @param e mouse event
+     */
+    @Override
+    public void mouseReleased(MouseEvent e)
+    {
+    	draggedNode = null;
+    }
+    
+    /**
+     * Handles mouse clicked event.
+     *
+     * @param e mouse event
+     */
+    @Override
+    public void mouseClicked(MouseEvent e)
+    {      
+    	for(Drawable d : drawables) // find first GButton that collides with mouse
+        {
+            if(d instanceof DrawableEdge && ((DrawableEdge) d).clickButton()) // try to click button
+            {            	
+                break;
+            }               
+        }
+    	repaint();
+    }
+
+    /**
+     * Handles mouse entered event.
+     *
+     * @param e mouse event
+     */
+    @Override
+    public void mouseEntered(MouseEvent e)
+    {        
+    }
+
+    /**
+     * Handles mouse exited event.
+     *
+     * @param e mouse event
+     */
+    @Override
+    public void mouseExited(MouseEvent arg0)
+    {
+    	draggedNode = null;
     }
 }

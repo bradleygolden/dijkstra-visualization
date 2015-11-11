@@ -1,21 +1,15 @@
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 
-class AFrame extends JFrame implements MouseListener, ActionListener, ItemListener, MouseMotionListener, ComponentListener
+class AFrame extends JFrame implements ActionListener, ItemListener
 {
-	private static Point mouse = new Point();
-    private Graph graph;              // graph object
-    private TopPanel top;             // top panel
-    private DrawManager drawManager;
+    public static Graph graph;              // graph object
+    private TopPanel top;                   // top panel
     
     /**
      * Initializes the main frame.
@@ -28,12 +22,8 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
         // initialize frame
         setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
         setSize( 800 , 600 );
-        addMouseListener(this);
-        addMouseMotionListener(this);
-        addComponentListener(this);
-        
-        drawManager = new DrawManager();
-        graph = null;
+
+        graph = Graph.graph1();
         
         // initialize top panel
         top = new TopPanel();
@@ -46,85 +36,7 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
         top.next.setEnabled(false);
         
         add(top, BorderLayout.NORTH);
-        add(new JPanel(), BorderLayout.CENTER);
-        
-        top.graphs.setSelectedIndex(0);
-    }
-
-    /**
-     * Main paint method.
-     *
-     */
-    @Override
-    public void paint(Graphics g)
-    {
-    	ScaledPoint.updateWindow(getHeight() - 0, getWidth());
-    	    	
-    	if(graph != null)
-    	{
-    		Drawable.setPath(graph.getPath());    	
-    		g = drawManager.drawAll(g);
-    	}
-    	
-    	super.paint(g);
-    }
-    
-    public static Point getMouse()
-    {
-    	return mouse;
-    }
-    
-    /**
-     * Handles mouse pressed event.
-     *
-     * @param e mouse event
-     */
-    public void mousePressed(MouseEvent e)
-    {        
-    	drawManager.mousePressed();
-    }
-
-    /**
-     * Handles mouse released event.
-     *
-     * @param e mouse event
-     */
-    public void mouseReleased(MouseEvent e)
-    {
-    	drawManager.nullDraggedNode();
-    }
-    
-    /**
-     * Handles mouse clicked event.
-     *
-     * @param e mouse event
-     */
-    @Override
-    public void mouseClicked(MouseEvent e)
-    {      
-    	drawManager.mouseClicked();
-    	repaint();
-    }
-
-    /**
-     * Handles mouse entered event.
-     *
-     * @param e mouse event
-     */
-    @Override
-    public void mouseEntered(MouseEvent e)
-    {        
-    }
-
-    /**
-     * Handles mouse exited event.
-     *
-     * @param e mouse event
-     */
-    @Override
-    public void mouseExited(MouseEvent arg0)
-    {
-    	drawManager.nullDraggedNode();
+        add(new DrawManager(), BorderLayout.CENTER);
     }
     
     /**
@@ -197,62 +109,12 @@ class AFrame extends JFrame implements MouseListener, ActionListener, ItemListen
             }
             
             graph.updateGraph();
-            drawManager.initDrawables(graph);
             top.start.setText("Start");
             top.graphs.setEnabled(true);
             DrawableEdge.enableButtons(true);
             repaint();
         }
     }
-    
-    /**
-     * Handles mouse dragged event. It is used to drag nodes.
-     *
-     * @param e mouse event
-     */
-    @Override
-    public void mouseDragged(MouseEvent e)
-    {
-    	mouse.x = e.getX();
-    	mouse.y = e.getY();
-        drawManager.dragNode();
-        repaint();
-    }
-
-    /**
-     * Handles mouse moved event.
-     *
-     * @param e mouse event
-     */
-    @Override
-    public void mouseMoved(MouseEvent e)
-    {
-    	mouse.x = e.getX();
-    	mouse.y = e.getY();
-    	repaint();
-    }
-    
-    @Override
-	public void componentHidden(ComponentEvent arg0)
-	{		
-	}
-
-	@Override
-	public void componentMoved(ComponentEvent e)
-	{		
-	}
-
-	@Override
-	public void componentResized(ComponentEvent e)
-	{
-		repaint();
-	}
-
-	@Override
-	public void componentShown(ComponentEvent e)
-	{
-		repaint();		
-	}
 }
 
 public class Gui

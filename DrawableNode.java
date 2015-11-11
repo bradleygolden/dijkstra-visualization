@@ -9,8 +9,6 @@ public class DrawableNode extends Drawable
 	public static final int DIST_BOX_WIDTH = 40;     // width of the distance box
 	public static final int RADIUS = 20;         // default radius of the node
 	public static final int RADIUS_BIG = 25;     // default radius when node is highlighted
-	public static final int PANEL_HEIGHT = 200;      // heigh of the panel, this decides how close 
-	                                                 // to the top nodes can be drawn
 	
     private Node node;
     private ScaledPoint point;
@@ -24,11 +22,6 @@ public class DrawableNode extends Drawable
     {
     	this.node = node;
         this.point = node.getScaledPoint();
-        
-        if(point.getY() < PANEL_HEIGHT)
-        {
-        	point.setWinXY(point.getX(), PANEL_HEIGHT);
-        }
     }
 
     /**
@@ -42,7 +35,7 @@ public class DrawableNode extends Drawable
         String dist;        // distance being drawn
         int drawRadius;
 
-        drawRadius = isMouseOver() ? RADIUS_BIG : RADIUS;       
+        drawRadius = isMouseOver() ? RADIUS_BIG : RADIUS;
         
         g.setColor(node.getColor());
         g.fillOval(point.getX()-drawRadius, point.getY()-drawRadius,      // draw node circle
@@ -80,7 +73,7 @@ public class DrawableNode extends Drawable
      */
     public boolean isMouseOver()
     {
-        return getDistance(AFrame.getMouse().x, AFrame.getMouse().y) < RADIUS;
+        return getDistance(DrawManager.getMouse().x, DrawManager.getMouse().y) < RADIUS;
     }
     
     /**
@@ -92,9 +85,5 @@ public class DrawableNode extends Drawable
     public void setPosition(int x, int y)
     {
         point.setWinXY(x, y);
-        if(point.getY() < PANEL_HEIGHT)
-        {
-        	point.setWinXY(point.getX(), 200);
-        }
     }
 }

@@ -16,7 +16,7 @@ public class DrawableEdge extends Drawable
 	public static final int MIN_WEIGHT = 0;               // the least edge's weight
 	public static final int MAX_WEIGHT = 9999;            // the greatest edge's weight
 	
-	private static boolean buttonsEnabled = false; // flag that allows change edges weights
+	private static boolean buttonsEnabled = true; // flag that allows change edges weights
 	
     private Edge edge;      // edge object to be drawn 
     private int thickness;  // thickness of the edge

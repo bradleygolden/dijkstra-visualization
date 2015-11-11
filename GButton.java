@@ -42,7 +42,7 @@ public class GButton extends Drawable
 	{
 		Point mouse;
 		
-		mouse = AFrame.getMouse();
+		mouse = DrawManager.getMouse();
 		
 		// this is a simple rectangle collision detection
 		// check if coordinates of the cursor are within rectangle bound by the button
