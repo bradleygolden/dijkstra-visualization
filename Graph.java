@@ -13,6 +13,7 @@ public class Graph
     // cannot initalize this static variable until a new graph is created
     protected static GraphData BACKEND_GRAPH; // graph strictly used for backend (algorithm) processing
     private static int MAX_EDGES = 0; // max number of edges in the graph
+    private static Graph GRAPH;
 
     //
     // middle tier related instance variables
@@ -278,7 +279,7 @@ public class Graph
         int n = path.length() - 2;
         String result = path.substring(n, n+2);
 
-        for (int i = n - 2; i > 0; i-=2)
+        for (int i = n - 2; i >= 0; i-=2)
         {
             if (path.charAt(i+1) == result.charAt(result.length() - 2))
             {
@@ -322,83 +323,62 @@ public class Graph
     //public static Graph graph1(string startNode, string endNode)
     public static Graph graph1(String... args)
     {
-        Graph graph = null;
         String arg = args[0];
 
         if (arg.equals("init"))
         {
-            System.out.println("init");
-            graph = new Graph(5, 7, "Graph1");
+            GRAPH = new Graph(5, 7, "Graph1");
 
             // add 5 nodes
             for (char i = 'A'; i < 'F'; i++)
             {
-                graph.addNode(i + "");
+                GRAPH.addNode(i + "");
             }
 
             // add 7 edges
-            graph.addEdge(graph.nodes[0], graph.nodes[1], 8);
-            graph.addEdge(graph.nodes[1], graph.nodes[2], 4);
-            graph.addEdge(graph.nodes[1], graph.nodes[3], 0);
-            graph.addEdge(graph.nodes[2], graph.nodes[0], 5);
-            graph.addEdge(graph.nodes[2], graph.nodes[4], 12);
-            graph.addEdge(graph.nodes[3], graph.nodes[2], 6);
-            graph.addEdge(graph.nodes[4], graph.nodes[3], 4);
+            GRAPH.addEdge(GRAPH.nodes[0], GRAPH.nodes[1], 8);
+            GRAPH.addEdge(GRAPH.nodes[1], GRAPH.nodes[2], 4);
+            GRAPH.addEdge(GRAPH.nodes[1], GRAPH.nodes[3], 0);
+            GRAPH.addEdge(GRAPH.nodes[2], GRAPH.nodes[0], 9);
+            GRAPH.addEdge(GRAPH.nodes[2], GRAPH.nodes[4], 12);
+            GRAPH.addEdge(GRAPH.nodes[3], GRAPH.nodes[2], 6);
+            GRAPH.addEdge(GRAPH.nodes[4], GRAPH.nodes[3], 4);
 
             START_NODE = "A";
-            END_NODE = "D";
+            END_NODE = "E";
 
             // set scaled points for nodes
-            graph.nodes[0].getScaledPoint().setXY(0.2, 0.8);
-            graph.nodes[1].getScaledPoint().setXY(0.8, 0.8);
-            graph.nodes[2].getScaledPoint().setXY(0.2, 0.4);
-            graph.nodes[3].getScaledPoint().setXY(0.8, 0.4);
-            graph.nodes[4].getScaledPoint().setXY(0.5, 0.3);
-
-            graph.setStates();
+            GRAPH.nodes[0].getScaledPoint().setXY(0.2, 0.8);
+            GRAPH.nodes[1].getScaledPoint().setXY(0.8, 0.8);
+            GRAPH.nodes[2].getScaledPoint().setXY(0.2, 0.4);
+            GRAPH.nodes[3].getScaledPoint().setXY(0.8, 0.4);
+            GRAPH.nodes[4].getScaledPoint().setXY(0.5, 0.3);
         }
 
         else if (arg.equals("start"))
         {
-            if (graph == null)
+            Edge[] tempEdges = new Edge[GRAPH.maxEdges];
+            for (int i = 0; i < GRAPH.maxEdges; i++)
             {
-                return null; // an error has occurred
+                tempEdges[i] = new Edge(GRAPH.edges[i].getStart(), 
+                        GRAPH.edges[i].getEnd(), GRAPH.edges[i].getVal());
             }
-
-            System.out.println("start");
-            System.out.println("Edge vals: " + graph.edges[0].getVal());
-            Edge[] tempEdges = new Edge[graph.maxEdges];
-            for (int i = 0; i < graph.maxEdges; i++)
-            {
-                tempEdges[i] = new Edge(graph.edges[i].getStart(), 
-                        graph.edges[i].getEnd(), graph.edges[i].getVal());
-            }
-            graph.edges = null;
+            GRAPH.edges = new Edge[GRAPH.maxEdges];
+            GRAPH.currNumEdges = 0;
 
             // add 7 edges
-            graph.addEdge(graph.nodes[0], graph.nodes[1], tempEdges[0].getVal());
-            graph.addEdge(graph.nodes[1], graph.nodes[2], tempEdges[1].getVal());
-            graph.addEdge(graph.nodes[1], graph.nodes[3], tempEdges[2].getVal());
-            graph.addEdge(graph.nodes[2], graph.nodes[0], tempEdges[3].getVal());
-            graph.addEdge(graph.nodes[2], graph.nodes[4], tempEdges[4].getVal());
-            graph.addEdge(graph.nodes[3], graph.nodes[2], tempEdges[5].getVal());
-            graph.addEdge(graph.nodes[4], graph.nodes[3], tempEdges[6].getVal());
-
-            START_NODE = "A";
-            END_NODE = "D";
-
-            // set scaled points for nodes
-            graph.nodes[0].getScaledPoint().setXY(0.2, 0.8);
-            graph.nodes[1].getScaledPoint().setXY(0.8, 0.8);
-            graph.nodes[2].getScaledPoint().setXY(0.2, 0.4);
-            graph.nodes[3].getScaledPoint().setXY(0.8, 0.4);
-            graph.nodes[4].getScaledPoint().setXY(0.5, 0.3);
-
-            graph.setStates();
-
+            GRAPH.addEdge(GRAPH.nodes[0], GRAPH.nodes[1], tempEdges[0].getVal());
+            GRAPH.addEdge(GRAPH.nodes[1], GRAPH.nodes[2], tempEdges[1].getVal());
+            GRAPH.addEdge(GRAPH.nodes[1], GRAPH.nodes[3], tempEdges[2].getVal());
+            GRAPH.addEdge(GRAPH.nodes[2], GRAPH.nodes[0], tempEdges[3].getVal());
+            GRAPH.addEdge(GRAPH.nodes[2], GRAPH.nodes[4], tempEdges[4].getVal());
+            GRAPH.addEdge(GRAPH.nodes[3], GRAPH.nodes[2], tempEdges[5].getVal());
+            GRAPH.addEdge(GRAPH.nodes[4], GRAPH.nodes[3], tempEdges[6].getVal());
         }
 
-        return graph;
+        GRAPH.setStates();
+
+        return GRAPH;
     }
 
     /**
