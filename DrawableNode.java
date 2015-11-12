@@ -51,12 +51,12 @@ public class DrawableNode extends Drawable
         g.fillOval(point.getX()-drawRadius, point.getY()-drawRadius,      // draw node circle
                 2*drawRadius, 2*drawRadius);        
         
-        if(node.getName() == startNode)
+        if(node.getName().equals(startNode))
         {
         	thickness = 3;
         	frameColor = Color.GREEN;
         }
-        else if(node.getName() == endNode)
+        else if(node.getName().equals(endNode))
         {
         	thickness = 3;
         	frameColor = Color.BLUE;
