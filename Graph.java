@@ -13,7 +13,6 @@ public class Graph
     // cannot initalize this static variable until a new graph is created
     protected static GraphData BACKEND_GRAPH; // graph strictly used for backend (algorithm) processing
     private static int MAX_EDGES = 0; // max number of edges in the graph
-    private static Graph GRAPH;
 
     //
     // middle tier related instance variables
@@ -326,11 +325,6 @@ public class Graph
         graph.updateGraph();
     }
 
-    public static Graph graph1()
-    {
-        return graph1("init");
-    }
-
     /**
      * A fixed graph with 5 nodes and 7 edges. 
      * <p>
@@ -340,64 +334,42 @@ public class Graph
      * 
      */
     //public static Graph graph1(string startNode, string endNode)
-    public static Graph graph1(String... args)
+    public static Graph graph1()
     {
-        String arg = args[0];
+    	Graph graph;
 
-        if (arg.equals("init"))
+        graph = null;
+        graph = new Graph(5, 7, "Graph1");
+
+        // add 5 nodes
+        for (char i = 'A'; i < 'F'; i++)
         {
-            GRAPH = new Graph(5, 7, "Graph1");
-
-            // add 5 nodes
-            for (char i = 'A'; i < 'F'; i++)
-            {
-                GRAPH.addNode(i + "");
-            }
-
-            START_NODE = "A";
-            END_NODE = "A";
-
-            // add 7 edges
-            GRAPH.addEdge(GRAPH.nodes[0], GRAPH.nodes[1], 8);
-            GRAPH.addEdge(GRAPH.nodes[1], GRAPH.nodes[2], 4);
-            GRAPH.addEdge(GRAPH.nodes[1], GRAPH.nodes[3], 0);
-            GRAPH.addEdge(GRAPH.nodes[2], GRAPH.nodes[0], 9);
-            GRAPH.addEdge(GRAPH.nodes[2], GRAPH.nodes[4], 12);
-            GRAPH.addEdge(GRAPH.nodes[3], GRAPH.nodes[2], 6);
-            GRAPH.addEdge(GRAPH.nodes[4], GRAPH.nodes[3], 4);
-
-            // set scaled points for nodes
-            GRAPH.nodes[0].getScaledPoint().setXY(0.2, 0.8);
-            GRAPH.nodes[1].getScaledPoint().setXY(0.8, 0.8);
-            GRAPH.nodes[2].getScaledPoint().setXY(0.2, 0.4);
-            GRAPH.nodes[3].getScaledPoint().setXY(0.8, 0.4);
-            GRAPH.nodes[4].getScaledPoint().setXY(0.5, 0.3);
+            graph.addNode(i + "");
         }
 
-        else if (arg.equals("start"))
-        {
-            Edge[] tempEdges = new Edge[GRAPH.maxEdges];
-            for (int i = 0; i < GRAPH.maxEdges; i++)
-            {
-                tempEdges[i] = new Edge(GRAPH.edges[i].getStart(), 
-                        GRAPH.edges[i].getEnd(), GRAPH.edges[i].getVal());
-            }
-            GRAPH.edges = new Edge[GRAPH.maxEdges];
-            GRAPH.currNumEdges = 0;
+        START_NODE = "A";
+        END_NODE = "A";
 
-            // add 7 edges
-            GRAPH.addEdge(GRAPH.nodes[0], GRAPH.nodes[1], tempEdges[0].getVal());
-            GRAPH.addEdge(GRAPH.nodes[1], GRAPH.nodes[2], tempEdges[1].getVal());
-            GRAPH.addEdge(GRAPH.nodes[1], GRAPH.nodes[3], tempEdges[2].getVal());
-            GRAPH.addEdge(GRAPH.nodes[2], GRAPH.nodes[0], tempEdges[3].getVal());
-            GRAPH.addEdge(GRAPH.nodes[2], GRAPH.nodes[4], tempEdges[4].getVal());
-            GRAPH.addEdge(GRAPH.nodes[3], GRAPH.nodes[2], tempEdges[5].getVal());
-            GRAPH.addEdge(GRAPH.nodes[4], GRAPH.nodes[3], tempEdges[6].getVal());
-        }
+        // add 7 edges
+        graph.addEdge(graph.nodes[0], graph.nodes[1], 8);
+        graph.addEdge(graph.nodes[1], graph.nodes[2], 4);
+        graph.addEdge(graph.nodes[1], graph.nodes[3], 0);
+        graph.addEdge(graph.nodes[2], graph.nodes[0], 9);
+        graph.addEdge(graph.nodes[2], graph.nodes[4], 12);
+        graph.addEdge(graph.nodes[3], graph.nodes[2], 6);
+        graph.addEdge(graph.nodes[4], graph.nodes[3], 4);
 
-        GRAPH.setStates();
+        // set scaled points for nodes
+        graph.nodes[0].getScaledPoint().setXY(0.2, 0.8);
+        graph.nodes[1].getScaledPoint().setXY(0.8, 0.8);
+        graph.nodes[2].getScaledPoint().setXY(0.2, 0.4);
+        graph.nodes[3].getScaledPoint().setXY(0.8, 0.4);
+        graph.nodes[4].getScaledPoint().setXY(0.5, 0.3);
+        
 
-        return GRAPH;
+        graph.setStates();
+
+        return graph;
     }
 
     /**
@@ -487,6 +459,71 @@ public class Graph
 
         graph.setStates();
 
+        return graph;
+    }
+    
+    /**
+     * 
+     * @param n number of nodes between 2 and 25
+     * @return
+     */
+    public static Graph generateGraph(int n)
+    {
+    	Graph graph;
+    	int index;
+    	
+        graph = new Graph(n,n-1 , "Generic graph");
+
+        // add first connection
+        graph.addNode("A");
+        graph.addNode("B");
+        graph.addEdge(graph.nodes[0], graph.nodes[1], (int)(Math.random()*20+1));
+        
+        // add n-1 connections
+        for (char i = 2; i < n; i++)
+        {
+            graph.addNode((char)(i + 'A') + "");
+            
+            // select random previous node
+            // and connect it with last added node
+            index = (int)(Math.random()*i);
+            graph.addEdge(graph.nodes[index], graph.nodes[i], (int)(Math.random()*20+1));
+        }        
+        
+        for(int i=0; i < graph.getNodes().length; i++)
+        {
+        	graph.nodes[i].getScaledPoint().setXY((Math.sin(i*Math.PI*2/graph.getNodes().length)+1)/2.5, 
+        			(Math.cos(i*Math.PI*2/graph.getNodes().length)+1)/2.5);
+        }
+
+        START_NODE = "A";
+        END_NODE = "A";
+        graph.setStates();
+
+        return graph;
+    }
+    
+    public static Graph regenerateGraph(Graph graph)
+    {
+        Edge[] tempEdges;
+        
+        tempEdges = new Edge[graph.maxEdges];
+        
+        for (int i = 0; i < graph.maxEdges; i++)
+        {
+            tempEdges[i] = new Edge(graph.edges[i].getStart(), 
+                    graph.edges[i].getEnd(), graph.edges[i].getVal());
+        }
+        
+        graph.edges = new Edge[graph.maxEdges];
+        graph.currNumEdges = 0;
+
+        for(Edge e : tempEdges)
+        {
+        	graph.addEdge(e.getEnd(), e.getStart(), e.getVal());
+        }
+
+        graph.setStates();
         return graph;
     }
 
