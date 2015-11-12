@@ -214,6 +214,7 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
         String newDialog;
         int maxVertices;
         int minVertices;
+        String helper;
         
         numVertices = 0;
         maxVertices = 25;
@@ -281,24 +282,42 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
         }
         else if (e.getSource() == startingNode) // Starting node is selected
         {
-            String start = startingNode.getSelectedItem() + "";
-
-            graph.setStart(start);
-            DrawableNode.setStart(start);
-            startSet = true;
+        	helper = startingNode.getSelectedItem() + "";
+        	
+        	if(helper.equals("")) // invalidate if user selected empty
+        	{
+        		startSet = false;        		
+        	}
+        	else
+        	{
+	            graph.setStart(helper);
+	            DrawableNode.setStart(helper);
+	            startSet = true;
+        	}
         }
         else if (e.getSource() == endingNode) // Ending node is selected
         {
-            String end = endingNode.getSelectedItem() + "";
+        	helper = endingNode.getSelectedItem() + "";
 
-            graph.setEnd(end);
-            DrawableNode.setEnd(end);
-            endSet = true;
+        	if(helper.equals("")) // invalidate if user selected empty
+        	{
+        		endSet = false;        		
+        	}
+        	else
+        	{
+	            graph.setEnd(helper);
+	            DrawableNode.setEnd(helper);
+	            endSet = true;
+        	}
         }
 
         if (startSet && endSet) // If start and end has been selected, allow user to start
         {
             start.setEnabled(true);
+        }
+        else
+        {
+        	start.setEnabled(false);
         }
 
         getParent().repaint();
