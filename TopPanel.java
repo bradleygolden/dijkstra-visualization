@@ -7,7 +7,7 @@ import java.awt.event.*;
  */
 public class TopPanel extends JPanel implements ActionListener, ItemListener
 {
-	private static Graph graph;                            // graph object
+	private static Graph graph;                            // Graph to be drawn
     private static final String[] GRAPHLIST = {"",
                                                "Graph 1", 
                                                "Graph 2", 
@@ -15,23 +15,24 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
                                                "Generated Graph"
                                                         }; // Predefined graphs
     private JPanel headerPanel;                            // Panel containing title
-    private JLabel header;                                 // The title of the program
     private JPanel chooseGraphs;                           // Panel containing graph options
-    private JLabel choose;                                 // graphs label
-    private JComboBox graphs;                              // List of predefined graphs
-    private JButton start;                                 // Starts algorithm
     private JPanel steps;                                  // Panel containing stepping buttons
+    private JPanel aboutPanel;                             // Panel for about button 
+    private JPanel nodeSelectionPanel;                     // Panel to hold starting 
+                                                           // and ending node selections
+    private DialogPanel dialogPanel;                       // Panel containing
+    private JLabel header;                                 // The title of the program
+    private JLabel choose;                                 // Graphs label
+    private JButton start;                                 // Starts algorithm
     private JButton prev;                                  // Go to previous position in algorithm
     private JButton next;                                  // Go to next position in algorithm
-    private DialogPanel dialogPanel;                       // Panel containing
-    private JPanel nodeSelectionPanel;                     // Panel to hold starting and ending node selections
+    private JButton about;                                 // About dijkstras
+    private JButton legend;                                // Show key/legend 
     private JComboBox startingNode;                        // List of nodes for starting node
     private JComboBox endingNode;                          // List of nodes for ending node
-    private boolean startSet = false;                      // Start selected flag
-    private boolean endSet = false;                        // End selected flag
-    private JPanel aboutPanel;                             // Panel for about button 
-    private JButton about;                                 // About dijkstras
-    private JButton showLegend;                            // Show key/legend 
+    private JComboBox graphs;                              // List of predefined graphs
+    private boolean startSet;                              // Start selected flag
+    private boolean endSet;                                // End selected flag
 
     /**
     * Creates a JPanel containing header, graph selection, interaction buttons,
@@ -51,13 +52,13 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
 
         aboutPanel = new JPanel();
         about = new JButton("About");
-        showLegend = new JButton("showLegend");
+        legend = new JButton("Show Legend");
 
         about.addActionListener(this);
-        showLegend.addActionListener(this);
+        legend.addActionListener(this);
 
         aboutPanel.add(about);
-        aboutPanel.add(showLegend);
+        aboutPanel.add(legend);
 
         chooseGraphs = new JPanel();
         choose = new JLabel("Choose a graph:");
@@ -78,6 +79,8 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
         steps.add(next);
         
         graph = null;
+        startSet = false;
+        endSet = false;
         
         graphs.addItemListener (this);
         start.addActionListener(this);
@@ -144,7 +147,8 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
                 graph.updateGraph();
                 graph.resetPath();
 
-                dialogPanel.setDialog("Algorithm stopped. Reselect starting and ending nodes to begin.");
+                dialogPanel.setDialog("Algorithm stopped. " +
+                                      "Reselect starting and ending nodes to begin.");
             }
 
         }
@@ -162,12 +166,26 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
             	graph.updateGraph();
             }
         }
-        else if (e.getSource() == about)
+        else if (e.getSource() == about) // handle about button
         { 
-            JOptionPane.showMessageDialog(this, "This is a visualization tool for Dijkstra's Algorithm." +
+            JOptionPane.showMessageDialog(this, "This is a visualization " + 
+                                                "tool for Dijkstra's Algorithm." +
                                                 "Learn about Dijkstra's Algorithm: " +
                                                 "https://en.wikipedia.org/wiki/Dijkstra's_algorithm" +
                                                 "\n\nVisualization by Maciej, Bradley, Amanda, Cody.");
+        }
+        else if (e.getSource() == legend) // handle showing/hiding legend
+        {
+            if (legend.getText() == "Show Legend")
+            {
+                legend.setText("Hide Legend");
+                DrawManager.showMap = true;
+            }
+            else
+            {
+                legend.setText("Show Legend");
+                DrawManager.showMap = false;
+            }
         }
         
         getParent().repaint();
@@ -184,8 +202,12 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
         int numVertices;
         int graphsIndex;
         String newDialog;
-
+        int maxVertices;
+        int minVertices;
+        
         numVertices = 0;
+        maxVertices = 25;
+        minVertices = 2;
 
         if (e.getSource() == graphs) // handle graph combo box
         {
@@ -209,9 +231,11 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
             {
             	setGraph(Graph.graph3());
             }
-            else if (graphsIndex == 4 && graphs.isPopupVisible())
+            else if (graphsIndex == 4 && 
+                     graphs.isPopupVisible()) // If genereated graph has been selected
             {
-                generateInput = JOptionPane.showInputDialog("Please enter number of vertices between 1 and 25.");
+                generateInput = JOptionPane.showInputDialog("Please enter number of " +
+                                                            "vertices between 1 and 25.");
 
                 try
                 {
@@ -222,7 +246,8 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
                     return;
                 }
 
-                if (numVertices >= 2 && numVertices < 25)
+                if (numVertices >= minVertices && 
+                    numVertices < maxVertices) // generate if input is valid
                 {
                     setGraph(Graph.generateGraph(numVertices));
                 }
@@ -231,7 +256,8 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
             }
             
             // Respond to user selecting graph
-            newDialog = String.format("Graph %s selected. Select starting and ending nodes to begin.", graphsIndex);
+            newDialog = String.format("Graph %s selected. Select starting and ending nodes to begin.",
+                                      graphsIndex);
             updateSelectionPanel(newDialog); 
 
             // New graph selected, can now start a new run of Dijkstra's
@@ -281,7 +307,7 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
         startingNode.removeAllItems();
         endingNode.removeAllItems();
 
-        for (String s : nodeList)
+        for (String s : nodeList) // add each node to JComboBox
         {
             startingNode.addItem(s);
             endingNode.addItem(s);
