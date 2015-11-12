@@ -133,7 +133,7 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
                 next.setEnabled(false);
                 DrawableEdge.enableButtons(true);
                 nodeSelectionPanel.setVisible(true);
-                graph = Graph.graph1("start");
+                graph = Graph.regenerateGraph(graph);
                 graph.updateGraph();
 
                 dialogPanel.setDialog("Algorithm stopped.");
