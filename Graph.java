@@ -42,6 +42,9 @@ public class Graph
         this.currNumNodes = 0; // the current number of nodes in the graph
         this.currNumEdges = 0; // the current number of edges in the graph
         this.name = name;
+        this.path = "";
+        this.states = null;
+        this.currentStateIndex = 0;
         backendGraph = new GraphData();
     }
 
