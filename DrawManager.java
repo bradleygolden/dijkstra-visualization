@@ -17,8 +17,7 @@ public class DrawManager extends JPanel implements MouseMotionListener, MouseLis
 	private Font defFont;             // default font for drawing strings
     private DrawableNode draggedNode; // point that is being dragged	
 	private Drawable[] drawables;     // array of drawable objects
-	
-	public static boolean showMap = true;
+	public static boolean showMap;
 	
 	/**
      * Default constructor initializes DrawManager object.
@@ -31,6 +30,7 @@ public class DrawManager extends JPanel implements MouseMotionListener, MouseLis
         addMouseListener(this);
         addMouseMotionListener(this);
         defFont = new Font("SansSerif", Font.BOLD, 15);
+        showMap = false;
 
         setBackground(new Color(255,255,153));
 	}

@@ -154,34 +154,44 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
         }
         else if (e.getSource() == prev) // handle prev button
         {
-            if (graph.prevState())
+            if (graph.prevState()) // if can go to prev state
             {
             	graph.updateGraph();
+                next.setEnabled(true);
+            } 
+            else // can't continue
+            {
+                prev.setEnabled(false);
             }
         }
         else if (e.getSource() == next) // handle next button
         {
-            if (graph.nextState())
+            if (graph.nextState()) // if can continue to next state
             {
             	graph.updateGraph();
+                prev.setEnabled(true);
+            }
+            else // can't continue
+            {
+                next.setEnabled(false);
             }
         }
         else if (e.getSource() == about) // handle about button
         { 
             JOptionPane.showMessageDialog(this, "This is a visualization " + 
                                                 "tool for Dijkstra's Algorithm." +
-                                                "Learn about Dijkstra's Algorithm: " +
+                                                "\n\nLearn about Dijkstra's Algorithm: " +
                                                 "https://en.wikipedia.org/wiki/Dijkstra's_algorithm" +
-                                                "\n\nVisualization by Maciej, Bradley, Amanda, Cody.");
+                                                "\n\nDeveloped by Maciej, Bradley, Amanda, Cody.");
         }
         else if (e.getSource() == legend) // handle showing/hiding legend
         {
-            if (legend.getText() == "Show Legend")
+            if (legend.getText() == "Show Legend") // if legend is hidden
             {
                 legend.setText("Hide Legend");
                 DrawManager.showMap = true;
             }
-            else
+            else // if legend is hidden
             {
                 legend.setText("Show Legend");
                 DrawManager.showMap = false;
