@@ -72,7 +72,7 @@ public class ScaledPoint
     {
         this.y = y;
     }
-    
+
     /**
      * Setter for the x and y coordinates.
      *
@@ -83,10 +83,10 @@ public class ScaledPoint
      */
     public void setXY(double x, double y)
     {
-    	this.x = x;
-    	this.y = y;
+        this.x = x;
+        this.y = y;
     }
-    
+
     /**
      * Sets scaled x and y coordinates based on panel's width and height
      * @param x new x coordinate in the panel.
@@ -94,7 +94,7 @@ public class ScaledPoint
      */
     public void setWinXY(int x, int y)
     {
-    	this.x = (double)x/width;
-    	this.y = (double)y/height;
+        this.x = (double)x/width;
+        this.y = (double)y/height;
     }
 }

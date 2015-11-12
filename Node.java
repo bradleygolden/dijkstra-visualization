@@ -1,5 +1,3 @@
-import java.awt.Color;
-
 /**
  * This class simulates a single node within a graph.
  */

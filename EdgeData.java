@@ -9,14 +9,14 @@ public final class EdgeData
 {
     private int    _weight;     // weight of this edge
     private NodeData _directToNode; // destination node of this edge
-    
+
     /**
      * Creates an EdgeData object with a destination node of type NodeData and a edge weight
      * set to edgeWeight
-    *
-    * @param destination (required) The destination of this edge. Is of type NodeData.
-    * @param weight (required) The weight value of this edge.
-    */
+     *
+     * @param destination (required) The destination of this edge. Is of type NodeData.
+     * @param weight (required) The weight value of this edge.
+     */
     public EdgeData(NodeData destination, int weight)
     {
         // do not allow unitialized destination node
@@ -24,10 +24,11 @@ public final class EdgeData
         {
             throw new IllegalArgumentException("Unable to create edge, destination node should not be null.");
         }
+
         _directToNode = destination;
-       setWeight(weight); // set the weight of this node
+        setWeight(weight); // set the weight of this node
     }
-    
+
     /**
      * Getter for the weight of this edge.
      *
@@ -38,7 +39,7 @@ public final class EdgeData
     {
         return _weight;
     }
-    
+
     /**
      * Setter for the weight of this edge.
      *
@@ -50,9 +51,10 @@ public final class EdgeData
         {
             throw new IllegalArgumentException("weigth needs to be a positive integer.");
         }
+
         _weight = weight;
     }
-    
+
     /**
      * Getter for the destination node connected to this edge.
      *

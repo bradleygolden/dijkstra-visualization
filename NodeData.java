@@ -26,7 +26,7 @@ public class NodeData
         _name = name;
         _edges = new ArrayList<EdgeData>();
     }
-    
+
     /**
      * Getter for the name of this node.
      *
@@ -36,7 +36,7 @@ public class NodeData
     {
         return _name;
     }
-    
+
     /**
      * Getter for all edges assocaited with this node
      *
@@ -47,7 +47,7 @@ public class NodeData
     {
         return _edges;
     }
-    
+
     /**
      * Adds an edge to this node or updates an edge associated with this node.
      *
@@ -60,7 +60,7 @@ public class NodeData
             // look for an existing edge given the provided edgeToAdd parameter
             // and return that edge if it exists
             EdgeData edge = findEdgeThatPointsToGivenNodeName(edgeToAdd.getDestination().getName());
-            
+
             // if the edge is null, the edge to add is new and will be connected with this node 
             if(edge == null)
             {
@@ -73,7 +73,7 @@ public class NodeData
             }
         }
     }
-    
+
     /**
      * Finds an edge given the name of an edge.
      *
