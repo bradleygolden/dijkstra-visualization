@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * TODO
+ * Gui implemenation of Dijkstra's Algorithm.
  */
 public class Gui
 {
