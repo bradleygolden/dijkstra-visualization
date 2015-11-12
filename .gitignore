@@ -1,5 +1,6 @@
 *.class
 *.swp
+*.zip
 /dijkstra-visualization/nbproject/private/
 /nbproject/private/
 /dist/
