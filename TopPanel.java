@@ -11,7 +11,9 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
     private static final String[] GRAPHLIST = {"",
                                                "Graph 1", 
                                                "Graph 2", 
-                                               "Graph 3"}; // Predefined graphs
+                                               "Graph 3",
+                                               "Generated Graph"
+                                                        }; // Predefined graphs
     private JPanel headerPanel;                            // Panel containing title
     private JLabel header;                                 // The title of the program
     private JPanel chooseGraphs;                           // Panel containing graph options
@@ -172,12 +174,16 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
      */
     public void itemStateChanged(ItemEvent e) 
     {
+        String generateInput;
+        int numVertices;
+        int graphsIndex;
+        String newDialog;
+
+        numVertices = 0;
 
         if (e.getSource() == graphs) // handle graph combo box
         {
-            String newDialog;
-
-            int graphsIndex = graphs.getSelectedIndex();
+            graphsIndex = graphs.getSelectedIndex();
 
             if (graphsIndex == 0) // If no graph has been selected
             {
@@ -191,11 +197,31 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
             }
             else if (graphsIndex == 2) // If graph2 has been selected
             {
-            	graph = Graph.graph2();
+            	setGraph(Graph.graph2());
             }
             else if (graphsIndex == 3) // If graph3 has been selected
             {
-            	graph = Graph.graph3();
+            	setGraph(Graph.graph3());
+            }
+            else if (graphsIndex == 4 && graphs.isPopupVisible())
+            {
+                generateInput = JOptionPane.showInputDialog("Please enter number of vertices between 1 and 25.");
+
+                try
+                {
+                    numVertices = new Integer(generateInput);
+                }
+                catch(NumberFormatException ie)
+                {
+                    return;
+                }
+
+                if (numVertices >= 2 && numVertices < 25)
+                {
+                    setGraph(Graph.generateGraph(numVertices));
+                }
+
+                graphs.hidePopup();
             }
             
             // Respond to user selecting graph
