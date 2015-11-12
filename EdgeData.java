@@ -1,10 +1,14 @@
-/**
- * This class simulates an edge.
- * <p>
- * Is to be used strictly as backend for use with Dijkstra's algorithm
- *
- * @author Amanda Olson
- */
+ /**
+  * @author Bradley Golden, Amanda Olson, Cody Roberts, Maciej Szpakowski
+  * <p>
+  * @project  Project 3 - Data Structure Visualization
+  * <p>
+  * @date November 12, 2015
+  * <p>
+  *This class simulates an edge.
+  * <p>
+  * Is to be used strictly as backend for use with Dijkstra's algorithm
+  */
 public final class EdgeData
 {
     private int    _weight;     // weight of this edge

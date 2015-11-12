@@ -1,6 +1,12 @@
 import java.util.List;
 
 /**
+ * @author Bradley Golden, Amanda Olson, Cody Roberts, Maciej Szpakowski
+ * <p>
+ * @project  Project 3 - Data Structure Visualization
+ * <p>
+ * @date November 12, 2015
+ * <p>
  * Used to simulate a graph containing nodes and edges.
  */
 public class Graph
@@ -50,7 +56,7 @@ public class Graph
 
     /**
      * Adds a node to the current graph.
-     * 
+     *
      * @param name The name of the current node as a string. Must be initialized.
      */
     public void addNode(String name)
@@ -75,7 +81,7 @@ public class Graph
      * Adds an edge to the current graph.
      * <p>
      * Returns if the maximium amount of predefined edges has been exceeded.
-     * 
+     *
      * @param start The starting node of the edge to be added. Must be initialized.
      * @param end The end node of the edge to be added. Must be initialized.
      * @param val The weight of the edge to be added. Must be initialized.
@@ -167,7 +173,7 @@ public class Graph
     {
         int i;
         String[] nodeNames = new String[maxNodes + 1];
-        
+
         i = 1;
         nodeNames[0] = ""; // empty to start
 
@@ -237,7 +243,7 @@ public class Graph
             currentStateIndex++;
 
             // build the current solution path
-            path += states.get(currentStateIndex).getLastStartNode() + 
+            path += states.get(currentStateIndex).getLastStartNode() +
                 states.get(currentStateIndex).getLastEndNode();
 
             return true;
@@ -283,7 +289,7 @@ public class Graph
     /**
      * Updates visual distances
      */
-    public void updateGraph() 
+    public void updateGraph()
     {
         String lastVisitedNode = states.get(currentStateIndex).getLastVisitedNode().getName();
         for (Node n : nodes)
@@ -307,8 +313,8 @@ public class Graph
      * This returns the resulting solution path in reverse order but this doesn't matter
      * when drawing the solution as the solution path is only used to draw the path in the gui
      *
-     * @return string of the current solution. This string is of length 0 if a solution path 
-     * doesn't exists or of length greater than 0 is a solution path exists. The format of this 
+     * @return string of the current solution. This string is of length 0 if a solution path
+     * doesn't exists or of length greater than 0 is a solution path exists. The format of this
      * string consists of pairs of edges and will always be even.
      */
     public String getPath()
@@ -327,12 +333,12 @@ public class Graph
 
         // the last edge in the path is in the current solution
         // so we must save that to the result first
-        result = path.substring(n, n+2); 
+        result = path.substring(n, n+2);
 
         // iterate through each edge in the solution path
         for (int i = n - 2; i >= 0; i-=2)
         {
-            // check the last character in the edge in the solution path with the first 
+            // check the last character in the edge in the solution path with the first
             // character in the edge of the resulting path
             if (path.charAt(i+1) == result.charAt(result.length() - 2))
             {
@@ -366,12 +372,12 @@ public class Graph
     }
 
     /**
-     * A fixed graph with 5 nodes and 7 edges. 
+     * A fixed graph with 5 nodes and 7 edges.
      * <p>
      * This is to be used in conjunction with Gui.java
      *
      * @return A graph object.
-     * 
+     *
      */
     public static Graph graph1()
     {
@@ -404,7 +410,7 @@ public class Graph
         graph.nodes[2].getScaledPoint().setXY(0.4, 0.4);
         graph.nodes[3].getScaledPoint().setXY(0.8, 0.4);
         graph.nodes[4].getScaledPoint().setXY(0.5, 0.3);
-        
+
         return graph;
     }
 
@@ -414,7 +420,7 @@ public class Graph
      * This is to be used in conjunction with Gui.java
      *
      * @return A graph object.
-     * 
+     *
      */
     public static Graph graph2()
     {
@@ -457,7 +463,7 @@ public class Graph
      * This is to be used in conjunction with Gui.java
      *
      * @return A graph object.
-     * 
+     *
      */
     public static Graph graph3()
     {
@@ -493,7 +499,7 @@ public class Graph
 
         return graph;
     }
-    
+
     /**
      * Generates a graph with n nodes and random weights edges.
      * Its density is random up to 20%.
@@ -508,7 +514,7 @@ public class Graph
         int index;         // helper index 1
         int index2;        // helper index 2
         int maxWeight;     // maximum weight of an edge
-        
+
         maxWeight = 20;
         bridgeEdges = (int)(Math.random()*(n*n/5) + 1); // density ~ n^2/5
         graph = new Graph(n,n-1 + bridgeEdges , "Generic graph");
@@ -516,35 +522,35 @@ public class Graph
         // add first connection
         graph.addNode("A");
         graph.addNode("B");
-        graph.addEdge(graph.nodes[0], graph.nodes[1], (int)(Math.random()*maxWeight+1));        
-        
+        graph.addEdge(graph.nodes[0], graph.nodes[1], (int)(Math.random()*maxWeight+1));
+
         for (char i = 2; i < n; i++) // add n-1 connections
         {
             graph.addNode((char)(i + 'A') + "");
-            
+
             // select random previous node
             // and connect it with last added node
             index = (int)(Math.random()*i);
             graph.addEdge(graph.nodes[index], graph.nodes[i], (int)(Math.random()*maxWeight+1));
-        }        
-        
+        }
+
         for(int i=0; i < graph.getNodes().length; i++) // arrange points in a circle
         {
             // x = a sin(i), y = a cos(i) is a classic circle parametric equation
             graph.nodes[i].getScaledPoint().setXY(
-                    0.2+(Math.sin(i*Math.PI*2/graph.getNodes().length)+1)/3, 
+                    0.2+(Math.sin(i*Math.PI*2/graph.getNodes().length)+1)/3,
                     0.2+(Math.cos(i*Math.PI*2/graph.getNodes().length)+1)/3);
         }
-        
+
         while(bridgeEdges > 0)  // add bridging edges
         {
             index = (int)(Math.random()*n);
             index2 = (int)(Math.random()*n);
-            
-            if(index != index2 && 
+
+            if(index != index2 &&
                !graph.hasEdge(graph.nodes[index], graph.nodes[index2])) // add if it's not there
             {
-                graph.addEdge(graph.nodes[index], graph.nodes[index2], 
+                graph.addEdge(graph.nodes[index], graph.nodes[index2],
                         (int)(Math.random()*maxWeight+1));
                 bridgeEdges--;
             }
@@ -556,7 +562,7 @@ public class Graph
 
         return graph;
     }
-    
+
     /**
      * Check if the graph has an edge between n1 and n2.
      * @param n1 One end an edge.
@@ -565,21 +571,21 @@ public class Graph
      * @author Maciej Szpakowski
      */
     private boolean hasEdge(Node n1, Node n2)
-    {       
+    {
         for(Edge e : edges)
         {
             if(e == null)
             {
                 continue;
             }
-            
-            if((e.getEnd() == n1 && e.getStart() == n2) || 
+
+            if((e.getEnd() == n1 && e.getStart() == n2) ||
                (e.getEnd() == n2 && e.getStart() == n1))
             {
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -591,15 +597,15 @@ public class Graph
     public static Graph regenerateGraph(Graph graph)
     {
         Edge[] tempEdges;
-        
+
         tempEdges = new Edge[graph.maxEdges];
-        
+
         for (int i = 0; i < graph.maxEdges; i++)
         {
-            tempEdges[i] = new Edge(graph.edges[i].getStart(), 
+            tempEdges[i] = new Edge(graph.edges[i].getStart(),
                     graph.edges[i].getEnd(), graph.edges[i].getVal());
         }
-        
+
         graph.edges = new Edge[graph.maxEdges];
         graph.currNumEdges = 0;
 

@@ -1,4 +1,12 @@
 /**
+ * @author Bradley Golden, Amanda Olson, Cody Roberts, Maciej Szpakowski
+ * <p>
+ * @project  Project 3 - Data Structure Visualization
+ * <p>
+ * @date November 12, 2015
+ * <p>
+ *This class simulates an edge.
+ * <p>
  * Used to convert relative x and y coordinates into actual x and y coordinates given
  * a dynamic display.
  */
@@ -25,7 +33,7 @@ public class ScaledPoint
      * @param h The height of the current window. Must be initialized.
      * @param w The width of the current window. Must be initialized.
      */
-    public static void updateWindow(int h, int w) 
+    public static void updateWindow(int h, int w)
     {
         height = h;
         width = w;

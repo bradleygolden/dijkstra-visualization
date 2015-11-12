@@ -1,3 +1,14 @@
+/**
+ * @author Bradley Golden, Amanda Olson, Cody Roberts, Maciej Szpakowski
+ * <p>
+ * @project  Project 3 - Data Structure Visualization
+ * <p>
+ * @date November 12, 2015
+ * <p>
+ * Gives the user a useful dialog panel which provides
+ * various instructions on how to use the GUI interface.
+ */
+
 import java.awt.*;
 import java.awt.Graphics;
 import javax.swing.*;
@@ -23,7 +34,7 @@ public class DialogPanel extends JPanel
     /**
     * Sets the dialog label to a new string
     *
-    * @param dialog the string to change the label to 
+    * @param dialog the string to change the label to
     */
     public void setDialog(String dialog)
     {

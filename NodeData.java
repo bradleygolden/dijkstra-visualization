@@ -2,11 +2,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * @author Bradley Golden, Amanda Olson, Cody Roberts, Maciej Szpakowski
+ * <p>
+ * @project  Project 3 - Data Structure Visualization
+ * <p>
+ * @date November 12, 2015
+ * <p>
  * This simulates a single node in a graph.
  * <p>
  * This class is used strictly for the backend when using Dijkstra's algorithm.
- *
- * @author Amanda Olson
  */
 public class NodeData
 {
@@ -50,7 +54,7 @@ public class NodeData
     /**
      * Adds an edge to this node or updates an edge associated with this node.
      *
-     * @param edgeToAdd (required) An edge of type EdgeData. 
+     * @param edgeToAdd (required) An edge of type EdgeData.
      */
     public void addOrUpdateEdge(EdgeData edgeToAdd)
     {
@@ -60,7 +64,7 @@ public class NodeData
             // and return that edge if it exists
             EdgeData edge = findEdgeThatPointsToGivenNodeName(edgeToAdd.getDestination().getName());
 
-            // if the edge is null, the edge to add is new and will be connected with this node 
+            // if the edge is null, the edge to add is new and will be connected with this node
             if(edge == null)
             {
                 _edges.add(edgeToAdd); // add edge to _edges list
@@ -77,7 +81,7 @@ public class NodeData
      * Finds an edge given the name of an edge.
      *
      * @param name (required) The name of an edge that is pre-existing or not.
-     * @return An edge that has a name that matches the name parameter. Edge 
+     * @return An edge that has a name that matches the name parameter. Edge
      * is of type EdgeData.
      */
     private EdgeData findEdgeThatPointsToGivenNodeName(String name)

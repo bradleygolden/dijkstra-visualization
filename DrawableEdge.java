@@ -21,13 +21,13 @@ public class DrawableEdge extends Drawable
     public static final Color NONPATH_COLOR = Color.GRAY; // default color of the edge
     public static final int MIN_WEIGHT = 0;               // the least edge's weight
     public static final int MAX_WEIGHT = 9999;            // the greatest edge's weight
-    
+
     private static boolean buttonsEnabled = true; // flag that allows change edges weights
-    
+
     private Edge edge;      // edge object to be drawn
     private GButton button; // button that displays edge's weight and allows user
                             // to change it
-    
+
     /**
      * Initializes DrawableEdge.
      *
@@ -38,7 +38,7 @@ public class DrawableEdge extends Drawable
         this.edge = edge;
         button = new GButton(edge.getVal() + "", DEF_BUTTON_WIDTH, DEF_BUTTON_HEIGHT);
     }
-    
+
     /**
      * Draws the edge.
      *
@@ -50,7 +50,7 @@ public class DrawableEdge extends Drawable
         ScaledPoint start;  // starting point of an edge
         ScaledPoint end;    // ending point of an edge
         Point transform;    // vector that offsets the button to the middle
-        
+
         start = edge.getStart().getScaledPoint();
         end = edge.getEnd().getScaledPoint();
 
@@ -64,22 +64,22 @@ public class DrawableEdge extends Drawable
             g.setColor(NONPATH_COLOR);
             ((Graphics2D)g).setStroke(new BasicStroke(NONPATH_THICKNESS));
         }
-        
-        // draw the edge itself        
+
+        // draw the edge itself
         g.drawLine(start.getX(),start.getY(), end.getX(),end.getY());
-        
+
         // these lines compute the vector that offsets
         // the button so it's in between two nodes that edge connects
         // equation: r = v1 + (v2 - v1)/2
         transform = new Point();
         transform.x = end.getX() + (start.getX() - end.getX())/2;
         transform.y = end.getY() + (start.getY() - end.getY())/2;
-        
+
         // move the button and draw it
         button.setLocation(transform.x, transform.y);
         button.draw(g);
     }
-    
+
     /**
      * Checks if the edge belongs to the current path.
      * @return result of the check.
@@ -89,27 +89,27 @@ public class DrawableEdge extends Drawable
         char startName;       // name of the one node that is connected to the edge
         char endName;         // name of the other node that is connected to the edge
         String curPathEdge;   // string used to iterate over current path
-        
+
         startName = edge.getStart().getName().charAt(0);
-        endName = edge.getEnd().getName().charAt(0);        
-        
+        endName = edge.getEnd().getName().charAt(0);
+
         for(int i=0;i<path.length();i+=2) // iterate over current path
         {
             curPathEdge = path.substring(i, i+2); // current edge is a string of two chars
                                                   // which are the names of the nodes
-                        
-            if(curPathEdge.indexOf(startName) != -1 && 
-               curPathEdge.indexOf(endName) != -1)     // the edge belong to path if 
+
+            if(curPathEdge.indexOf(startName) != -1 &&
+               curPathEdge.indexOf(endName) != -1)     // the edge belong to path if
                                                        // names of the nodes it connects
                                                        // are found in curPathEdge
             {
                 return true;
             }
         }
-        
+
         return false;
     }
-    
+
     /**
      * Tries to click the button of the edge. When button is clicked,
      * user can input a new value for the edge.
@@ -120,13 +120,13 @@ public class DrawableEdge extends Drawable
     {
         String input;  // string returned by input dialog
         int newWeight; // weight received from user
-                
+
         if(buttonsEnabled && button.isMouseOver()) // button can be clicked only it cursor is over it
                                                    // and flag is enabled
         {
             input = JOptionPane.showInputDialog(
                     String.format("New weight [%d ~ %d]", MIN_WEIGHT,MAX_WEIGHT));
-            
+
             try
             {
                 newWeight = new Integer(input);
@@ -135,19 +135,19 @@ public class DrawableEdge extends Drawable
             {
                 return true;
             }
-            
+
             if(newWeight >= MIN_WEIGHT && newWeight <= MAX_WEIGHT) // allow only certain range
             {
                 edge.setVal(newWeight);
                 button.setText(input);
             }
-            
+
             return true;
         }
-        
+
         return false;
     }
-    
+
     /**
      * Sets buttonsEnabled flag, which enables or disables edge buttons.
      * @param enabled new value of buttonsEnabled.
@@ -156,7 +156,7 @@ public class DrawableEdge extends Drawable
     {
         buttonsEnabled = enabled;
     }
-    
+
     /**
      * Returns whether edge buttons are enabled or not.
      * @return buttonsEnabled.

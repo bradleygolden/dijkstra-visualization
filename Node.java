@@ -1,7 +1,13 @@
 /**
+ * @author Bradley Golden, Amanda Olson, Cody Roberts, Maciej Szpakowski
+ * <p>
+ * @project  Project 3 - Data Structure Visualization
+ * <p>
+ * @date November 12, 2015
+ * <p>
  * This class simulates a single node within a graph.
  */
-public class Node 
+public class Node
 {
     private int val; // value of the node
     private ScaledPoint point; // point where the current node is on the screen
@@ -11,14 +17,14 @@ public class Node
     /**
      * Constructor
      * <p>
-     * Creates a Node object with point = ScaledPoint object, val = infinity, name = name, 
+     * Creates a Node object with point = ScaledPoint object, val = infinity, name = name,
      * backendNode = NodeData object.
      *
      * @param name (required) The name of the node object. Can be any string.
      */
     public Node(String name)
     {
-        this.point = new ScaledPoint();  
+        this.point = new ScaledPoint();
         this.val = Integer.MAX_VALUE;
         this.name = name;
         this.backendNode = new NodeData(name);

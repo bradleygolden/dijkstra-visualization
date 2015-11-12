@@ -27,10 +27,10 @@ public class DrawableNode extends Drawable
 
     private static String startNode = ""; // name of the node where the path starts
     private static String endNode = "";   // name of the destination node
-    
+
     private Node node;         // reference to node object being drawn
     private ScaledPoint point; // reference to scaled point in node
-    
+
     /**
      * Initializes DrawableNode object.
      *
@@ -57,7 +57,7 @@ public class DrawableNode extends Drawable
         Color nodeColor;    // color of the node
 
         drawRadius = isMouseOver() ? RADIUS_BIG : RADIUS;
-        
+
         if(Drawable.path.indexOf(node.getName()) != -1) // choose color of the node depending on
                                                          // the state of the node
         {
@@ -66,17 +66,17 @@ public class DrawableNode extends Drawable
         else if(node.getValue() != Integer.MAX_VALUE)
         {
             nodeColor = NODE_VISITED_COLOR;
-        }        
+        }
         else
         {
             nodeColor = NODE_UNVISITED_COLOR;
         }
-        
+
         // draw node circle
         g.setColor(nodeColor);
         g.fillOval(point.getX()-drawRadius, point.getY()-drawRadius,
-                2*drawRadius, 2*drawRadius);        
-        
+                2*drawRadius, 2*drawRadius);
+
         if(node.getName().equals(startNode)) // choose color and thickness for frame depending on
                                              // if the node is starting or ending node on the path
         {
@@ -93,29 +93,29 @@ public class DrawableNode extends Drawable
             thickness = FRAME_THIN;
             frameColor = Color.BLACK;
         }
-        
+
         // draw frame around the node
         g.setColor(frameColor);
         ((Graphics2D)g).setStroke(new BasicStroke(thickness));
         g.drawOval(point.getX()-drawRadius, point.getY()-drawRadius,
                 2*drawRadius, 2*drawRadius);
-        
+
         // draw node name
         g.setColor(Color.BLACK);
         g.drawString(node.getName(), point.getX()-5, point.getY()+5);
-        
+
         // draw back for node distance
         g.setColor(Color.WHITE);
-        g.fillRect(point.getX() + DIST_BOX_OFFSET_X, point.getY() + DIST_BOX_OFFSET_Y, 
+        g.fillRect(point.getX() + DIST_BOX_OFFSET_X, point.getY() + DIST_BOX_OFFSET_Y,
                 DIST_BOX_WIDTH, DIST_BOX_HEIGTH);
-        
+
         // draw node distance
         g.setColor(Color.BLACK);
         dist = "" + (node.getValue() == Integer.MAX_VALUE ? "\u221e" : node.getValue());
         g.drawString(dist, point.getX() + DIST_BOX_OFFSET_X, point.getY());
 
     }
-    
+
     /**
      * Returns distance in pixels of this node from coordinates x,y.
      *
@@ -126,10 +126,10 @@ public class DrawableNode extends Drawable
     private int getDistance(int x, int y)
     {
         // standard 2D distance algorithm
-        return (int)(Math.sqrt((point.getX()-x)*(point.getX()-x) + 
+        return (int)(Math.sqrt((point.getX()-x)*(point.getX()-x) +
                 (point.getY()-y)*(point.getY()-y)));
     }
-    
+
     /**
      * Checks whether mouse is hovering over this node.
      * @return result of the check.
@@ -139,7 +139,7 @@ public class DrawableNode extends Drawable
         // standatd collision between point and circle algorithm in 2D
         return getDistance(DrawManager.getMouse().x, DrawManager.getMouse().y) < RADIUS;
     }
-    
+
     /**
      * Sets the frame position of the ScaledPoint associated with this node.
      *
@@ -150,7 +150,7 @@ public class DrawableNode extends Drawable
     {
         point.setWinXY(x, y);
     }
-    
+
     /**
      * Sets DrawableNode.startNode.
      * @param start new value of DrawableNode.startNode.
@@ -159,7 +159,7 @@ public class DrawableNode extends Drawable
     {
         startNode = start;
     }
-    
+
     /**
      * Sets DrawableNode.endNode.
      * @param end new value of DrawableNode.endNode.

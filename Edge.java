@@ -1,4 +1,10 @@
 /**
+ * @author Bradley Golden, Amanda Olson, Cody Roberts, Maciej Szpakowski
+ * <p>
+ * @project  Project 3 - Data Structure Visualization
+ * <p>
+ * @date November 12, 2015
+ * <p>
  * This class simulates a single edge between two nodes.
  */
 public class Edge
@@ -13,7 +19,7 @@ public class Edge
      * Constructor
      * <p>
      * Creates an edge object with a given start, end, and edge value.
-     * 
+     *
      * @param start The node where the edge starts. (Not null)
      * @param end The node where the edge ends. (Not null)
      * @param val Value of the edge. Value can be any integer.
@@ -39,7 +45,7 @@ public class Edge
 
     /**
      * Setter for the edge value.
-     * 
+     *
      * @param val Value for the edge. Must be initialized. Can be any integer value.
      */
     public void setVal(int val)

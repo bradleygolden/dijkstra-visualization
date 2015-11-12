@@ -19,14 +19,14 @@ public class GButton extends Drawable
     public static final int TEXT_OFFSET_X = 10;         // x offset of the button's text
     public static final int TEXT_OFFSET_Y = 15;         // y offset of the button's text
     public static final Color FONT_COLOR = Color.BLACK; // color of the font and frame
-    public static final int HILIGHT_THICKNESS = 3;      // thickness of the button's frame when 
+    public static final int HILIGHT_THICKNESS = 3;      // thickness of the button's frame when
                                                         // it's highlighted
-    
+
     private Point location;          // location of the button
     private String text;             // text of the button
     private Dimension size;          // size of the button
     private GradientPaint gradient;  // gradient used to fill the button
-    
+
     /**
      * Initializes GButton.
      * @param text text of the button
@@ -39,7 +39,7 @@ public class GButton extends Drawable
         this.location = new Point();
         this.size = new Dimension(width, height);
     }
-    
+
     /**
      * Check if cursor is over the button.
      * @return Result of the collision check.
@@ -47,12 +47,12 @@ public class GButton extends Drawable
     public boolean isMouseOver()
     {
         Point mouse;  // mouse coordinates
-        
+
         mouse = DrawManager.getMouse();
-        
+
         // this is a simple rectangle collision detection
         // check if coordinates of the cursor are within rectangle bound by the button
-        return mouse.x > location.x && mouse.x < location.x + size.width && 
+        return mouse.x > location.x && mouse.x < location.x + size.width &&
                 mouse.y > location.y && mouse.y < location.y + size.height;
     }
 
@@ -64,9 +64,9 @@ public class GButton extends Drawable
     public void draw(Graphics g)
     {
         Color gradientEnd;  // color for gradient end, depends on buttons being enabled
-        
+
         gradientEnd = DrawableEdge.getEnabledFlag() ? GRADIENT_END_COLOR : GRADIENT_START_COLOR;
-        
+
         // offset the button so its center is in the middle not in the corner
         location.x -= size.width/2;
         location.y -= size.height/2;
@@ -75,8 +75,8 @@ public class GButton extends Drawable
         gradient = new GradientPaint(location.x, location.y, GRADIENT_START_COLOR,
                                      location.x, location.y + size.height, gradientEnd);
         ((Graphics2D)g).setPaint(gradient);
-        g.fillRect(location.x, location.y, size.width, size.height);        
-        
+        g.fillRect(location.x, location.y, size.width, size.height);
+
         if(isMouseOver() && DrawableEdge.getEnabledFlag()) // make frame thicker if highlighted
         {
             ((Graphics2D)g).setStroke(new BasicStroke(HILIGHT_THICKNESS));
@@ -85,13 +85,13 @@ public class GButton extends Drawable
         {
             ((Graphics2D)g).setStroke(new BasicStroke(1));
         }
-        
+
         // draw frame around button and text inside
         g.setColor(FONT_COLOR);
         g.drawRect(location.x, location.y, size.width, size.height);
         g.drawString(text, location.x + TEXT_OFFSET_X, location.y + TEXT_OFFSET_Y);
     }
-    
+
     /**
      * Sets text of the button.
      * @param text String used to set the text.
@@ -100,7 +100,7 @@ public class GButton extends Drawable
     {
         this.text = text;
     }
-    
+
     /**
      * Sets the location of the button.
      * @param x new x coordinate in pixels from the upper

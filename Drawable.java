@@ -9,14 +9,14 @@ import java.awt.Graphics;
 public abstract class Drawable
 {
     protected static String path = ""; // current shortest path as a string of nodes
-    
+
     /**
      * Draws the object using g
      *
      * @param g Initialized Graphics object used to draw.
      */
     public abstract void draw(Graphics g);
-    
+
     /**
      * Sets the Drawable.path to path.
      * @param path new string path
