@@ -8,20 +8,13 @@ public class Graph
     // start and end is chosen and changed by the user
     private static String startNode = "A"; // starting point in the graph
     private static String endNode = "A"; // ending point in the graph
-    // cannot initalize this static variable until a new graph is created
-    private static GraphData backendGraph; // graph strictly used for backend (algorithm) processing
 
-    //
+    // graph strictly used for backend (algorithm) processing
+    private static GraphData backendGraph = null;
+
     // middle tier related instance variables
-    //
     protected Node[] nodes; // all nodes in the graph
     protected Edge[] edges; // all edges in the graph
-
-    //
-    // backend tier related instance variables
-    //
-    // BACKEND_GRAPH contains all information about the graph pertaining to the backend and  
-    // is only to be used in conjunction with Data classes.
 
     // graph related instance variables
     private int maxNodes; // max number of nodes in the graph
@@ -31,22 +24,7 @@ public class Graph
     private String name; // the name of this graph
     private List<DijkstraAlgorithmState> states; // a list of dijkstra algorithm states
     private int currentStateIndex; // the index of the current state of the graph
-    protected String path = "";
-
-    /**
-     * Creates a Graph object with default values
-     */
-    //public Graph()
-    //{
-        //nodes = null;
-        //maxNodes = 0;
-        //maxEdges = 0;
-        //currNumNodes = 0;
-        //currNumEdges = 0;
-        //name = "Default Name";
-        //states = null;
-        //currentStateIndex = 0;
-    /*}*/
+    private String path; // the current solution provided by Dijkstra's algorithm
 
     /**
      * Creates a Graph object with the number of nodes and edges pre-defined
@@ -54,15 +32,15 @@ public class Graph
      * @param numNodes The number of nodes the graph contains. Must be greater than 0.
      * @param numEdges The number of edges the graph contains. Must be greater than 0.
      * @param name The name of the graph as a string. Must be initialized.
-     * TODO
      */
     public Graph(int numNodes, int numEdges, String name)
     {
-        //this();
-        nodes = new Node[numNodes];
-        edges = new Edge[numEdges];
-        maxNodes = numNodes;
-        maxEdges = numEdges;
+        this.nodes = new Node[numNodes];
+        this.edges = new Edge[numEdges];
+        this.maxNodes = numNodes;
+        this.maxEdges = numEdges;
+        this.currNumNodes = 0; // the current number of nodes in the graph
+        this.currNumEdges = 0; // the current number of edges in the graph
         this.name = name;
         backendGraph = new GraphData();
     }
@@ -70,7 +48,6 @@ public class Graph
     /**
      * Adds a node to the current graph.
      * 
-     * @param val The value of the node to be added. Must be initialized.
      * @param name The name of the current node as a string. Must be initialized.
      */
     public void addNode(String name)
@@ -79,8 +56,6 @@ public class Graph
 
         if (currNumNodes == maxNodes) // Reached maximum nodes defined in constructor
         {
-            System.out.println("You cannot add more nodes than you defined in the" +
-                    "constructor.");
             return;
         }
 
@@ -89,7 +64,7 @@ public class Graph
         // add node to backendGraph
         backendGraph.addNode(newNode.getData());
 
-        nodes[currNumNodes] = newNode; // add node to graph
+        nodes[currNumNodes] = newNode; // append nodes to end of current nodes
         currNumNodes++; // increment number of nodes in the graph
     } // end addNode
 
@@ -108,7 +83,6 @@ public class Graph
 
         if (currNumEdges == maxEdges) // Reached maximum edges defined in constructor
         {
-            System.out.println("You have reached maximum ammount of edges");
             return;
         }
 
@@ -117,8 +91,8 @@ public class Graph
         // add edge to backendGraph
         backendGraph.addEdgeToNode(start.getName(), end.getName(), val);
 
-        edges[currNumEdges] = newEdge;
-        currNumEdges++;
+        edges[currNumEdges] = newEdge; // append edge to previous edges in graph
+        currNumEdges++; // increment number of edges in the graph
     }
 
     /**
@@ -184,14 +158,17 @@ public class Graph
     /**
      * Collects the names of the nodes in the graph
      *
-     * @return String[] a list of the graph's node names
+     * @return String[] list of the graph's node names
      */
     public String[] getNodeNames()
     {
+        int i;
         String[] nodeNames = new String[maxNodes + 1];
         
-        int i = 1;
+        i = 1;
         nodeNames[0] = ""; // empty to start
+
+        // iterate through the nodes and get the node names
         for (Node n : nodes)
         {
            nodeNames[i] = n.getName();
@@ -204,6 +181,9 @@ public class Graph
 
     /**
      * Prints out the current nodes and edges in the graph.
+     *
+     * @return String representation of the current graph. This function
+     * can be trivial with large graphs.
      */
     public String toString()
     {
@@ -229,10 +209,6 @@ public class Graph
     /**
      * Runs dijkstra's algorithm and produces the graph states into states instance
      * variable.
-     *
-     * @param baseGraph A default graph of type GraphData. Graph is non empty.
-     * @param start The node where the algorithm starts. Letter A-Z.
-     * @param end The node where the algorithm ends. Letter A-Z.
      */
     public void setStates()
     {
@@ -244,18 +220,35 @@ public class Graph
         }
     }
 
+    /**
+     * Builds the current solution path and sets the index of the current state to the next state.
+     *
+     * @see getPath Uses the solution path from this method to find the most current solution.
+     * @return true if there exists a next state, false otherwise
+     */
     public boolean nextState()
     {
+        // check if the current state index is within the bounds of all possible states
         if (currentStateIndex < states.size() - 1)
         {
             currentStateIndex++;
-            path += states.get(currentStateIndex).getLastStartNode() + states.get(currentStateIndex).getLastEndNode();
+
+            // build the current solution path
+            path += states.get(currentStateIndex).getLastStartNode() + 
+                states.get(currentStateIndex).getLastEndNode();
+
             return true;
         }
 
         return false;
     }
 
+    /**
+     * Builds the current solution path and sets the index of the current state to the previous state.
+     *
+     * @see getPath Uses the solution path from this method to find the most current solution.
+     * @return true if there exists a previus state, false otherwise
+     */
     public boolean prevState()
     {
         if (currentStateIndex > 0)
@@ -270,12 +263,14 @@ public class Graph
     }
 
     /**
-     * Resets the path so algorithm can be restarted with new parameters
+     * Resets the path so the algorithm can be restarted with new parameters.
      */
     public void resetPath()
     {
-        currentStateIndex = 0;
-        path = "";
+        currentStateIndex = 0; // change the current state index to zero
+        path = ""; // clear the current path
+
+        // iterate though each node and reset the values to inifinity
         for (Node n : nodes)
         {
             n.setValue(Integer.MAX_VALUE);
@@ -302,23 +297,44 @@ public class Graph
 
     /**
      * Parses path to find find current solution
+     * <p>
+     * As an example: The the current path is "ABBCDFCF", the solution path is "ABBCCF"
+     * Notice that all edges "AB", "BC", "CF" are connected
+     * <p>
+     * This returns the resulting solution path in reverse order but this doesn't matter
+     * when drawing the solution as the solution path is only used to draw the path in the gui
      *
-     * @return string of the current solution
+     * @return string of the current solution. This string is of length 0 if a solution path 
+     * doesn't exists or of length greater than 0 is a solution path exists. The format of this 
+     * string consists of pairs of edges and will always be even.
      */
     public String getPath()
     {
+        int n; // number of characters in the current path
+        String result; // the resulting path solution
+
+        // first check that the path length is greater than 2, if not there is no solution path
+        // yet
         if (path.length() < 2)
         {
             return "";
         }
 
-        int n = path.length() - 2;
-        String result = path.substring(n, n+2);
+        n = path.length() - 2; // set n to the second to last letter in the path
 
+        // the last edge in the path is in the current solution
+        // so we must save that to the result first
+        result = path.substring(n, n+2); 
+
+        // iterate through each edge in the solution path
         for (int i = n - 2; i >= 0; i-=2)
         {
+            // check the last character in the edge in the solution path with the first 
+            // character in the edge of the resulting path
             if (path.charAt(i+1) == result.charAt(result.length() - 2))
             {
+                // two edges are connecting, therefore we must
+                // append the result with the new edge
                 result = result + path.substring(i, i+2);
             }
         }
@@ -327,7 +343,9 @@ public class Graph
     }
 
     /**
-     * Sets starting node of algorithm
+     * Sets the starting node of the algorithm
+     *
+     * @param start (required) Name of the starting node.
      */
     public void setStart(String start)
     {
@@ -335,7 +353,9 @@ public class Graph
     }
 
     /**
-     * Sets ending node of algorithm
+     * Sets the ending node of algorithm
+     *
+     * @param end (required) Name of the ending node.
      */
     public void setEnd(String end)
     {
