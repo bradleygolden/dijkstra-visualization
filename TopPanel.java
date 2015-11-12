@@ -1,8 +1,10 @@
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-import javax.swing.*;
-
+/**
+ * JPanel holding user options
+ */
 public class TopPanel extends JPanel implements ActionListener, ItemListener
 {
 	private static Graph graph;                            // graph object
@@ -23,14 +25,19 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
     private JPanel nodeSelectionPanel;                     // Panel to hold starting and ending node selections
     private JComboBox startingNode;                        // List of nodes for starting node
     private JComboBox endingNode;                          // List of nodes for ending node
+    private boolean startSet = false;                      // Start selected flag
+    private boolean endSet = false;                        // End selected flag
+    private JButton about;                                 // About dijkstras
+    private JPanel aboutPanel;                             // Panel for about button 
 
     /**
-    * Creates a JPanel containing title, options, and a dialogPanel 
+    * Creates a JPanel containing header, graph selection, interaction buttons,
+    * and starting and ending nodes.
     */
     public TopPanel() 
     {
         super();
-        this.setLayout(new GridLayout(5,0));
+        this.setLayout(new GridLayout(6,3));
 
         headerPanel = new JPanel();
         headerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -38,6 +45,12 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
         header.setFont(new Font("Serif", Font.BOLD, 20));
 
         headerPanel.add(header);
+
+        aboutPanel = new JPanel();
+        about = new JButton("About");
+        about.addActionListener(this);
+
+        aboutPanel.add(about);
 
         chooseGraphs = new JPanel();
         choose = new JLabel("Choose a graph:");
@@ -48,6 +61,8 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
         chooseGraphs.add(graphs);
         chooseGraphs.add(start);
 
+        start.setEnabled(false);
+
         steps = new JPanel();
         prev = new JButton("Previous Step");
         next = new JButton("Next Step");
@@ -57,7 +72,6 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
         
         graph = null;
         
-        // initialize top panel
         graphs.addItemListener (this);
         start.addActionListener(this);
         prev.addActionListener (this);
@@ -81,6 +95,7 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
         nodeSelectionPanel.setVisible(false);
 
         this.add(headerPanel);
+        this.add(aboutPanel);
         this.add(chooseGraphs);
         this.add(steps);
         this.add(dialogPanel);
@@ -95,9 +110,9 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        if (e.getSource() == start)
+        if (e.getSource() == start) // if start button is pressed
         {
-            if (start.getText() == "Start") // handle start button
+            if (start.getText() == "Start") // handle starting conditions
             {
                 start.setText("Stop");
                 graphs.setEnabled(false);
@@ -105,10 +120,12 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
                 next.setEnabled(true);
                 DrawableEdge.enableButtons(false);
                 nodeSelectionPanel.setVisible(false);
-                graph = Graph.graph1("start");
+                graph = Graph.regenerateGraph(graph);
                 graph.updateGraph();
+
+                dialogPanel.setDialog("Algorithm started, use previous and next to step through");
             }
-            else if (start.getText() == "Stop") // handle stop button
+            else if (start.getText() == "Stop") // handle stopping conditions
             {
                 start.setText("Start");
                 graphs.setEnabled(true);
@@ -116,6 +133,10 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
                 next.setEnabled(false);
                 DrawableEdge.enableButtons(true);
                 nodeSelectionPanel.setVisible(true);
+                graph = Graph.graph1("start");
+                graph.updateGraph();
+
+                dialogPanel.setDialog("Algorithm stopped.");
             }
 
         }
@@ -133,12 +154,19 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
             	graph.updateGraph();
             }
         }
+        else if (e.getSource() == about)
+        { 
+            JOptionPane.showMessageDialog(this, "This is a visualization tool for Dijkstra's Algorithm." +
+                                                "Learn about Dijkstra's Algorithm: " +
+                                                "https://en.wikipedia.org/wiki/Dijkstra's_algorithm" +
+                                                "\n\nVisualization by Maciej, Bradley, Amanda, Cody.");
+        }
         
         getParent().repaint();
     }
 
     /**
-     * Handles graph combo box.
+     * Handles item state events 
      *
      * @param e item event
      */
@@ -151,47 +179,62 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
 
             int graphsIndex = graphs.getSelectedIndex();
 
-            if (graphsIndex == 0)
+            if (graphsIndex == 0) // If no graph has been selected
             {
                 dialogPanel.resetDialog();
                 nodeSelectionPanel.setVisible(false);
                 return;
             }
-            if (graphsIndex == 1) // graph1
+            if (graphsIndex == 1) // If graph1 has been selected
             {
-            	graph = Graph.graph1();
+            	setGraph(Graph.graph1());
             }
-            else if (graphsIndex == 2) // graph2
+            else if (graphsIndex == 2) // If graph2 has been selected
             {
             	graph = Graph.graph2();
             }
-            else if (graphsIndex == 3) // graph3
+            else if (graphsIndex == 3) // If graph3 has been selected
             {
             	graph = Graph.graph3();
             }
             
+            // Respond to user selecting graph
             graph.updateGraph();
             newDialog = String.format("Graph %s selected. Select starting and ending nodes to begin.", graphsIndex);
-
-            // Respond to user selecting graph
-
             updateSelectionPanel(newDialog); 
 
-            // New graph, can now start a new run of Dijkstra's
+            // New graph selected, can now start a new run of Dijkstra's
             start.setText("Start");
+            start.setEnabled(false);
+            startSet = false;
+            endSet = false;
 
-            graphs.setEnabled(true);
             DrawableEdge.enableButtons(true);
             getParent().repaint();
         }
-        else if (e.getSource() == startingNode)
+        else if (e.getSource() == startingNode) // Starting node is selected
         {
-            graph.setStart(startingNode.getSelectedItem() + "");
+            String start = startingNode.getSelectedItem() + "";
+
+            graph.setStart(start);
+            DrawableNode.setStart(start);
+            startSet = true;
         }
-        else if (e.getSource() == endingNode)
+        else if (e.getSource() == endingNode) // Ending node is selected
         {
-            graph.setEnd(endingNode.getSelectedItem() + "");
+            String end = endingNode.getSelectedItem() + "";
+
+            graph.setEnd(end);
+            DrawableNode.setEnd(end);
+            endSet = true;
         }
+
+        if (startSet && endSet) // If start and end has been selected, allow user to start
+        {
+            start.setEnabled(true);
+        }
+
+        getParent().repaint();
     }
 
     /**

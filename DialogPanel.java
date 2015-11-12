@@ -2,6 +2,9 @@ import java.awt.*;
 import java.awt.Graphics;
 import javax.swing.*;
 
+/**
+ *
+ */
 public class DialogPanel extends JPanel
 {
     private JLabel dialog; // Label to hold messages

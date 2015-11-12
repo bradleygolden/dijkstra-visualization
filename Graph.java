@@ -192,9 +192,10 @@ public class Graph
      */
     public String[] getNodeNames()
     {
-        String[] nodeNames = new String[maxNodes];
+        String[] nodeNames = new String[maxNodes + 1];
         
-        int i = 0;
+        int i = 1;
+        nodeNames[0] = ""; // empty to start
         for (Node n : nodes)
         {
            nodeNames[i] = n.getName();
