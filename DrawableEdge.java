@@ -3,22 +3,27 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-
 import javax.swing.JOptionPane;
 
+/**
+ * Wraps logic for drawing the graph's edge on screen.
+ * @date 11/11/2015
+ * @project Data structure visualization - Dijkstra's Algorithm
+ * @author Maciej Szpakowski
+ */
 public class DrawableEdge extends Drawable
 {
-	public static final int DEF_BUTTON_WIDTH = 40;        // default button's width
-	public static final int DEF_BUTTON_HEIGHT = 22;       // default button's height
-	public static final int PATH_THICKNESS = 4;           // path edge's thickness
-	public static final int NONPATH_THICKNESS = 2;        // non-path edge's thickness
-	public static final Color PATH_COLOR = Color.MAGENTA; // edge's color if it's part of the path
-	public static final Color NONPATH_COLOR = Color.GRAY; // default color of the edge
-	public static final int MIN_WEIGHT = 0;               // the least edge's weight
-	public static final int MAX_WEIGHT = 9999;            // the greatest edge's weight
-	
-	private static boolean buttonsEnabled = true; // flag that allows change edges weights
-	
+    public static final int DEF_BUTTON_WIDTH = 40;        // default button's width
+    public static final int DEF_BUTTON_HEIGHT = 22;       // default button's height
+    public static final int PATH_THICKNESS = 4;           // path edge's thickness
+    public static final int NONPATH_THICKNESS = 2;        // non-path edge's thickness
+    public static final Color PATH_COLOR = Color.MAGENTA; // edge's color if it's part of the path
+    public static final Color NONPATH_COLOR = Color.GRAY; // default color of the edge
+    public static final int MIN_WEIGHT = 0;               // the least edge's weight
+    public static final int MAX_WEIGHT = 9999;            // the greatest edge's weight
+    
+    private static boolean buttonsEnabled = true; // flag that allows change edges weights
+    
     private Edge edge;      // edge object to be drawn
     private GButton button; // button that displays edge's weight and allows user
                             // to change it
@@ -51,13 +56,13 @@ public class DrawableEdge extends Drawable
 
         if(isPath()) // decide the color based on whether it's part of the path or not
         {
-        	g.setColor(PATH_COLOR);
-        	((Graphics2D)g).setStroke(new BasicStroke(PATH_THICKNESS));
+            g.setColor(PATH_COLOR);
+            ((Graphics2D)g).setStroke(new BasicStroke(PATH_THICKNESS));
         }
         else
         {
-        	g.setColor(NONPATH_COLOR);
-        	((Graphics2D)g).setStroke(new BasicStroke(NONPATH_THICKNESS));
+            g.setColor(NONPATH_COLOR);
+            ((Graphics2D)g).setStroke(new BasicStroke(NONPATH_THICKNESS));
         }
         
         // draw the edge itself        
@@ -81,28 +86,28 @@ public class DrawableEdge extends Drawable
      */
     private boolean isPath()
     {
-    	char startName;       // name of the one node that is connected to the edge
-    	char endName;         // name of the other node that is connected to the edge
-    	String curPathEdge;   // string used to iterate over current path
-    	
-    	startName = edge.getStart().getName().charAt(0);
-    	endName = edge.getEnd().getName().charAt(0);    	
-    	
-    	for(int i=0;i<path.length();i+=2) // iterate over current path
-    	{
-    		curPathEdge = path.substring(i, i+2); // current edge is a string of two chars
-    		                                      // which are the names of the nodes
-    		    		
-    		if(curPathEdge.indexOf(startName) != -1 && 
-    		   curPathEdge.indexOf(endName) != -1)     // the edge belong to path if 
-    			                                       // names of the nodes it connects
-    			                                       // are found in curPathEdge
-    		{
-    			return true;
-    		}
-    	}
-    	
-    	return false;
+        char startName;       // name of the one node that is connected to the edge
+        char endName;         // name of the other node that is connected to the edge
+        String curPathEdge;   // string used to iterate over current path
+        
+        startName = edge.getStart().getName().charAt(0);
+        endName = edge.getEnd().getName().charAt(0);        
+        
+        for(int i=0;i<path.length();i+=2) // iterate over current path
+        {
+            curPathEdge = path.substring(i, i+2); // current edge is a string of two chars
+                                                  // which are the names of the nodes
+                        
+            if(curPathEdge.indexOf(startName) != -1 && 
+               curPathEdge.indexOf(endName) != -1)     // the edge belong to path if 
+                                                       // names of the nodes it connects
+                                                       // are found in curPathEdge
+            {
+                return true;
+            }
+        }
+        
+        return false;
     }
     
     /**
@@ -113,33 +118,34 @@ public class DrawableEdge extends Drawable
      */
     public boolean clickButton()
     {
-    	String input;  // string returned by input dialog
-    	int newWeight; // weight received from user
-    	    	
-    	if(buttonsEnabled && button.isMouseOver()) // button can be clicked only it cursor is over it
-    		                                       // and flag is enabled
-    	{
-    		input = JOptionPane.showInputDialog("New weight");
-    		
-    		try
-    		{
-    			newWeight = new Integer(input);
-    		}
-    		catch(NumberFormatException e)
-    		{
-    			return true;
-    		}
-    		
-    		if(newWeight >= MIN_WEIGHT && newWeight <= MAX_WEIGHT) // allow only certain range
-    		{
-    			edge.setVal(newWeight);
-    			button.setText(input);
-    		}
-    		
-    		return true;
-    	}
-    	
-    	return false;
+        String input;  // string returned by input dialog
+        int newWeight; // weight received from user
+                
+        if(buttonsEnabled && button.isMouseOver()) // button can be clicked only it cursor is over it
+                                                   // and flag is enabled
+        {
+            input = JOptionPane.showInputDialog(
+            		String.format("New weight [%d ~ %d]", MIN_WEIGHT,MAX_WEIGHT));
+            
+            try
+            {
+                newWeight = new Integer(input);
+            }
+            catch(NumberFormatException e)
+            {
+                return true;
+            }
+            
+            if(newWeight >= MIN_WEIGHT && newWeight <= MAX_WEIGHT) // allow only certain range
+            {
+                edge.setVal(newWeight);
+                button.setText(input);
+            }
+            
+            return true;
+        }
+        
+        return false;
     }
     
     /**
@@ -148,7 +154,7 @@ public class DrawableEdge extends Drawable
      */
     public static void enableButtons(boolean enabled)
     {
-    	buttonsEnabled = enabled;
+        buttonsEnabled = enabled;
     }
     
     /**
@@ -157,6 +163,6 @@ public class DrawableEdge extends Drawable
      */
     public static boolean getEnabledFlag()
     {
-    	return buttonsEnabled;
+        return buttonsEnabled;
     }
 }

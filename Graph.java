@@ -373,7 +373,6 @@ public class Graph
      * @return A graph object.
      * 
      */
-    //public static Graph graph1(string startNode, string endNode)
     public static Graph graph1()
     {
     	Graph graph;
@@ -507,7 +506,7 @@ public class Graph
     	int index;
     	int index2;
     	
-    	bridgeEdges = (int)(Math.random()*(n*n-n-2) + 1) / 2;
+    	bridgeEdges = (int)(Math.random()*(n*n/5) + 1);
         graph = new Graph(n,n-1 + bridgeEdges , "Generic graph");
 
         // add first connection

@@ -6,6 +6,12 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
+/**
+ * Our own graphics button because JButton won't cooperate with custom drawings.
+ * @date 11/11/2015
+ * @project Data structure visualization - Dijkstra's Algorithm
+ * @author Maciej Szpakowski
+ */
 public class GButton extends Drawable
 {
 	public static final Color GRADIENT_START_COLOR = Color.WHITE; // color of the gradient top
@@ -38,9 +44,9 @@ public class GButton extends Drawable
 	 * Check if cursor is over the button.
 	 * @return Result of the collision check.
 	 */
-	boolean isMouseOver()
+	public boolean isMouseOver()
 	{
-		Point mouse;
+		Point mouse;  // mouse coordinates
 		
 		mouse = DrawManager.getMouse();
 		
@@ -69,19 +75,19 @@ public class GButton extends Drawable
 		gradient = new GradientPaint(location.x, location.y, GRADIENT_START_COLOR,
 				                     location.x, location.y + size.height, gradientEnd);
 		((Graphics2D)g).setPaint(gradient);
-		g.fillRect(location.x, location.y, size.width, size.height);
+		g.fillRect(location.x, location.y, size.width, size.height);		
 		
-		g.setColor(FONT_COLOR);
-		if(isMouseOver() && DrawableEdge.getEnabledFlag()) // make frame thicker if it's highlighted
+		if(isMouseOver() && DrawableEdge.getEnabledFlag()) // make frame thicker if highlighted
 		{
 			((Graphics2D)g).setStroke(new BasicStroke(HILIGHT_THICKNESS));
 		}
-		else             // otherwise draw it normally
+		else
 		{
 			((Graphics2D)g).setStroke(new BasicStroke(1));
 		}
 		
 		// draw frame around button and text inside
+		g.setColor(FONT_COLOR);
 		g.drawRect(location.x, location.y, size.width, size.height);
 		g.drawString(text, location.x + TEXT_OFFSET_X, location.y + TEXT_OFFSET_Y);
     }
