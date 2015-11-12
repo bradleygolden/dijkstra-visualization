@@ -273,7 +273,24 @@ public class Graph
         return false;
     }
 
-    public void updateGraph() {
+    /**
+     * Resets the path so algorithm can be restarted with new parameters
+     */
+    public void resetPath()
+    {
+        currentStateIndex = 0;
+        path = "";
+        for (Node n : nodes)
+        {
+            n.setValue(Integer.MAX_VALUE);
+        }
+    }
+
+    /**
+     * Updates visual distances
+     */
+    public void updateGraph() 
+    {
         String lastVisitedNode = states.get(currentStateIndex).getLastVisitedNode().getName();
         for (Node n : nodes)
         {
@@ -287,6 +304,11 @@ public class Graph
         }
     }
 
+    /**
+     * Parses path to find find current solution
+     *
+     * @return string of the current solution
+     */
     public String getPath()
     {
         if (path.length() < 2)
@@ -308,21 +330,20 @@ public class Graph
         return result;
     }
 
+    /**
+     * Sets starting node of algorithm
+     */
     public void setStart(String start)
     {
         START_NODE = start;
     }
 
+    /**
+     * Sets ending node of algorithm
+     */
     public void setEnd(String end)
     {
         END_NODE = end;
-    }
-
-    public void run(Graph graph)
-    {
-        // get all states for Dijkstra's Algorithm
-        graph.setStates(); 
-        graph.updateGraph();
     }
 
     /**
@@ -366,9 +387,6 @@ public class Graph
         graph.nodes[3].getScaledPoint().setXY(0.8, 0.4);
         graph.nodes[4].getScaledPoint().setXY(0.5, 0.3);
         
-
-        graph.setStates();
-
         return graph;
     }
 
@@ -412,8 +430,6 @@ public class Graph
         graph.nodes[4].getScaledPoint().setXY(0.2, 0.2);
         graph.nodes[5].getScaledPoint().setXY(0.8, 0.2);
 
-        graph.setStates();
-
         return graph;
     }
 
@@ -456,8 +472,6 @@ public class Graph
         graph.nodes[3].getScaledPoint().setXY(0.9, 0.5);
         graph.nodes[4].getScaledPoint().setXY(0.5, 0.2);
         graph.nodes[5].getScaledPoint().setXY(0.9, 0.2);
-
-        graph.setStates();
 
         return graph;
     }
@@ -503,6 +517,12 @@ public class Graph
         return graph;
     }
     
+    /**
+     * Builds graph with new parameters
+     * @param graph the graph to regenerate
+     *
+     * @return the new graph
+     */
     public static Graph regenerateGraph(Graph graph)
     {
         Edge[] tempEdges;

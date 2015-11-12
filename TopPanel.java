@@ -29,8 +29,9 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
     private JComboBox endingNode;                          // List of nodes for ending node
     private boolean startSet = false;                      // Start selected flag
     private boolean endSet = false;                        // End selected flag
-    private JButton about;                                 // About dijkstras
     private JPanel aboutPanel;                             // Panel for about button 
+    private JButton about;                                 // About dijkstras
+    private JButton showLegend;                            // Show key/legend 
 
     /**
     * Creates a JPanel containing header, graph selection, interaction buttons,
@@ -39,7 +40,7 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
     public TopPanel() 
     {
         super();
-        this.setLayout(new GridLayout(6,3));
+        this.setLayout(new GridLayout(6,0));
 
         headerPanel = new JPanel();
         headerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -50,9 +51,13 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
 
         aboutPanel = new JPanel();
         about = new JButton("About");
+        showLegend = new JButton("showLegend");
+
         about.addActionListener(this);
+        showLegend.addActionListener(this);
 
         aboutPanel.add(about);
+        aboutPanel.add(showLegend);
 
         chooseGraphs = new JPanel();
         choose = new JLabel("Choose a graph:");
@@ -125,7 +130,7 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
                 graph = Graph.regenerateGraph(graph);
                 graph.updateGraph();
 
-                dialogPanel.setDialog("Algorithm started, use previous and next to step through");
+                dialogPanel.setDialog("Algorithm started, use previous and next to step through.");
             }
             else if (start.getText() == "Stop") // handle stopping conditions
             {
@@ -137,8 +142,9 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
                 nodeSelectionPanel.setVisible(true);
                 graph = Graph.regenerateGraph(graph);
                 graph.updateGraph();
+                graph.resetPath();
 
-                dialogPanel.setDialog("Algorithm stopped.");
+                dialogPanel.setDialog("Algorithm stopped. Reselect starting and ending nodes to begin.");
             }
 
         }
@@ -225,7 +231,6 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
             }
             
             // Respond to user selecting graph
-            graph.updateGraph();
             newDialog = String.format("Graph %s selected. Select starting and ending nodes to begin.", graphsIndex);
             updateSelectionPanel(newDialog); 
 
