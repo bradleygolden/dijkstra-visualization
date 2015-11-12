@@ -484,8 +484,8 @@ public class Graph
     	int index;
     	int index2;
     	
-    	bridgeEdges = (int)(Math.random()*(n*n-n-2) + 1);
-        graph = new Graph(n,n-1 , "Generic graph");
+    	bridgeEdges = (int)(Math.random()*(n*n-n-2) + 1) / 2;
+        graph = new Graph(n,n-1 + bridgeEdges , "Generic graph");
 
         // add first connection
         graph.addNode("A");
@@ -532,7 +532,12 @@ public class Graph
     {    	
     	for(Edge e : edges)
     	{
-    		if((e.getEnd() == n1 && e.getStart() == n2) && 
+    		if(e == null)
+    		{
+    			continue;
+    		}
+    		
+    		if((e.getEnd() == n1 && e.getStart() == n2) || 
     		   (e.getEnd() == n2 && e.getStart() == n1))
     		{
     			return true;
@@ -564,14 +569,5 @@ public class Graph
 
         graph.setStates();
         return graph;
-    }
-
-    /**
-     * Test driver for the graph class.
-     */
-    public static void main(String[] args)
-    {
-        Graph graph = graph1();
-        System.out.println(graph.toString());
     }
 }
