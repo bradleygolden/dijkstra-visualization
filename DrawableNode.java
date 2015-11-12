@@ -11,23 +11,23 @@ import java.awt.Graphics2D;
  */
 public class DrawableNode extends Drawable
 {
-	public static final int DIST_BOX_OFFSET_X = 20;  // x pos. of the distance box relative to node
-	public static final int DIST_BOX_OFFSET_Y = -15; // y pos. of the distance box relative to node
-	public static final int DIST_BOX_HEIGTH = 20;    // height of the distance box
-	public static final int DIST_BOX_WIDTH = 40;     // width of the distance box
-	public static final int RADIUS = 20;             // default radius of the node
-	public static final int RADIUS_BIG = 25;         // default radius when node is highlighted
-	public static final int FRAME_THICK = 3;         // thicnkess of the thick frame
-	public static final int FRAME_THIN = 1;          // thickness of the thin frame
-	public static final Color NODE_UNVISITED_COLOR = new Color(200,200,200); // unvisited node color
-	public static final Color NODE_VISITED_COLOR = new Color(200,255,200);   // visited node color
-	public static final Color NODE_PATH_COLOR = new Color(50,255,50);        // path node color
-	public static final Color NODE_START_COLOR = new Color(0,100,0); // frame color of start node
-	public static final Color NODE_END_COLOR = Color.BLUE;           // frame color of end node
+    public static final int DIST_BOX_OFFSET_X = 20;  // x pos. of the distance box relative to node
+    public static final int DIST_BOX_OFFSET_Y = -15; // y pos. of the distance box relative to node
+    public static final int DIST_BOX_HEIGTH = 20;    // height of the distance box
+    public static final int DIST_BOX_WIDTH = 40;     // width of the distance box
+    public static final int RADIUS = 20;             // default radius of the node
+    public static final int RADIUS_BIG = 25;         // default radius when node is highlighted
+    public static final int FRAME_THICK = 3;         // thicnkess of the thick frame
+    public static final int FRAME_THIN = 1;          // thickness of the thin frame
+    public static final Color NODE_UNVISITED_COLOR = new Color(200,200,200); // unvisited node color
+    public static final Color NODE_VISITED_COLOR = new Color(200,255,200);   // visited node color
+    public static final Color NODE_PATH_COLOR = new Color(50,255,50);        // path node color
+    public static final Color NODE_START_COLOR = new Color(0,100,0); // frame color of start node
+    public static final Color NODE_END_COLOR = Color.BLUE;           // frame color of end node
 
-	private static String startNode = ""; // name of the node where the path starts
-	private static String endNode = "";   // name of the destination node
-	
+    private static String startNode = ""; // name of the node where the path starts
+    private static String endNode = "";   // name of the destination node
+    
     private Node node;         // reference to node object being drawn
     private ScaledPoint point; // reference to scaled point in node
     
@@ -38,7 +38,7 @@ public class DrawableNode extends Drawable
      */
     public DrawableNode(Node node)
     {
-    	this.node = node;
+        this.node = node;
         this.point = node.getScaledPoint();
     }
 
@@ -59,18 +59,18 @@ public class DrawableNode extends Drawable
         drawRadius = isMouseOver() ? RADIUS_BIG : RADIUS;
         
         if(Drawable.path.indexOf(node.getName()) != -1) // choose color of the node depending on
-        	                                             // the state of the node
+                                                         // the state of the node
         {
-        	nodeColor = NODE_PATH_COLOR;
+            nodeColor = NODE_PATH_COLOR;
         }
         else if(node.getValue() != Integer.MAX_VALUE)
-    	{
-        	nodeColor = NODE_VISITED_COLOR;
-    	}        
-    	else
-    	{
-    		nodeColor = NODE_UNVISITED_COLOR;
-    	}
+        {
+            nodeColor = NODE_VISITED_COLOR;
+        }        
+        else
+        {
+            nodeColor = NODE_UNVISITED_COLOR;
+        }
         
         // draw node circle
         g.setColor(nodeColor);
@@ -78,20 +78,20 @@ public class DrawableNode extends Drawable
                 2*drawRadius, 2*drawRadius);        
         
         if(node.getName().equals(startNode)) // choose color and thickness for frame depending on
-        	                                 // if the node is starting or ending node on the path
+                                             // if the node is starting or ending node on the path
         {
-        	thickness = FRAME_THICK;
-        	frameColor = NODE_START_COLOR;
+            thickness = FRAME_THICK;
+            frameColor = NODE_START_COLOR;
         }
         else if(node.getName().equals(endNode))
         {
-        	thickness = FRAME_THICK;
-        	frameColor = NODE_END_COLOR;
+            thickness = FRAME_THICK;
+            frameColor = NODE_END_COLOR;
         }
         else
         {
-        	thickness = FRAME_THIN;
-        	frameColor = Color.BLACK;
+            thickness = FRAME_THIN;
+            frameColor = Color.BLACK;
         }
         
         // draw frame around the node
@@ -107,7 +107,7 @@ public class DrawableNode extends Drawable
         // draw back for node distance
         g.setColor(Color.WHITE);
         g.fillRect(point.getX() + DIST_BOX_OFFSET_X, point.getY() + DIST_BOX_OFFSET_Y, 
-        		DIST_BOX_WIDTH, DIST_BOX_HEIGTH);
+                DIST_BOX_WIDTH, DIST_BOX_HEIGTH);
         
         // draw node distance
         g.setColor(Color.BLACK);
@@ -125,7 +125,7 @@ public class DrawableNode extends Drawable
      */
     private int getDistance(int x, int y)
     {
-    	// standard 2D distance algorithm
+        // standard 2D distance algorithm
         return (int)(Math.sqrt((point.getX()-x)*(point.getX()-x) + 
                 (point.getY()-y)*(point.getY()-y)));
     }
@@ -136,7 +136,7 @@ public class DrawableNode extends Drawable
      */
     public boolean isMouseOver()
     {
-    	// standatd collision between point and circle algorithm in 2D
+        // standatd collision between point and circle algorithm in 2D
         return getDistance(DrawManager.getMouse().x, DrawManager.getMouse().y) < RADIUS;
     }
     
@@ -157,7 +157,7 @@ public class DrawableNode extends Drawable
      */
     public static void setStart(String start)
     {
-    	startNode = start;
+        startNode = start;
     }
     
     /**
@@ -166,6 +166,6 @@ public class DrawableNode extends Drawable
      */
     public static void setEnd(String end)
     {
-    	endNode = end;
+        endNode = end;
     }
 }

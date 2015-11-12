@@ -125,7 +125,7 @@ public class DrawableEdge extends Drawable
                                                    // and flag is enabled
         {
             input = JOptionPane.showInputDialog(
-            		String.format("New weight [%d ~ %d]", MIN_WEIGHT,MAX_WEIGHT));
+                    String.format("New weight [%d ~ %d]", MIN_WEIGHT,MAX_WEIGHT));
             
             try
             {

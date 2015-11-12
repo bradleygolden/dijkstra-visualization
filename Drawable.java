@@ -8,8 +8,8 @@ import java.awt.Graphics;
  */
 public abstract class Drawable
 {
-	protected static String path = ""; // current shortest path as a string of nodes
-	
+    protected static String path = ""; // current shortest path as a string of nodes
+    
     /**
      * Draws the object using g
      *
@@ -23,6 +23,6 @@ public abstract class Drawable
      */
     public static void setPath(String path)
     {
-    	Drawable.path = path;
+        Drawable.path = path;
     }
 }

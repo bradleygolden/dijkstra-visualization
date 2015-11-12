@@ -375,7 +375,7 @@ public class Graph
      */
     public static Graph graph1()
     {
-    	Graph graph;
+        Graph graph;
 
         graph = null;
         graph = new Graph(5, 7, "Graph1");
@@ -503,14 +503,14 @@ public class Graph
      */
     public static Graph generateGraph(int n)
     {
-    	Graph graph;       // resultant graph
-    	int bridgeEdges;   // number of bridging edges
-    	int index;         // helper index 1
-    	int index2;        // helper index 2
-    	int maxWeight;     // maximum weight of an edge
-    	
-    	maxWeight = 20;
-    	bridgeEdges = (int)(Math.random()*(n*n/5) + 1); // density ~ n^2/5
+        Graph graph;       // resultant graph
+        int bridgeEdges;   // number of bridging edges
+        int index;         // helper index 1
+        int index2;        // helper index 2
+        int maxWeight;     // maximum weight of an edge
+        
+        maxWeight = 20;
+        bridgeEdges = (int)(Math.random()*(n*n/5) + 1); // density ~ n^2/5
         graph = new Graph(n,n-1 + bridgeEdges , "Generic graph");
 
         // add first connection
@@ -530,24 +530,24 @@ public class Graph
         
         for(int i=0; i < graph.getNodes().length; i++) // arrange points in a circle
         {
-        	// x = a sin(i), y = a cos(i) is a classic circle parametric equation
-        	graph.nodes[i].getScaledPoint().setXY(
-        			0.2+(Math.sin(i*Math.PI*2/graph.getNodes().length)+1)/3, 
-        			0.2+(Math.cos(i*Math.PI*2/graph.getNodes().length)+1)/3);
+            // x = a sin(i), y = a cos(i) is a classic circle parametric equation
+            graph.nodes[i].getScaledPoint().setXY(
+                    0.2+(Math.sin(i*Math.PI*2/graph.getNodes().length)+1)/3, 
+                    0.2+(Math.cos(i*Math.PI*2/graph.getNodes().length)+1)/3);
         }
         
         while(bridgeEdges > 0)  // add bridging edges
         {
-        	index = (int)(Math.random()*n);
-        	index2 = (int)(Math.random()*n);
-        	
-        	if(index != index2 && 
-        	   !graph.hasEdge(graph.nodes[index], graph.nodes[index2])) // add if it's not there
-        	{
-        		graph.addEdge(graph.nodes[index], graph.nodes[index2], 
-        				(int)(Math.random()*maxWeight+1));
-        		bridgeEdges--;
-        	}
+            index = (int)(Math.random()*n);
+            index2 = (int)(Math.random()*n);
+            
+            if(index != index2 && 
+               !graph.hasEdge(graph.nodes[index], graph.nodes[index2])) // add if it's not there
+            {
+                graph.addEdge(graph.nodes[index], graph.nodes[index2], 
+                        (int)(Math.random()*maxWeight+1));
+                bridgeEdges--;
+            }
         }
 
         startNode = "A";
@@ -565,22 +565,22 @@ public class Graph
      * @author Maciej Szpakowski
      */
     private boolean hasEdge(Node n1, Node n2)
-    {    	
-    	for(Edge e : edges)
-    	{
-    		if(e == null)
-    		{
-    			continue;
-    		}
-    		
-    		if((e.getEnd() == n1 && e.getStart() == n2) || 
-    		   (e.getEnd() == n2 && e.getStart() == n1))
-    		{
-    			return true;
-    		}
-    	}
-    	
-    	return false;
+    {       
+        for(Edge e : edges)
+        {
+            if(e == null)
+            {
+                continue;
+            }
+            
+            if((e.getEnd() == n1 && e.getStart() == n2) || 
+               (e.getEnd() == n2 && e.getStart() == n1))
+            {
+                return true;
+            }
+        }
+        
+        return false;
     }
 
     /**
@@ -605,7 +605,7 @@ public class Graph
 
         for(Edge e : tempEdges)
         {
-        	graph.addEdge(e.getEnd(), e.getStart(), e.getVal());
+            graph.addEdge(e.getEnd(), e.getStart(), e.getVal());
         }
 
         graph.setStates();
