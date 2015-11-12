@@ -22,8 +22,8 @@ public class DrawableNode extends Drawable
 	public static final Color NODE_UNVISITED_COLOR = new Color(200,200,200); // unvisited node color
 	public static final Color NODE_VISITED_COLOR = new Color(200,255,200);   // visited node color
 	public static final Color NODE_PATH_COLOR = new Color(50,255,50);        // path node color
-	public static final Color NODE_START_COLOR = Color.GREEN;    // frame color of start node
-	public static final Color NODE_END_COLOR = Color.BLUE;       // frame color of end node
+	public static final Color NODE_START_COLOR = new Color(0,100,0); // frame color of start node
+	public static final Color NODE_END_COLOR = Color.BLUE;           // frame color of end node
 
 	private static String startNode = ""; // name of the node where the path starts
 	private static String endNode = "";   // name of the destination node
