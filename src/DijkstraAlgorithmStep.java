@@ -2,19 +2,29 @@
  *
  * @author  Amanda Olson
  * DijkstraAlgorithmStep represents that path of node to another
- * TODO : create accessors for all of the class's properties
  */
-public class DijkstraAlgorithmStep {
-    public NodeData startNode;
-    public NodeData endNode;
-    public int accumulatedWeight;
+public class DijkstraAlgorithmStep 
+{
+    public NodeData startNode;		// initial start position
+    public NodeData endNode;		// destination position
+    public int accumulatedWeight;	// current weight of traversed path
     
+    /**
+    * Make and return a copy of the current single move path
+    * <p>
+    * @return copy
+    */
     public DijkstraAlgorithmStep makeCopy()
     {
-        DijkstraAlgorithmStep copy = new DijkstraAlgorithmStep();
+        DijkstraAlgorithmStep copy;     // copy of single move path
+	
+	
+	copy = new DijkstraAlgorithmStep();
         copy.startNode = startNode;
         copy.endNode = endNode;
         copy.accumulatedWeight = accumulatedWeight;
-        return copy;
+        
+
+	return copy;
     }
 }
