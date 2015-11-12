@@ -278,19 +278,4 @@ public class TopPanel extends JPanel implements ActionListener, ItemListener
     {
         return graph;
     }
-
-    /**
-    *  Test driver for TopPanel
-    */
-    public static void main(String[] args) 
-    {
-        // Test Code
-        JFrame frame = new JFrame("Dijkstra's Algorithm");
-        frame.getContentPane().add(new TopPanel(), BorderLayout.NORTH);
-        frame.getContentPane().add(new JPanel(), BorderLayout.CENTER);
-
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 300);
-        frame.setVisible(true);
-    }
 }
