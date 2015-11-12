@@ -5,38 +5,32 @@ import java.awt.Color;
  */
 public class Node 
 {
-    private static final Color DEFAULT_NODE_COLOR = Color.pink; // the default color of nodes
     private int val; // value of the node
     private ScaledPoint point; // point where the current node is on the screen
-    private Color color; // the color of the current node
     private String name; // the name of this node
-
-    private NodeData backendNode;
-
-    public Node()
-    {
-        // TODO - delete this constructor
-        color = DEFAULT_NODE_COLOR;
-    }
+    private NodeData backendNode; // this node is associated with a backendNode counterpart
 
     /**
-     * TODO
-     * Creates a Node object with a value.
+     * Constructor
+     * <p>
+     * Creates a Node object with point = ScaledPoint object, val = infinity, name = name, 
+     * backendNode = NodeData object.
      *
-     * @param val Value of the current node.
+     * @param name (required) The name of the node object. Can be any string.
      */
     public Node(String name)
     {
-        this.point = new ScaledPoint(); 
+        this.point = new ScaledPoint();  
         this.val = Integer.MAX_VALUE;
         this.name = name;
         this.backendNode = new NodeData(name);
     }
 
     /**
-     * Setter for the Node value.
+     * Setter for the node value.
      *
-     * @param val New value to set node to. Must be initialzed.
+     * @param val New value to set node to. Must be initialzed. The value can be any
+     * integer value.
      */
     public void setValue(int val)
     {
@@ -44,9 +38,9 @@ public class Node
     }
 
     /**
-     * Getter for the Node value.
+     * Getter for the node value.
      *
-     * @return The Node's value.
+     * @return The Node's current value. This value can be any integer value.
      */
     public int getValue()
     {
@@ -54,7 +48,7 @@ public class Node
     }
 
     /**
-     * Setter for the Node's scaled point.
+     * Setter for the node's scaled point.
      *
      * @param point A ScaledPoint type. Must be initialzed.
      */
@@ -71,26 +65,6 @@ public class Node
     public ScaledPoint getScaledPoint()
     {
         return this.point;
-    }
-
-    /**
-     * Getter for the Node's color.
-     *
-     * @return The nodes current color as a Color object.
-     */
-    public Color getColor()
-    {
-        return this.color;
-    }
-
-    /**
-     * Setter for the Node's color.
-     *
-     * @param color An initialized Color object. Must be initialized.
-     */
-    public void setColor(Color color)
-    {
-        this.color = color;
     }
 
     /**
@@ -113,6 +87,11 @@ public class Node
         return name;
     }
 
+    /**
+     * Getter for the backend node associated with this Node object.
+     *
+     * @return A NodeData object.
+     */
     public NodeData getData()
     {
         return this.backendNode;
@@ -121,7 +100,7 @@ public class Node
     /**
      * Prints a string of the current node's value.
      *
-     * @return Current node value.
+     * @return Current node value as a string.
      */
     public String toString()
     {

@@ -5,36 +5,36 @@ import java.awt.Color;
  */
 public class Edge
 {
-    private static final Color DEFAULT_EDGE_COLOR = Color.BLUE; // the default color of edges
     private int val; // value of the edge
     private Node start; // node where edge starts
     private Node end; // node where edge ends
-    private Color color; // color of the current edge
-
-    private EdgeData backendEdge; // for directed graph
-    // use of this instance variable is optional
+    private EdgeData backendEdge; // backend edge associated with this edge
     private EdgeData backendEdgeReverse; // for undirected graph. must be used with backendEdge
 
     /**
+     * Constructor
+     * <p>
      * Creates an edge object with a given start, end, and edge value.
      * 
      * @param start The node where the edge starts. (Not null)
      * @param end The node where the edge ends. (Not null)
-     * @param val Value of the edge.
-     * TODO
+     * @param val Value of the edge. Value can be any integer.
      */
     public Edge(Node start, Node end, int val)
     {
-        NodeData tempStart = start.getData();
-        NodeData tempEnd = end.getData();
         this.val = val;
         this.start = start;
         this.end = end;
+
+        NodeData tempStart = start.getData(); // get backend node related with starting node
+        NodeData tempEnd = end.getData(); // get backend node related with ending node
+
+        // initialized two directoed edges
+        // this simulates an undirected edge
         this.backendEdge = new EdgeData(tempStart, val);
         this.backendEdgeReverse = new EdgeData(tempEnd, val);
 
-        //TODO - this creates an undirected node
-        //pulled from GraphData.java
+        // create an undirected node and adds is to the backend
         tempStart.addOrUpdateEdge(backendEdge);
         tempEnd.addOrUpdateEdge(backendEdgeReverse);
     }
@@ -42,21 +42,17 @@ public class Edge
     /**
      * Setter for the edge value.
      * 
-     * @param val Value for the edge. Must be initialized.
-     * TODO
+     * @param val Value for the edge. Must be initialized. Can be any integer value.
      */
     public void setVal(int val)
     {
         this.val = val; // change the value of this edge
-        // now change both directions of the backend edge
-        this.backendEdge.setWeight(val); // change the backend edge weight
-        this.backendEdgeReverse.setWeight(val); // change the backend edge weight 
     }
 
     /**
      * Getter for the edge value.
      *
-     * @return The current edge value.
+     * @return The current edge value. Value can be any integer.
      */
     public int getVal()
     {
@@ -66,7 +62,7 @@ public class Edge
     /**
      * Getter for the start node of the edge.
      *
-     * @return The current edge's start point (type Node).
+     * @return The current edge's start node (type Node).
      */
     public Node getStart()
     {
@@ -81,16 +77,6 @@ public class Edge
     public Node getEnd()
     {
         return this.end;
-    }
-
-    /**
-     * Getter for the current color of this edge.
-     *
-     * @return The current color of this edge as a Color object.
-     */
-    public Color getColor()
-    {
-        return this.color;
     }
 
     /**
@@ -114,19 +100,9 @@ public class Edge
     }
 
     /**
-     * Setter for the current color of the edge.
+     * Provides the current edge value.
      *
-     * @param color Initialized color for changing the current edge color. Must be initialized.
-     */
-    public void setColor(Color color)
-    {
-        this.color = color;
-    }
-
-    /**
-     * Provides the current edge value
-     *
-     * @return The edge value.
+     * @return The edge value as a string of any integer value.
      */
     public String toString()
     {
@@ -146,7 +122,7 @@ public class Edge
 
         System.out.println(edge1_2.toString());
         System.out.println(edge2_1.toString());
-        
+
         System.out.println(edge1_2.getStart().toString());
         System.out.println(edge1_2.getEnd().toString());
     }
