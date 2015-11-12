@@ -1,6 +1,4 @@
-import java.util.Arrays;
 import java.util.List;
-import java.awt.Color;
 
 /**
  * Used to simulate a graph containing nodes and edges.
@@ -8,11 +6,10 @@ import java.awt.Color;
 public class Graph
 {
     // start and end is chosen and changed by the user
-    private static String START_NODE = "A"; // starting point in the graph
-    private static String END_NODE = "A"; // ending point in the graph
+    private static String startNode = "A"; // starting point in the graph
+    private static String endNode = "A"; // ending point in the graph
     // cannot initalize this static variable until a new graph is created
-    protected static GraphData BACKEND_GRAPH; // graph strictly used for backend (algorithm) processing
-    private static int MAX_EDGES = 0; // max number of edges in the graph
+    private static GraphData backendGraph; // graph strictly used for backend (algorithm) processing
 
     //
     // middle tier related instance variables
@@ -66,9 +63,8 @@ public class Graph
         edges = new Edge[numEdges];
         maxNodes = numNodes;
         maxEdges = numEdges;
-        MAX_EDGES = maxEdges;
         this.name = name;
-        this.BACKEND_GRAPH = new GraphData();
+        backendGraph = new GraphData();
     }
 
     /**
@@ -91,7 +87,7 @@ public class Graph
         newNode = new Node(name); // create a new logic node
 
         // add node to backendGraph
-        BACKEND_GRAPH.addNode(newNode.getData());
+        backendGraph.addNode(newNode.getData());
 
         nodes[currNumNodes] = newNode; // add node to graph
         currNumNodes++; // increment number of nodes in the graph
@@ -119,7 +115,7 @@ public class Graph
         newEdge = new Edge(start, end, val);
 
         // add edge to backendGraph
-        BACKEND_GRAPH.addEdgeToNode(start.getName(), end.getName(), val);
+        backendGraph.addEdgeToNode(start.getName(), end.getName(), val);
 
         edges[currNumEdges] = newEdge;
         currNumEdges++;
@@ -242,7 +238,7 @@ public class Graph
     {
         // populate all states
         try {
-            states = BACKEND_GRAPH.performDijkstraAlgorithm(START_NODE, END_NODE);
+            states = backendGraph.performDijkstraAlgorithm(startNode, endNode);
         } catch (Exception ex) {
             System.out.println("Exception: " + ex);
         }
@@ -335,7 +331,7 @@ public class Graph
      */
     public void setStart(String start)
     {
-        START_NODE = start;
+        startNode = start;
     }
 
     /**
@@ -343,7 +339,7 @@ public class Graph
      */
     public void setEnd(String end)
     {
-        END_NODE = end;
+        endNode = end;
     }
 
     /**
@@ -368,8 +364,8 @@ public class Graph
             graph.addNode(i + "");
         }
 
-        START_NODE = "A";
-        END_NODE = "A";
+        startNode = "A";
+        endNode = "A";
 
         // add 7 edges
         graph.addEdge(graph.nodes[0], graph.nodes[1], 8);
@@ -419,8 +415,8 @@ public class Graph
         graph.addEdge(graph.nodes[3], graph.nodes[5], 8);
         graph.addEdge(graph.nodes[4], graph.nodes[5], 6);
 
-        START_NODE = "A";
-        END_NODE = "E";
+        startNode = "A";
+        endNode = "E";
 
         // set scaled points for nodes
         graph.nodes[0].getScaledPoint().setXY(0.2, 0.8);
@@ -462,8 +458,8 @@ public class Graph
         graph.addEdge(graph.nodes[3], graph.nodes[5], 7);
         graph.addEdge(graph.nodes[4], graph.nodes[5], 6);
 
-        START_NODE = "A";
-        END_NODE = "E";
+        startNode = "A";
+        endNode = "E";
 
         // set scaled points for nodes
         graph.nodes[0].getScaledPoint().setXY(0.2, 0.8);
@@ -484,8 +480,11 @@ public class Graph
     public static Graph generateGraph(int n)
     {
     	Graph graph;
+    	int bridgeEdges;
     	int index;
+    	int index2;
     	
+    	bridgeEdges = (int)(Math.random()*(n*n-n-2) + 1);
         graph = new Graph(n,n-1 , "Generic graph");
 
         // add first connection
@@ -506,23 +505,43 @@ public class Graph
         
         for(int i=0; i < graph.getNodes().length; i++)
         {
-        	graph.nodes[i].getScaledPoint().setXY((Math.sin(i*Math.PI*2/graph.getNodes().length)+1)/2.5, 
-        			(Math.cos(i*Math.PI*2/graph.getNodes().length)+1)/2.5);
+        	graph.nodes[i].getScaledPoint().setXY(0.2+(Math.sin(i*Math.PI*2/graph.getNodes().length)+1)/3, 
+        			0.2+(Math.cos(i*Math.PI*2/graph.getNodes().length)+1)/3);
+        }
+        
+        while(bridgeEdges > 0)
+        {
+        	index = (int)(Math.random()*n);
+        	index2 = (int)(Math.random()*n);
+        	
+        	if(index != index2 && !graph.hasEdge(graph.nodes[index], graph.nodes[index2]))
+        	{
+        		graph.addEdge(graph.nodes[index], graph.nodes[index2], (int)(Math.random()*20+1));
+        		bridgeEdges--;
+        	}
         }
 
-        START_NODE = "A";
-        END_NODE = "A";
+        startNode = "A";
+        endNode = "A";
         graph.setStates();
 
         return graph;
     }
     
-    /**
-     * Builds graph with new parameters
-     * @param graph the graph to regenerate
-     *
-     * @return the new graph
-     */
+    private boolean hasEdge(Node n1, Node n2)
+    {    	
+    	for(Edge e : edges)
+    	{
+    		if((e.getEnd() == n1 && e.getStart() == n2) && 
+    		   (e.getEnd() == n2 && e.getStart() == n1))
+    		{
+    			return true;
+    		}
+    	}
+    	
+    	return false;
+    }
+
     public static Graph regenerateGraph(Graph graph)
     {
         Edge[] tempEdges;
